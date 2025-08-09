@@ -24,7 +24,7 @@ function Cookie.DuelStartMainCharacter(c)
 end
 function Cookie.DuelStartop(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
-	if Duel.IsTurnPlayer(tp) then
+	if Duel.GetTurnPlayer()==tp then
 	Duel.SpecialSummon(e:GetHandler(),0,tp,tp,true,true,POS_FACEUP_ATTACK)
 	local enemymain=Duel.GetMatchingGroup(nil,1-tp,LOCATION_EXTRA,0,nil):GetFirst()
 	Duel.SpecialSummon(enemymain,0,1-tp,1-tp,true,true,POS_FACEUP_ATTACK) end
@@ -73,7 +73,7 @@ function Cookie.DrawStMainCharacter(c)
 	c:RegisterEffect(e3)
 end
 function Cookie.Resetcon(e,tp,eg,ep,ev,re,r,rp)
-	return Duel.IsTurnPlayer(tp)
+	return Duel.GetTurnPlayer()==tp
 end
 function Cookie.ResetPositionfilter(c)
 	return c:IsFaceup() and c:IsDefensePos() and not c:IsLocation(LOCATION_EMZONE)
@@ -112,7 +112,7 @@ function Cookie.Resetop(e,tp,eg,ep,ev,re,r,rp)
 	Duel.Remove(resetmana,POS_FACEUP,REASON_RULE) end
 end
 function Cookie.drawcon(e,tp,eg,ep,ev,re,r,rp)
-	return Duel.IsTurnPlayer(tp)
+	return Duel.GetTurnPlayer()==tp
 end
 function Cookie.drawop(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
@@ -301,6 +301,7 @@ function Cookie.MainCharacterSpEff(c)
 	local e6=Effect.CreateEffect(c)
 	e6:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_TRIGGER_O)
 	e6:SetCode(EVENT_ATTACK_ANNOUNCE)
+	e6:SetHintTiming(TIMING_BATTLE_STEP_END)
 	e6:SetRange(LOCATION_MZONE)
 	e6:SetCondition(function(_,tp) return Duel.IsTurnPlayer(1-tp) end)
 	e6:SetOperation(Cookie.cookienothingop)
@@ -338,7 +339,7 @@ function Cookie.leavecookieop(e,tp,eg,ep,ev,re,r,rp)
 end
 function Cookie.leavecookiecon2(e,tp,eg,ep,ev,re,r,rp)
 	local tp=e:GetHandlerPlayer()
-	return Duel.GetCounter(tp,1,1,0xa01)>0 and Duel.IsTurnPlayer(tp)
+	return Duel.GetCounter(tp,1,1,0xa01)>0 and Duel.GetTurnPlayer()==tp
 end
 function Cookie.cookiefilter(c)
 	return c:IsRace(RACE_WARRIOR)
@@ -387,7 +388,7 @@ function Cookie.leavecookieop2(e,tp,eg,ep,ev,re,r,rp)
 	Duel.RaiseEvent(e:GetHandler(),EVENT_CUSTOM+10060100,e,0,tp,tp,0)
 end
 function Cookie.leavecookiecon3(e,tp,eg,ep,ev,re,r,rp)
-	return Duel.IsTurnPlayer(tp)
+	return Duel.GetTurnPlayer()==tp
 end
 function Cookie.leavecookieop3(e,tp,eg,ep,ev,re,r,rp)
 	Duel.RaiseEvent(e:GetHandler(),EVENT_CUSTOM+10060100,e,0,tp,tp,0)

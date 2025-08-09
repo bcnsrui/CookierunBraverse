@@ -144,7 +144,7 @@ function Cookie6.Trapeff(e)
 	e:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_TRIGGER_O)
 	e:SetCode(EVENT_ATTACK_ANNOUNCE)
 	e:SetRange(LOCATION_HAND)
-	e:SetCondition(function(_,tp) return Duel.IsTurnPlayer(1-tp) end)
+	e:SetCondition(function(_,tp) return Duel.GetTurnPlayer()~=tp end)
 	e:SetCost(Cost.SelfToGrave)
 end
 

@@ -23,7 +23,7 @@ function Cookie2.SummonCookie(c)
 end
 function Cookie2.Summoncon(e)
 	local tp=e:GetHandlerPlayer()
-	return Duel.GetLocationCount(tp,LOCATION_MZONE)>0 and Duel.IsTurnPlayer(tp) and Duel.GetCurrentPhase()==PHASE_BATTLE_STEP
+	return Duel.GetLocationCount(tp,LOCATION_MZONE)>0 and Duel.GetTurnPlayer()==tp and Duel.GetCurrentPhase()==PHASE_BATTLE_STEP
 	and not (Duel.GetAttacker() and Duel.GetAttacker():IsControler(tp)) and Duel.GetCurrentChain()==0
 end
 function Cookie2.Summonop(e,tp,eg,ep,ev,re,r,rp)
