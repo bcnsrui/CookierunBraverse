@@ -4,7 +4,10 @@ Cookie3={}
 --효과트리거
 function Cookie3.eventtg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return true end
-	Duel.SetChainLimit(aux.FALSE)
+	Duel.SetChainLimit(Cookie3.effectchainlm2)
+end
+function Cookie3.effectchainlm2(e,rp,tp)
+	return e:GetHandler():IsSetCard(0xa05)
 end
 function Cookie3.eventtg2(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return true end

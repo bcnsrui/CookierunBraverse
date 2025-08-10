@@ -10,8 +10,8 @@ function s.filter(c)
 	return c:IsLevel(1) and c:IsAttribute(ATTRIBUTE_LIGHT)
 end
 function s.target(e,tp,eg,ep,ev,re,r,rp,chk)
-	if chk==0 then return Duel.IsExistingMatchingCard(s.filter,tp,LOCATION_EXTRA,0,1,nil)
-	and Duel.IsExistingMatchingCard(Cookie3.NoEmFzonefilter,tp,LOCATION_MZONE,0,1,nil) end
+	if chk==0 then return Duel.IsExistingMatchingCard(s.filter,tp,LOCATION_EXTRA,0,1,nil) and
+	Duel.IsExistingMatchingCard(Cookie3.NoEmFzonefilter,tp,LOCATION_MZONE,0,1,nil) end
 	Duel.SetChainLimit(aux.FALSE)
 end
 function s.operation(e,tp,eg,ep,ev,re,r,rp)

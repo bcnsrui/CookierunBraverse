@@ -82,7 +82,7 @@ function Cookie7.damageeff(e,tp,eg,ep,ev,re,r,rp,ag,dam)
 	elseif typ=="Group" then tg=ag:GetFirst() end
 	Duel.Damage(1-tp,dam,REASON_EFFECT)
 	local damage=0
-	while damage<dam and tg:GetOverlayCount()>0 do
+	while damage<dam and ((tg:GetOverlayCount()>0 and not tg:IsSetCard(0xa04)) or tg:GetOverlayCount()>1) do
 	g=tg:GetOverlayGroup()
 	last=g:GetFirst()
 	tc=g:GetNext()
@@ -130,7 +130,7 @@ function Cookie7.hptrasheff(e,tp,eg,ep,ev,re,r,rp,ag,dam)
 	elseif typ=="Group" then tg=ag:GetFirst() end
 	Duel.Damage(1-tp,dam,REASON_EFFECT)
 	local trash=0
-	while trash<dam and tg:GetOverlayCount()>0 do
+	while trash<dam and (tg:GetOverlayCount()>0 or (tg:IsSetCard(0xa04) and tg:GetOverlayCount()>1)) do
 	g=tg:GetOverlayGroup()
 	last=g:GetFirst()
 	tc=g:GetNext()

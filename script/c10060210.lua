@@ -5,7 +5,7 @@ function s.initial_effect(c)
 	c:RegisterEffect(e1)
 end
 function s.filter(c,e,tp)
-	return c:IsLevel(1) and c:IsCanBeSpecialSummoned(e,0,tp,false,false)
+	return c:IsLevel(1) and c:IsAttribute(ATTRIBUTE_LIGHT) and c:IsRace(RACE_WARRIOR)
 end
 function s.operation(e,tp,eg,ep,ev,re,r,rp)
 	Cookie8.resetevent(e,tp,eg,ep,ev,re,r,rp)
