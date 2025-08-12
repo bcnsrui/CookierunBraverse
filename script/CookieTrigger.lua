@@ -81,8 +81,31 @@ function Cookie4.healtriggerop2(e,tp,eg,ep,ev,re,r,rp)
 	if Duel.SelectYesNo(tp,aux.Stringid(10060001,0)) then
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_TOGRAVE)
 	local g=Duel.SelectMatchingCard(tp,nil,tp,LOCATION_HAND,0,1,1,nil)
-	local ally=Duel.GetMatchingGroup(Card.IsFaceup,tp,LOCATION_EXTRA,0,nil):GetSum(Card.GetLevel)
-	if ally<6 then return end	
 	Duel.SendtoGrave(g,REASON_RULE)
+	local ally=Duel.GetMatchingGroup(Card.IsFaceup,tp,LOCATION_EXTRA,0,nil):GetSum(Card.GetLevel)
+	if ally<6 then return end
 	Cookie7.hpaddop(e,tp,eg,ep,ev,re,r,rp,hg,2) end end
+end
+
+--츄러스맛쿠키
+function Cookie4.SRCookieEffect(c,attr,colorCount,mixCount)
+	Cookie2.CookieCharacter(c)
+	Cookie2.battlemanacost(attr,colorCount,mixCount)(c)
+	local e1=Effect.CreateEffect(c)
+	e1:SetType(EFFECT_TYPE_SINGLE)
+	e1:SetCode(EFFECT_ADD_SETCODE)
+	e1:SetValue(0xb05)
+	c:RegisterEffect(e1)
+end
+function Cookie4.healtriggerop2(e,tp,eg,ep,ev,re,r,rp)
+	local hg=e:GetLabelObject()
+	if Duel.GetFieldGroupCount(tp,LOCATION_HAND,0)>0 then
+	if Duel.SelectYesNo(tp,aux.Stringid(10060001,6)) then
+	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_TOGRAVE)
+	local g=Duel.SelectMatchingCard(tp,nil,tp,LOCATION_HAND,0,1,1,nil)
+	Duel.SendtoGrave(g,REASON_RULE)
+	local support=Duel.GetFieldGroupCount(tp,LOCATION_REMOVED,0)
+	if support<4 then return end
+	if not Duel.SelectYesNo(tp,aux.Stringid(10060001,0)) then return end
+	Duel.Remove(e:GetHandler(),POS_FACEDOWN,REASON_EFFECT) end end
 end

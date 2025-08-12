@@ -22,7 +22,6 @@ function s.andoperation(e,tp,eg,ep,ev,re,r,rp)
 	if not c:IsLocation(LOCATION_MZONE) then return end
 	local ally=Duel.GetMatchingGroup(Card.IsFaceup,tp,LOCATION_EXTRA,0,nil):GetSum(Card.GetLevel)
 	if ally<5 then return end
-	Duel.Hint(HINT_SELECTMSG,tp,aux.Stringid(10060001,1))
 	local g=Duel.GetMatchingGroup(Cookie3.NoEmFzonefilter,tp,0,LOCATION_MZONE,nil)
 	Cookie7.doubledamageeff(e,tp,eg,ep,ev,re,r,rp,g,1,1)
 end

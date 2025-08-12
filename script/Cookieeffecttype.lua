@@ -120,6 +120,25 @@ function Cookie6.extrasuccess(e)
 	e:SetTarget(Cookie3.eventtg)
 end
 
+--7턴 종료시
+function Cookie6.ESCookieEffect(c,attr,colorCount,mixCount)
+	Cookie2.CookieCharacter(c)
+	Cookie2.battlemanacost(attr,colorCount,mixCount)(c)
+	local e1=Effect.CreateEffect(c)
+	Cookie6.endphase(e1)
+	return e1
+end
+function Cookie6.endphase(e)
+	e:SetDescription(aux.Stringid(10060000,5))
+	e:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_TRIGGER_F)
+	e:SetCode(EVENT_PHASE+PHASE_END)
+	e:SetRange(LOCATION_MZONE)
+	e:SetCountLimit(1)
+	e:SetCondition(function(_,tp) return Duel.GetTurnPlayer()==tp end)
+	e:SetTarget(Cookie3.eventtg)
+end
+
+
 --I아이템
 function Cookie6.ItemEffect(c)
 	local e1=Effect.CreateEffect(c)
