@@ -14,6 +14,6 @@ function s.andoperation(e,tp,eg,ep,ev,re,r,rp)
 	Cookie3.manacost(e,tp,eg,ep,ev,re,r,rp,ATTRIBUTE_WIND,1,1)
 	local support=Duel.GetFieldGroupCount(tp,LOCATION_REMOVED,0)
 	if support<7 then return end
-	local g=Duel.GetMatchingGroup(Cookie3.NoEmFzonefilter,tp,LOCATION_MZONE,0,e:GetHandler()):GetFirst()
-	Cookie7.hpaddop(e,tp,eg,ep,ev,re,r,rp,g,1) end
+	local ag=Duel.GetMatchingGroup(Cookie3.NoEmFzonefilter,tp,LOCATION_MZONE,0,e:GetHandler())
+	if #ag>0 then Cookie7.hpaddop(e,tp,eg,ep,ev,re,r,rp,ag:GetFirst(),1) end
 end

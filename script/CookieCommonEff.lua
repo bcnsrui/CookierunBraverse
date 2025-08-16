@@ -92,7 +92,8 @@ function Cookie3.Refreshop(e,tp,eg,ep,ev,re,r,rp)
 	local ag=Duel.SelectMatchingCard(tp,Card.IsRace,tp,LOCATION_GRAVE,0,1,1,nil,RACE_WARRIOR)
 	Duel.SendtoExtraP(ag,nil,REASON_EFFECT)
 	local refill=Duel.GetFieldGroup(tp,LOCATION_GRAVE,0)
-	Duel.SendtoDeck(refill,nil,SEQ_DECKSHUFFLE,REASON_RULE) end
+	Duel.SendtoDeck(refill,nil,SEQ_DECKSHUFFLE,REASON_RULE)
+	Duel.ShuffleDeck(tp) end
 end
 
 --타겟X

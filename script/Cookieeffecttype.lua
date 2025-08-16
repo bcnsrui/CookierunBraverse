@@ -121,7 +121,7 @@ function Cookie6.extrasuccess(e)
 end
 
 --7턴 종료시
-function Cookie6.ESCookieEffect(c,attr,colorCount,mixCount)
+function Cookie6.ETCookieEffect(c,attr,colorCount,mixCount)
 	Cookie2.CookieCharacter(c)
 	Cookie2.battlemanacost(attr,colorCount,mixCount)(c)
 	local e1=Effect.CreateEffect(c)
