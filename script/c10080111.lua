@@ -1,0 +1,15 @@
+local s,id=GetID()
+function s.initial_effect(c)
+	local e1=Cookie6.ESCookieEffect(c,ATTRIBUTE_WIND,2,2)
+	e1:SetOperation(s.operation)
+	c:RegisterEffect(e1)
+end
+function s.operation(e,tp,eg,ep,ev,re,r,rp)
+	Cookie8.resetevent(e,tp,eg,ep,ev,re,r,rp)
+	Duel.Hint(HINT_SELECTMSG,tp,aux.Stringid(10060000,6))
+	local mana=Duel.SelectMatchingCard(tp,nil,tp,LOCATION_REMOVED,0,1,1,nil)
+	Duel.SendtoHand(mana,nil,REASON_EFFECT)
+	Duel.ConfirmCards(1-tp,mana)
+	local rest=Duel.SelectMatchingCard(tp,nil,tp,LOCATION_HAND,0,1,1,nil)
+	Duel.Remove(rest,POS_FACEDOWN,REASON_EFFECT)
+end

@@ -123,7 +123,6 @@ end
 function Cookie2.damagecheck(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
 	local bc=c:GetBattleTarget()
-	if bc==nil then return Duel.NegateAttack() end
 	local dam=c:GetAttack()
 	Cookie7.damageeff(e,tp,eg,ep,ev,re,r,rp,bc,dam)
 	Duel.RaiseEvent(c,EVENT_CUSTOM+10060100,e,0,tp,tp,0)

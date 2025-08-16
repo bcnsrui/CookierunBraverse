@@ -16,7 +16,7 @@ function s.operation(e,tp,eg,ep,ev,re,r,rp)
 	local mana=Duel.SelectMatchingCard(tp,nil,tp,LOCATION_REMOVED,0,1,1,nil)
 	Duel.SendtoHand(mana,nil,REASON_EFFECT)
 	Duel.ConfirmCards(1-tp,mana)
-	if not Duel.SelectYesNo(tp,aux.Stringid(id,0)) then return end
+	if not Duel.SelectYesNo(tp,aux.Stringid(10060001,8)) then return end
 	Duel.Draw(tp,1,REASON_EFFECT)
 	Cookie3.Refreshop(e,tp,eg,ep,ev,re,r,rp)
 end

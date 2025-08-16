@@ -1,6 +1,6 @@
 local s,id=GetID()
 function s.initial_effect(c)
-	local e1=Cookie6.ESCookieEffect(c,ATTRIBUTE_LIGHT,2,3)
+	local e1=Cookie6.SSCookieEffect(c,ATTRIBUTE_FIRE,1,1)
 	e1:SetOperation(s.operation)
 	c:RegisterEffect(e1)
 end
