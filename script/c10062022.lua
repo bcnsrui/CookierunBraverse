@@ -1,0 +1,15 @@
+local s,id=GetID()
+function s.initial_effect(c)
+	local e1=Cookie6.SSCookieEffect(c,ATTRIBUTE_WATER,3,3)
+	e1:SetOperation(s.operation)
+	c:RegisterEffect(e1)
+end
+function s.operation(e,tp,eg,ep,ev,re,r,rp)
+	Cookie8.resetevent(e,tp,eg,ep,ev,re,r,rp)
+	local e1=Effect.CreateEffect(e:GetHandler())
+	e1:SetType(EFFECT_TYPE_SINGLE)
+	e1:SetCode(EFFECT_ADD_SETCODE)
+	e1:SetValue(0xa06)
+	e1:SetReset(RESET_PHASE|PHASE_END|RESET_OPPO_TURN,1)
+	e:GetHandler():RegisterEffect(e1)
+end

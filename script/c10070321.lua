@@ -31,8 +31,7 @@ function s.operation(e,tp,eg,ep,ev,re,r,rp)
 	e:GetHandler():RegisterEffect(e2)
 end
 function s.filter(c,tp)
-	return c:IsPreviousControler(tp) 
-	--and c:IsAttribute(ATTRIBUTE_WIND)
+	return c:IsPreviousControler(tp) and c:IsAttribute(ATTRIBUTE_WIND)
 end
 function s.thcon(e,tp,eg,ep,ev,re,r,rp)
 	return eg:IsExists(s.filter,1,nil,tp)

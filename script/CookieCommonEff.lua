@@ -104,10 +104,11 @@ end
 
 --상대 배틀에리어 쿠키 트래시로 보내기
 function Cookie3.bttrashop(e,tp,eg,ep,ev,re,r,rp,g)
-	Duel.Remove(g,POS_FACEUP,REASON_EFFECT)
-	Duel.SendtoGrave(g,REASON_EFFECT)
 	if #g==0 then return end
-	if Duel.IsExistingMatchingCard(Card.IsCode,tp,LOCATION_FZONE,0,1,nil,10070522) then
+	if g:IsExists(Card.IsLocation,1,nil,LOCATION_MZONE) and
+	Duel.IsExistingMatchingCard(Card.IsCode,tp,LOCATION_FZONE,0,1,nil,10070522) then
 	local filtersg=Duel.GetMatchingGroup(Card.IsCode,tp,LOCATION_FZONE,0,nil,10070522)
 	Cookie8.eventop(e,tp,eg,ep,ev,re,r,rp,filtersg) end
+	Duel.Remove(g,POS_FACEUP,REASON_EFFECT)
+	Duel.SendtoGrave(g,REASON_EFFECT)
 end

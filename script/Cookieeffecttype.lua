@@ -81,6 +81,11 @@ end
 function Cookie6.BSCookieEffect(c,attr,colorCount,mixCount)
 	Cookie2.CookieCharacter(c)
 	Cookie2.battlemanacost(attr,colorCount,mixCount)(c)
+	local e2=Effect.CreateEffect(c)
+	e2:SetType(EFFECT_TYPE_SINGLE)
+	e2:SetCode(EFFECT_ADD_SETCODE)
+	e2:SetValue(0xc04)
+	c:RegisterEffect(e2)
 	local e1=Effect.CreateEffect(c)
 	Cookie6.Blocker(e1)
 	return e1
