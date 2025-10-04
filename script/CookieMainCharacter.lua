@@ -256,6 +256,16 @@ function Cookie.MainCharacterSpEff(c)
 	e1:SetTarget(Cookie3.notg)
 	e1:SetOperation(Cookie.handop)
 	c:RegisterEffect(e1)
+	local e7=Effect.CreateEffect(c)
+	e7:SetDescription(aux.Stringid(10060002,12))
+	e7:SetType(EFFECT_TYPE_QUICK_O)
+	e7:SetCode(EVENT_FREE_CHAIN)
+	e7:SetProperty(EFFECT_FLAG_DAMAGE_CAL)
+	e7:SetRange(LOCATION_EMZONE)
+	e7:SetCondition(Cookie2.BattlePositioncon)
+	e7:SetTarget(Cookie3.notg)
+	e7:SetOperation(Cookie.maincookieop2)
+	c:RegisterEffect(e7)
 	local e2=Effect.CreateEffect(c)
 	e2:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
 	e2:SetCode(EVENT_LEAVE_FIELD)
@@ -466,4 +476,11 @@ function Cookie.maincookieop(e,tp,eg,ep,ev,re,r,rp)
 		else local ally=Duel.GetMatchingGroup(nil,tp,LOCATION_EMZONE,0,nil):GetFirst()
 		Duel.Overlay(ally,rest) end
 	elseif sel2==5 then Duel.SendtoExtraP(rest,nil,REASON_EFFECT) end
+end
+function Cookie.maincookieop2(e,tp,eg,ep,ev,re,r,rp)
+	local c=e:GetHandler()
+	Duel.Hint(HINT_SELECTMSG,tp,aux.Stringid(10060001,7))
+	local count=Duel.AnnounceNumber(tp,0,1,2,3)
+	if count==0 then return end
+	Duel.Draw(tp,count,REASON_EFFECT)
 end
