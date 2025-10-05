@@ -1,1 +1,1 @@
-Duel.LoadScript("CS_init.lua")
+Duel.LoadScript("CS_init2.lua")
