@@ -23,7 +23,7 @@ function Cookie.DuelStartMainCharacter(c)
 	c:RegisterEffect(e1)
 end
 function Cookie.DuelStartfilter(c)
-	return c:IsType(TYPE_FUSION)
+	return not c:IsType(TYPE_FUSION)
 end
 function Cookie.DuelStartop(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
