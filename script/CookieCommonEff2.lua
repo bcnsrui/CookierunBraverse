@@ -1,6 +1,11 @@
 --쿠키런 브레이버스의 공통적인 임플란트2
 Cookie7={}
 
+function Cookie7.szonecon(e,tp,eg,ep,ev,re,r,rp)
+	local c=e:GetHandler()
+	return c:IsLocation(LOCATION_SZONE) and not c:IsLocation(LOCATION_FZONE)
+end
+
 --쿠키 체력 채우기
 function Cookie7.hpaddop(e,tp,eg,ep,ev,re,r,rp,hg,hp)
 	local heal=0
@@ -22,7 +27,7 @@ function Cookie7.hpaddop(e,tp,eg,ep,ev,re,r,rp,hg,hp)
 	local e2=Effect.CreateEffect(c)
 	e2:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_CONTINUOUS)
 	e2:SetCode(EVENT_MOVE)
-	e2:SetCondition(Cookie4.szonecon)
+	e2:SetCondition(Cookie7.szonecon)
 	e2:SetOperation(Cookie7.hpcookietomove)
 	e2:SetLabel(hpcode)
 	e2:SetLabelObject(hg)
@@ -33,6 +38,12 @@ function Cookie7.hpaddop(e,tp,eg,ep,ev,re,r,rp,hg,hp)
 	e3:SetOperation(Cookie7.hpcookietoremove)
 	e3:SetLabel(hpcode)
 	hpcookie:RegisterEffect(e3)
+	local e4=Effect.CreateEffect(c)
+	e4:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_CONTINUOUS)
+	e4:SetCode(EVENT_TO_DECK)
+	e4:SetOperation(Cookie7.hpcookietodeck)
+	e4:SetLabel(hpcode)
+	hpcookie:RegisterEffect(e4)
 	Cookie3.Refreshop(e,tp,eg,ep,ev,re,r,rp)
 	heal=heal+1 end
 end
@@ -48,7 +59,14 @@ function Cookie7.hpcookietoremove(e,tp,eg,ep,ev,re,r,rp)
 	Duel.SendtoDeck(e:GetHandler(),nil,-2,REASON_RULE)
 	Duel.Remove(hpcode,POS_FACEUP,REASON_RULE)
 end
+function Cookie7.hpcookietodeck(e,tp,eg,ep,ev,re,r,rp)
+	local hpcode=Duel.CreateToken(tp,e:GetLabel())
+	Duel.DisableShuffleCheck()
+	Duel.SendtoDeck(e:GetHandler(),nil,-2,REASON_RULE)
+	Duel.SendtoDeck(hpcode,nil,SEQ_DECKTOP,REASON_RULE)
+end
 function Cookie7.hpcookietomove(e,tp,eg,ep,ev,re,r,rp)
+	local hg=e:GetLabelObject()
 	local hpcookie2=Duel.CreateToken(tp,e:GetLabel())
 	Duel.DisableShuffleCheck()
 	Duel.SendtoDeck(e:GetHandler(),nil,-2,REASON_RULE)
@@ -64,16 +82,37 @@ function Cookie7.hpcookietomove(e,tp,eg,ep,ev,re,r,rp)
 	Cookie4.drawtriggerop(e,tp,eg,ep,ev,re,r,rp)
 	--얼그레이맛
 	elseif hpcookie2:IsSetCard(0xb04) then
-	Cookie4.healtriggerop2(e,tp,eg,ep,ev,re,r,rp)
+	Cookie4.Earlgreytriggerop(e,tp,eg,ep,ev,re,r,rp)
 	--츄러스맛
 	elseif hpcookie2:IsSetCard(0xb05) then
-	Cookie4.supporttriggerop(e,tp,eg,ep,ev,re,r,rp)
+	Cookie4.Churrotriggerop(e,tp,eg,ep,ev,re,r,rp)
 	--서리여왕쿠키
 	elseif hpcookie2:IsSetCard(0xb06) then
-	Cookie4.drawtriggerop2(e,tp,eg,ep,ev,re,r,rp)
+	Cookie4.FrostQueentriggerop(e,tp,eg,ep,ev,re,r,rp)
 	--에일리언도넛
 	elseif hpcookie2:IsSetCard(0xb07) then
 	Cookie4.trashtriggerop(e,tp,eg,ep,ev,re,r,rp)
+	--와일드베리맛쿠키
+	elseif hpcookie2:IsSetCard(0xb08) then
+	Cookie4.wildberrytriggerop(e,tp,eg,ep,ev,re,r,rp)
+	--미스틱오팔쿠키
+	elseif hpcookie2:IsSetCard(0xb09) then
+	Cookie4.mystictriggerop(e,tp,eg,ep,ev,re,r,rp)
+	--젤리 개구리쿠키
+	elseif hpcookie2:IsSetCard(0xb10) then
+	Cookie4.jellyfrogtriggerop(e,tp,eg,ep,ev,re,r,rp)
+	--비신령쿠키
+	elseif hpcookie2:IsSetCard(0xb11) then
+	Cookie4.Raindeitytriggerop(e,tp,eg,ep,ev,re,r,rp)
+	--스코빌리아 교장
+	elseif hpcookie2:IsSetCard(0xb12) then
+	Cookie4.schtriggerop(e,tp,eg,ep,ev,re,r,rp)
+	--아레나드로우 플립
+	elseif hpcookie2:IsSetCard(0xb13) and hg:GetAttribute()==hpcookie2:GetAttribute() then
+	Cookie4.ARdrawtriggerop(e,tp,eg,ep,ev,re,r,rp)
+	--아레나힐 플립
+	elseif hpcookie2:IsSetCard(0xb14) and hg:GetAttribute()==hpcookie2:GetAttribute() then
+	Cookie4.ARhealtriggerop(e,tp,eg,ep,ev,re,r,rp)
 	--노트리거
 	else end
 	Duel.Remove(hpcookie2,POS_FACEUP,REASON_RULE)
@@ -89,23 +128,19 @@ function Cookie7.damageeff(e,tp,eg,ep,ev,re,r,rp,ag,dam)
 	local tg
 	if typ=="Card" then tg=ag
 	elseif typ=="Group" then tg=ag:GetFirst() end
-	if tg:IsSetCard(0xa06) and not tg:GetBattleTarget() then dam=0 end
-	Duel.Damage(1-tp,dam,REASON_EFFECT)
+	Duel.Damage(1-c:GetControler(),dam,REASON_EFFECT)
 	local damage=0
-	while damage<dam and ((tg:GetOverlayCount()>0 and not tg:IsSetCard(0xa04)) or tg:GetOverlayCount()>1) do
+	while damage<dam and ((tg:GetOverlayCount()>0 and not tg:IsSetCard(0xa03)) or tg:GetOverlayCount()>1) do
 	g=tg:GetOverlayGroup()
 	last=g:GetFirst()
 	tc=g:GetNext()
 	for tc in aux.Next(g) do
 		if tc:GetSequence()>last:GetSequence() then last=tc end
 	end
-	if tg:IsSetCard(0xa03) then Duel.SendtoGrave(last,REASON_EFFECT) else
-	Duel.MoveToField(last,1-tp,1-tp,LOCATION_SZONE,POS_FACEUP,true) end
+	if tg:IsSetCard(0xa02) then Duel.SendtoGrave(last,REASON_EFFECT) else
+	Duel.MoveToField(last,tg:GetControler(),tg:GetControler(),LOCATION_SZONE,POS_FACEUP,true) end
 	damage=damage+1 end
-	if dam>0 and tg:IsSetCard(0xa02) then Cookie8.eventop(e,tp,eg,ep,ev,re,r,rp,tg)
-	Duel.RaiseEvent(e:GetHandler(),EVENT_CUSTOM+10060100,e,0,tp,tp,0) end
-	if tg:GetOverlayCount()==0 and tg:IsLocation(LOCATION_MZONE) then Duel.Destroy(tg,REASON_RULE)
-	if tg:IsSetCard(0xc03) and not c:IsSetCard(0xa01) then Cookie8.eventop(e,tp,eg,ep,ev,re,r,rp,tg) end end
+	if tg:GetOverlayCount()==0 and tg:IsLocation(LOCATION_MZONE) then Duel.Destroy(tg,REASON_RULE) end
 end
 
 --쿠키 데미지 주기(2장)
@@ -114,19 +149,12 @@ function Cookie7.doubledamageeff(e,tp,eg,ep,ev,re,r,rp,g,dam1,dam2)
 	if #g==0 then return end
 	if #g==1 then
 	Cookie7.damageeff(e,tp,eg,ep,ev,re,r,rp,g,dam1)
-	if g:GetFirst():IsLocation(LOCATION_EXTRA) then setsg:Merge(g) end
-	local filtersg=setsg:Filter(Card.IsSetCard,nil,0xc03)
-	Cookie8.eventop(e,tp,eg,ep,ev,re,r,rp,filtersg)
 	else
 	Duel.Hint(HINT_SELECTMSG,tp,aux.Stringid(10060001,3))
 	local ag=g:FilterSelect(tp,aux.TRUE,1,1,nil)
 	local bg=g:RemoveCard(ag)
 	Cookie7.damageeff(e,tp,eg,ep,ev,re,r,rp,ag,dam1)
-	Cookie7.damageeff(e,tp,eg,ep,ev,re,r,rp,bg,dam2)
-	if ag:GetFirst():IsLocation(LOCATION_EXTRA) then setsg:Merge(ag) end
-	if bg:GetFirst():IsLocation(LOCATION_EXTRA) then setsg:Merge(bg) end	
-	local filtersg=setsg:Filter(Card.IsSetCard,nil,0xc03)
-	Cookie8.eventop(e,tp,eg,ep,ev,re,r,rp,filtersg) end
+	Cookie7.damageeff(e,tp,eg,ep,ev,re,r,rp,bg,dam2) end
 end
 
 --쿠키 hp 트래시로 보내기
@@ -138,10 +166,9 @@ function Cookie7.hptrasheff(e,tp,eg,ep,ev,re,r,rp,ag,dam)
 	local tg
 	if typ=="Card" then tg=ag
 	elseif typ=="Group" then tg=ag:GetFirst() end
-	if tg:IsSetCard(0xa06) and not tg:GetBattleTarget() then dam=0 end
-	Duel.Damage(1-tp,dam,REASON_EFFECT)
+	Duel.Damage(1-c:GetControler(),dam,REASON_EFFECT)
 	local trash=0
-	while trash<dam and (tg:GetOverlayCount()>0 or (tg:IsSetCard(0xa04) and tg:GetOverlayCount()>1)) do
+	while trash<dam and (tg:GetOverlayCount()>0 or (tg:IsSetCard(0xa03) and tg:GetOverlayCount()>1)) do
 	g=tg:GetOverlayGroup()
 	last=g:GetFirst()
 	tc=g:GetNext()
@@ -150,33 +177,7 @@ function Cookie7.hptrasheff(e,tp,eg,ep,ev,re,r,rp,ag,dam)
 	end
 	Duel.SendtoGrave(last,REASON_EFFECT)
 	trash=trash+1 end
-	if dam>0 and tg:IsSetCard(0xa02) then Cookie8.eventop(e,tp,eg,ep,ev,re,r,rp,tg)
-	Duel.RaiseEvent(e:GetHandler(),EVENT_CUSTOM+10060100,e,0,tp,tp,0) end
-	if tg:GetOverlayCount()==0 and tg:IsLocation(LOCATION_MZONE) then Duel.Destroy(tg,REASON_RULE)
-	if tg:IsSetCard(0xc03) then Cookie8.eventop(e,tp,eg,ep,ev,re,r,rp,tg) end end
-end
-
---쿠키 hp 서포트 에리어로 보내기POS_FACEUP
-function Cookie7.hpsupporteff(e,tp,eg,ep,ev,re,r,rp,ag,dam,pos)
-	local c=e:GetHandler()
-	local typ=type(ag)
-	if typ=="Card" and ag==nil then return
-	elseif typ=="Group" and #ag==0 then return end
-	local tg
-	if typ=="Card" then tg=ag
-	elseif typ=="Group" then tg=ag:GetFirst() end
-	local hpsupport=0
-	while hpsupport<dam and (tg:GetOverlayCount()>0 or (tg:IsSetCard(0xa04) and tg:GetOverlayCount()>1)) do
-	g=tg:GetOverlayGroup()
-	last=g:GetFirst()
-	tc=g:GetNext()
-	for tc in aux.Next(g) do
-		if tc:GetSequence()>last:GetSequence() then last=tc end
-	end
-	Duel.Remove(last,pos,REASON_RULE)
-	hpsupport=hpsupport+1 end
-	if tg:GetOverlayCount()==0 and tg:IsLocation(LOCATION_MZONE) then Duel.Destroy(tg,REASON_RULE)
-	if tg:IsSetCard(0xc03) then Cookie8.eventop(e,tp,eg,ep,ev,re,r,rp,tg) end end
+	if tg:GetOverlayCount()==0 and tg:IsLocation(LOCATION_MZONE) then Duel.Destroy(tg,REASON_RULE) end
 end
 
 --공격대미지 변화
