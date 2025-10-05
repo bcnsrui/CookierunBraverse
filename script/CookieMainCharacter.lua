@@ -22,11 +22,14 @@ function Cookie.DuelStartMainCharacter(c)
 	e1:SetOperation(Cookie.DuelStartop)
 	c:RegisterEffect(e1)
 end
+function Cookie.DuelStartfilter(c)
+	return c:IsType(TYPE_FUSION)
+end
 function Cookie.DuelStartop(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
 	if Duel.GetTurnPlayer()==tp then
 	Duel.SpecialSummon(e:GetHandler(),0,tp,tp,true,true,POS_FACEUP_ATTACK)
-	local enemymain=Duel.GetMatchingGroup(nil,1-tp,LOCATION_EXTRA,0,nil):GetFirst()
+	local enemymain=Duel.GetMatchingGroup(Cookie.DuelStartfilter,1-tp,LOCATION_EXTRA,0,nil):GetFirst()
 	Duel.SpecialSummon(enemymain,0,1-tp,1-tp,true,true,POS_FACEUP_ATTACK) end
 	
 	if c:IsCode(10060000) then return end
