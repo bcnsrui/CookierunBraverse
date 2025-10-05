@@ -1,4 +1,4 @@
 local s,id=GetID()
 function s.initial_effect(c)
-    Cookie6.NSCookieEffect(c,ATTRIBUTE_LIGHT,0,3)
+	Cookie2.CookieCharacter(c,ATTRIBUTE_LIGHT,0,3)
 end
