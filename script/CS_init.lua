@@ -11,11 +11,10 @@ function Duel.IsBattlePhase()
 end
 
 --Cookie TCG Utility
-Duel.LoadScript("CookieMainCharacter.lua")
 Duel.LoadScript("CookieCharacter.lua")
 Duel.LoadScript("CookieCommonEff.lua")
 Duel.LoadScript("CookieCommonEff2.lua")
-Duel.LoadScript("CookieCommonEff3.lua")
+Duel.LoadScript("Cookieeffecttype.lua")
+Duel.LoadScript("CookieMainCharacter.lua")
 Duel.LoadScript("CookieTrigger.lua")
 Duel.LoadScript("StageCommonEff.lua")
-Duel.LoadScript("Cookieeffecttype.lua")
