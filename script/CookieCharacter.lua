@@ -2,17 +2,34 @@
 Cookie2={}
 
 --쿠키 유틸
-function Cookie2.CookieCharacter(c,attr,colorCount,mixCount)
+function Cookie2.CookieCharacter(c)
 	c:EnableCounterPermit(0xa02)
 	c:EnableCounterPermit(0xa03)
+	Cookie2.SummonCookie(c)
 	Cookie2.CookieEff(c)
+	Cookie2.CookieEff2(c)
 	Cookie2.BattleEff(c)
-	Cookie2.BattlePosition(c)
-	Cookie2.GravePosition(c)
-	Cookie2.SupportPosition(c)
-	Cookie2.HandPosition(c)
-	Cookie2.BrakePosition(c)
-	Cookie2.battlemanacost(attr,colorCount,mixCount)(c)
+end
+
+--쿠키 소환
+function Cookie2.SummonCookie(c)
+	local e1=Effect.CreateEffect(c)
+	e1:SetType(EFFECT_TYPE_QUICK_O+EFFECT_TYPE_CONTINUOUS)
+	e1:SetCode(EVENT_FREE_CHAIN)
+	e1:SetRange(LOCATION_HAND)
+	e1:SetCondition(Cookie2.Summoncon)
+	e1:SetOperation(Cookie2.Summonop)
+	c:RegisterEffect(e1)
+end
+function Cookie2.Summoncon(e)
+	local tp=e:GetHandlerPlayer()
+	return Duel.GetLocationCount(tp,LOCATION_MZONE)>0 and Duel.GetTurnPlayer()==tp and Duel.GetCurrentPhase()==PHASE_BATTLE_STEP
+	and not (Duel.GetAttacker() and Duel.GetAttacker():IsControler(tp)) and Duel.GetCurrentChain()==0
+end
+function Cookie2.Summonop(e,tp,eg,ep,ev,re,r,rp)
+	Duel.SpecialSummon(e:GetHandler(),0,tp,tp,false,false,POS_FACEUP_ATTACK)
+	if e:GetHandler():IsSetCard(0xc02) then Cookie8.eventop(e,tp,eg,ep,ev,re,r,rp,e:GetHandler()) end
+	Duel.RaiseEvent(e:GetHandler(),EVENT_CUSTOM+10060100,e,0,tp,tp,0)
 end
 
 --유희왕과 다른 룰(1표시형식변경불가,2수비공격가능,3~4무량공격,5체력은수비력,6hp채우기,7전투파괴X)
@@ -81,12 +98,21 @@ function Cookie2.NoBtDestroy(e,tp,eg,ep,ev,re,r,rp,chk)
 	return true
 end
 
---배틀 페이즈 쿠키의 효과(데미지체크)
+--유희왕과 다른 룰2(1효과적용순서리셋)
+function Cookie2.CookieEff2(c)
+	local e1=Effect.CreateEffect(c)
+	e1:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_CONTINUOUS)
+	e1:SetCode(EVENT_MOVE)
+	e1:SetOperation(Cookie8.resetevent)
+	c:RegisterEffect(e1)
+end
+
+--배틀 페이즈 쿠키의 효과(1데미지체크,2턴P기절체크,3비턴P기절체크)
 function Cookie2.BattleEff(c)
 	local e1=Effect.CreateEffect(c)
 	e1:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_CONTINUOUS)
 	e1:SetProperty(EFFECT_FLAG_CANNOT_DISABLE)
-	e1:SetCode(EVENT_DAMAGE_STEP_END)
+	e1:SetCode(EVENT_BATTLE_START)
 	e1:SetCondition(Cookie2.damagecon)
 	e1:SetOperation(Cookie2.damagecheck)
 	c:RegisterEffect(e1)
@@ -99,454 +125,12 @@ function Cookie2.damagecheck(e,tp,eg,ep,ev,re,r,rp)
 	local bc=c:GetBattleTarget()
 	local dam=c:GetAttack()
 	Cookie7.damageeff(e,tp,eg,ep,ev,re,r,rp,bc,dam)
-end
-
-function Cookie2.BattlePosition(c)
+	Duel.RaiseEvent(c,EVENT_CUSTOM+10060100,e,0,tp,tp,0)
+	local code=c:GetCode()
+	local gtbl=_G["c" .. code]
+	if gtbl and type(gtbl.andoperation) == "function" then
 	local e1=Effect.CreateEffect(c)
-	e1:SetDescription(aux.Stringid(10060002,1))
-	e1:SetType(EFFECT_TYPE_QUICK_O)
-	e1:SetCode(EVENT_FREE_CHAIN)
-	e1:SetRange(LOCATION_MZONE)
-	e1:SetHintTiming(TIMING_BATTLE_PHASE,TIMING_BATTLE_PHASE)
-	e1:SetCondition(Cookie2.BattlePositioncon)
-	e1:SetTarget(Cookie3.notg)
-	e1:SetOperation(Cookie2.BattlePositionop)
-	c:RegisterEffect(e1)
-	local e2=e1:Clone()
-	e2:SetDescription(aux.Stringid(10061001,0))
-	e2:SetProperty(EFFECT_FLAG_BOTH_SIDE)
-	e2:SetOperation(Cookie2.Cookiedamageop)
-	c:RegisterEffect(e2)
-	local e3=e2:Clone()
-	e3:SetDescription(aux.Stringid(10061001,1))
-	e3:SetOperation(Cookie2.Cookiedamageop2)
-	c:RegisterEffect(e3)
-	local e4=e2:Clone()
-	e4:SetDescription(aux.Stringid(10061001,2))
-	e4:SetOperation(Cookie2.Cookiedamageop3)
-	c:RegisterEffect(e4)
-	local e5=e1:Clone()
-	e5:SetDescription(aux.Stringid(10061001,7))
-	e5:SetCondition(Cookie2.Cookierestcon)
-	e5:SetOperation(Cookie2.Cookierestop)
-	c:RegisterEffect(e5)
-	local e6=e1:Clone()
-	e6:SetDescription(aux.Stringid(10061001,8))
-	e6:SetCondition(Cookie2.Cookierestcon2)
-	e6:SetOperation(Cookie2.Cookierestop2)
-	c:RegisterEffect(e6)
-	local e7=e1:Clone()
-	e7:SetDescription(aux.Stringid(10061001,9))
-	e7:SetOperation(Cookie2.Cookienosumop)
-	c:RegisterEffect(e7)
-end
-function Cookie2.BattlePositioncon(e)
-	return Duel.GetCurrentPhase()==PHASE_BATTLE_STEP
-end
-function Cookie2.Cookiedamageop(e,tp,eg,ep,ev,re,r,rp)
-	local c=e:GetHandler()
-	Duel.Hint(HINT_SELECTMSG,tp,aux.Stringid(10061003,6))
-	local count=Duel.AnnounceNumber(tp,0,1,2,3,4,5)
-	if c:GetControler()~=tp and not Duel.SelectYesNo(1-tp,aux.Stringid(10061003,12)) then return end
-	Cookie7.damageeff(e,tp,eg,ep,ev,re,r,rp,c,count)
-end
-function Cookie2.Cookiedamageop2(e,tp,eg,ep,ev,re,r,rp)
-	local c=e:GetHandler()
-	Duel.Hint(HINT_SELECTMSG,tp,aux.Stringid(10061003,7))
-	local count=Duel.AnnounceNumber(tp,0,1,2,3,4)
-	if count==0 then return end
-	local opts = {
-		aux.Stringid(10061001,5),
-		aux.Stringid(10061001,6),
-	}
-	local sel=Duel.SelectOption(tp,table.unpack(opts))+1
-	if sel==1 then
-	if c:GetControler()~=tp and not Duel.SelectYesNo(1-tp,aux.Stringid(10061003,8)) then return end
-	Cookie7.hptrasheff(e,tp,eg,ep,ev,re,r,rp,c,count)
-	elseif sel==2 then
-	if c:GetControler()~=tp and not Duel.SelectYesNo(1-tp,aux.Stringid(10061003,8)) then return end
-	Cookie7.hpaddop(e,tp,eg,ep,ev,re,r,rp,c,count) end
-end
-function Cookie2.Cookiedamageop3(e,tp,eg,ep,ev,re,r,rp)
-	local c=e:GetHandler()
-	Duel.Hint(HINT_SELECTMSG,tp,aux.Stringid(10061003,11))
-	local count=Duel.AnnounceNumber(tp,0,1,2,3,4)
-	if count==0 then return end
-	local opts = {
-		aux.Stringid(10061001,3),
-		aux.Stringid(10061001,4),
-	}
-	local sel=Duel.SelectOption(tp,table.unpack(opts))+1
-	if sel==1 then
-	if Duel.SelectYesNo(tp,aux.Stringid(10061003,9)) then
-	if c:GetControler()~=tp and not Duel.SelectYesNo(1-tp,aux.Stringid(10061003,10)) then return end
-	Cookie7.cookieatkchange(e,tp,eg,ep,ev,re,r,rp,PHASE_END,1,c,count)
-	else
-	if c:GetControler()~=tp and not Duel.SelectYesNo(1-tp,aux.Stringid(10061003,10)) then return end
-	Cookie7.cookieatkchange(e,tp,eg,ep,ev,re,r,rp,PHASE_DAMAGE_CAL,1,c,count) end
-
-	elseif sel==2 then
-	if Duel.SelectYesNo(tp,aux.Stringid(10061003,9)) then
-	if c:GetControler()~=tp and not Duel.SelectYesNo(1-tp,aux.Stringid(10061003,10)) then return end
-	Cookie7.cookieatkchange(e,tp,eg,ep,ev,re,r,rp,PHASE_END,1,c,-count)
-	else
-	if c:GetControler()~=tp and not Duel.SelectYesNo(1-tp,aux.Stringid(10061003,10)) then return end
-	Cookie7.cookieatkchange(e,tp,eg,ep,ev,re,r,rp,PHASE_DAMAGE_CAL,1,c,-count) end end
-end
-function Cookie2.Cookienosumop(e,tp,eg,ep,ev,re,r,rp)
-	local c=e:GetHandler()
-	Duel.DisableShuffleCheck()
-	while c:GetOverlayCount()>0 do
-		g=c:GetOverlayGroup()
-		last=g:GetFirst()
-		tc=g:GetNext()
-		for tc in aux.Next(g) do
-			if tc:GetSequence()>last:GetSequence() then last=tc end end
-		Duel.SendtoDeck(last,nil,SEQ_DECKTOP,REASON_EFFECT) end
-	Duel.SendtoHand(c,nil,REASON_EFFECT)
-	Duel.ConfirmCards(1-tp,c)
-	Duel.ShuffleHand(tp)
-end
-function Cookie2.Cookierestcon(e)
-	return e:GetHandler():IsAttackPos() and Cookie2.BattlePositioncon(e)
-end
-function Cookie2.Cookierestop(e,tp,eg,ep,ev,re,r,rp)
-	Duel.ChangePosition(e:GetHandler(),POS_FACEUP_DEFENSE)
-end
-function Cookie2.Cookierestcon2(e)
-	return e:GetHandler():IsDefensePos() and Cookie2.BattlePositioncon(e)
-end
-function Cookie2.Cookierestop2(e,tp,eg,ep,ev,re,r,rp)
-	Duel.ChangePosition(e:GetHandler(),POS_FACEUP_ATTACK)
-end
-function Cookie2.BattlePositionop(e,tp,eg,ep,ev,re,r,rp)
-	local c=e:GetHandler()
-	Duel.DisableShuffleCheck()
-	Duel.Hint(HINT_SELECTMSG,tp,aux.Stringid(10061003,0))
-	local opts = {
-		aux.Stringid(10061002,12),
-		aux.Stringid(10061002,1),
-		aux.Stringid(10061002,5),
-		aux.Stringid(10061002,6),
-		aux.Stringid(10061002,7),
-		aux.Stringid(10061002,10),
-	}
-	Duel.Hint(HINT_SELECTMSG,tp,aux.Stringid(10061003,1))
-	local sel=Duel.SelectOption(tp,table.unpack(opts))+1
-	if sel==1 then return end
-	if sel==2 then
-		local deckopts = {
-			aux.Stringid(10061002,2),
-			aux.Stringid(10061002,3),
-			aux.Stringid(10061002,4),
-		}
-		Duel.Hint(HINT_SELECTMSG,tp,aux.Stringid(10061003,2))
-		local decksel=Duel.SelectOption(tp,table.unpack(deckopts))+1
-		if decksel==1 then Duel.SendtoDeck(c,nil,SEQ_DECKSHUFFLE,REASON_EFFECT)
-			Duel.ShuffleDeck(tp)
-		elseif decksel==2 then 
-			Duel.SendtoDeck(c,nil,SEQ_DECKTOP,REASON_EFFECT)
-		else 
-			Duel.SendtoDeck(c,nil,SEQ_DECKBOTTOM,REASON_EFFECT)
-		end
-	elseif sel==3 then Duel.SendtoHand(c,nil,REASON_EFFECT)
-		Duel.ConfirmCards(1-tp,c)
-		Duel.ShuffleHand(tp)
-	elseif sel==4 then Duel.Remove(c,POS_FACEUP,REASON_EFFECT)
-		Duel.SendtoGrave(c,REASON_EFFECT)
-	elseif sel==5 then
-		local removeopts = {
-			aux.Stringid(10061002,8),
-			aux.Stringid(10061002,9),
-		}
-		Duel.Hint(HINT_SELECTMSG,tp,aux.Stringid(10061003,3))
-		local removesel=Duel.SelectOption(tp,table.unpack(removeopts))+1
-		if removesel==1 then Duel.Remove(c,POS_FACEUP,REASON_EFFECT)
-		else local ally=Duel.GetMatchingGroup(nil,tp,LOCATION_EMZONE,0,nil):GetFirst()
-		Duel.Overlay(ally,c) end
-	elseif sel==6 then Duel.SendtoExtraP(c,nil,REASON_EFFECT) end
-end
-
-function Cookie2.GravePosition(c)
-	local e1=Effect.CreateEffect(c)
-	e1:SetDescription(aux.Stringid(10060002,1))
-	e1:SetType(EFFECT_TYPE_QUICK_O)
-	e1:SetCode(EVENT_FREE_CHAIN)
-	e1:SetRange(LOCATION_GRAVE)
-	e1:SetCondition(Cookie2.GravePositioncon)
-	e1:SetTarget(Cookie3.notg)
-	e1:SetOperation(Cookie2.GravePositionop)
-	c:RegisterEffect(e1)
-end
-function Cookie2.GravePositioncon(e)
-	return e:GetHandler():GetSequence()==0 and Cookie2.BattlePositioncon(e)
-end
-function Cookie2.GravePositioncon2(e)
-	local tp=e:GetHandlerPlayer()
-	return e:GetHandler():GetSequence()==0 and Cookie2.BattlePositioncon2(e)
-end
-function Cookie2.GravePositionop(e,tp,eg,ep,ev,re,r,rp)
-	local c=e:GetHandler()
-	Duel.DisableShuffleCheck()
-	Duel.Hint(HINT_SELECTMSG,tp,aux.Stringid(10061003,0))
-	local g=Duel.SelectMatchingCard(tp,nil,tp,LOCATION_GRAVE,0,0,99,nil)
-	if #g==0 then return end
-	local opts = {
-		aux.Stringid(10061002,12),
-		aux.Stringid(10061002,0),
-		aux.Stringid(10061002,1),
-		aux.Stringid(10061002,5),
-		aux.Stringid(10061002,7),
-		aux.Stringid(10061002,10),
-		aux.Stringid(10061002,11),
-	}
-	Duel.Hint(HINT_SELECTMSG,tp,aux.Stringid(10061003,1))
-	local sel=Duel.SelectOption(tp,table.unpack(opts))+1
-	if sel==1 then return end
-	if sel==2 and #g==1 and c:IsRace(RACE_WARRIOR) then Duel.SpecialSummon(g,0,tp,tp,false,false,POS_FACEUP_ATTACK)
-	elseif sel==2 then
-	elseif sel==3 then
-		local deckopts = {
-			aux.Stringid(10061002,2),
-			aux.Stringid(10061002,3),
-			aux.Stringid(10061002,4),
-		}
-		Duel.Hint(HINT_SELECTMSG,tp,aux.Stringid(10061003,2))
-		local decksel=Duel.SelectOption(tp,table.unpack(deckopts))+1
-		if decksel==1 then Duel.SendtoDeck(g,nil,SEQ_DECKSHUFFLE,REASON_EFFECT)
-			Duel.ConfirmCards(1-tp,g)
-			Duel.ShuffleDeck(tp)
-		elseif decksel==2 then 
-			Duel.SendtoDeck(g,nil,SEQ_DECKTOP,REASON_EFFECT)
-			Duel.ConfirmCards(1-tp,g)
-			if #g>1 then Duel.SortDecktop(tp,tp,#g) end
-		else 
-			Duel.SendtoDeck(g,nil,SEQ_DECKBOTTOM,REASON_EFFECT)
-			Duel.ConfirmCards(1-tp,g)
-			if #g>1 then Duel.SortDeckbottom(tp,tp,#g) end
-		end
-	elseif sel==4 then Duel.SendtoHand(g,nil,REASON_EFFECT)
-		Duel.ConfirmCards(1-tp,g)
-		Duel.ShuffleHand(tp)
-	elseif sel==5 then
-		local removeopts = {
-			aux.Stringid(10061002,8),
-			aux.Stringid(10061002,9),
-		}
-		Duel.Hint(HINT_SELECTMSG,tp,aux.Stringid(10061003,3))
-		local removesel=Duel.SelectOption(tp,table.unpack(removeopts))+1
-		if removesel==1 then Duel.Remove(g,POS_FACEUP,REASON_EFFECT)
-		else local ally=Duel.GetMatchingGroup(nil,tp,LOCATION_EMZONE,0,nil):GetFirst()
-		Duel.Overlay(ally,g) end
-	elseif sel==6 then Duel.SendtoExtraP(g,nil,REASON_EFFECT)
-		Duel.ConfirmCards(1-tp,g)
-	elseif sel==7 and #g==1 then
-		if Duel.GetMatchingGroupCount(Cookie3.NoEmFzonefilter,tp,LOCATION_MZONE,0,nil)>0 then
-			local cookie=Duel.SelectMatchingCard(tp,Cookie3.NoEmFzonefilter,tp,LOCATION_MZONE,0,1,1,nil):GetFirst()
-			Duel.SendtoDeck(g,nil,SEQ_DECKTOP,REASON_EFFECT)
-			Duel.ConfirmCards(1-tp,g)
-			Cookie7.hpaddop(e,tp,eg,ep,ev,re,r,rp,cookie,1)	end
-	elseif sel==7 then end
-end
-
-function Cookie2.SupportPosition(c)
-	local e1=Effect.CreateEffect(c)
-	e1:SetDescription(aux.Stringid(10060002,1))
-	e1:SetType(EFFECT_TYPE_QUICK_O)
-	e1:SetCode(EVENT_FREE_CHAIN)
-	e1:SetRange(LOCATION_REMOVED)
-	e1:SetCondition(Cookie2.GravePositioncon)
-	e1:SetTarget(Cookie3.notg)
-	e1:SetOperation(Cookie2.SupportPositionop)
-	c:RegisterEffect(e1)
-end
-function Cookie2.SupportPositionop(e,tp,eg,ep,ev,re,r,rp)
-	local c=e:GetHandler()
-	Duel.DisableShuffleCheck()
-	Duel.Hint(HINT_SELECTMSG,tp,aux.Stringid(10061003,0))
-	local g=Duel.SelectMatchingCard(tp,nil,tp,LOCATION_REMOVED,0,0,99,nil)
-	if #g==0 then return end
-	local opts = {
-		aux.Stringid(10061002,12),
-		aux.Stringid(10061002,0),
-		aux.Stringid(10061002,1),
-		aux.Stringid(10061002,5),
-		aux.Stringid(10061002,6),
-		aux.Stringid(10061002,10),
-		aux.Stringid(10061002,11),
-	}
-	Duel.Hint(HINT_SELECTMSG,tp,aux.Stringid(10061003,1))
-	local sel=Duel.SelectOption(tp,table.unpack(opts))+1
-	if sel==1 then return end
-	if sel==2 and #g==1 and c:IsRace(RACE_WARRIOR) then Duel.SpecialSummon(g,0,tp,tp,false,false,POS_FACEUP_ATTACK)
-	elseif sel==2 then
-	elseif sel==2 then local tc=g:Select(tp,1,1,nil):GetFirst()
-	Duel.SpecialSummon(tc,0,tp,tp,false,false,POS_FACEUP_ATTACK)
-	elseif sel==3 then
-		local deckopts = {
-			aux.Stringid(10061002,2),
-			aux.Stringid(10061002,3),
-			aux.Stringid(10061002,4),
-		}
-		Duel.Hint(HINT_SELECTMSG,tp,aux.Stringid(10061003,2))
-		local decksel=Duel.SelectOption(tp,table.unpack(deckopts))+1
-		if decksel==1 then Duel.SendtoDeck(g,nil,SEQ_DECKSHUFFLE,REASON_EFFECT)
-			Duel.ConfirmCards(1-tp,g)
-			Duel.ShuffleDeck(tp)
-		elseif decksel==2 then 
-			Duel.SendtoDeck(g,nil,SEQ_DECKTOP,REASON_EFFECT)
-			Duel.ConfirmCards(1-tp,g)
-			if #g>1 then Duel.SortDecktop(tp,tp,#g) end
-		else 
-			Duel.SendtoDeck(g,nil,SEQ_DECKBOTTOM,REASON_EFFECT)
-			Duel.ConfirmCards(1-tp,g)
-			if #g>1 then Duel.SortDeckbottom(tp,tp,#g) end
-		end
-	elseif sel==4 then Duel.SendtoHand(g,nil,REASON_EFFECT)
-		Duel.ConfirmCards(1-tp,g)
-		Duel.ShuffleHand(tp)
-	elseif sel==5 then Duel.SendtoGrave(g,REASON_EFFECT)
-		Duel.ConfirmCards(1-tp,g)
-	elseif sel==6 then Duel.SendtoExtraP(g,nil,REASON_EFFECT)
-		Duel.ConfirmCards(1-tp,g)
-	elseif sel==7 and #g==1 then
-		if Duel.GetMatchingGroupCount(Cookie3.NoEmFzonefilter,tp,LOCATION_MZONE,0,nil)>0 then
-			local cookie=Duel.SelectMatchingCard(tp,Cookie3.NoEmFzonefilter,tp,LOCATION_MZONE,0,1,1,nil):GetFirst()
-			Duel.SendtoDeck(g,nil,SEQ_DECKTOP,REASON_EFFECT)
-			Duel.ConfirmCards(1-tp,g)
-			Cookie7.hpaddop(e,tp,eg,ep,ev,re,r,rp,cookie,1)	end
-	elseif sel==7 then end
-end
-
-function Cookie2.HandPosition(c)
-	local e1=Effect.CreateEffect(c)
-	e1:SetDescription(aux.Stringid(10060002,1))
-	e1:SetType(EFFECT_TYPE_QUICK_O)
-	e1:SetCode(EVENT_FREE_CHAIN)
-	e1:SetRange(LOCATION_HAND)
-	e1:SetCondition(Cookie2.BattlePositioncon)
-	e1:SetTarget(Cookie3.notg)
-	e1:SetOperation(Cookie2.HandPositionop)
-	c:RegisterEffect(e1)
-end
-function Cookie2.HandPositionop(e,tp,eg,ep,ev,re,r,rp)
-	local c=e:GetHandler()
-	Duel.DisableShuffleCheck()
-	Duel.Hint(HINT_SELECTMSG,tp,aux.Stringid(10061003,0))
-	local opts = {
-		aux.Stringid(10061002,12),
-		aux.Stringid(10061002,0),
-		aux.Stringid(10061002,1),
-		aux.Stringid(10061002,6),
-		aux.Stringid(10061002,7),
-		aux.Stringid(10061002,10),
-		aux.Stringid(10061002,11),
-	}
-	Duel.Hint(HINT_SELECTMSG,tp,aux.Stringid(10061003,1))
-	local sel=Duel.SelectOption(tp,table.unpack(opts))+1
-	if sel==1 then return end
-	if sel==2 and c:IsRace(RACE_WARRIOR) then Duel.SpecialSummon(c,0,tp,tp,false,false,POS_FACEUP_ATTACK)
-	elseif sel==2 then
-	elseif sel==3 then
-		local deckopts = {
-			aux.Stringid(10061002,2),
-			aux.Stringid(10061002,3),
-			aux.Stringid(10061002,4),
-		}
-		Duel.Hint(HINT_SELECTMSG,tp,aux.Stringid(10061003,2))
-		local decksel=Duel.SelectOption(tp,table.unpack(deckopts))+1
-		if decksel==1 then Duel.SendtoDeck(c,nil,SEQ_DECKSHUFFLE,REASON_EFFECT)
-			Duel.ShuffleDeck(tp)
-		elseif decksel==2 then 
-			Duel.SendtoDeck(c,nil,SEQ_DECKTOP,REASON_EFFECT)
-		else 
-			Duel.SendtoDeck(c,nil,SEQ_DECKBOTTOM,REASON_EFFECT)
-		end
-	elseif sel==4 then Duel.SendtoGrave(c,REASON_EFFECT)
-	elseif sel==5 then
-		local removeopts = {
-			aux.Stringid(10061002,8),
-			aux.Stringid(10061002,9),
-		}
-		Duel.Hint(HINT_SELECTMSG,tp,aux.Stringid(10061003,3))
-		local removesel=Duel.SelectOption(tp,table.unpack(removeopts))+1
-		if removesel==1 then Duel.Remove(c,POS_FACEUP,REASON_EFFECT)
-		else local ally=Duel.GetMatchingGroup(nil,tp,LOCATION_EMZONE,0,nil):GetFirst()
-		Duel.Overlay(ally,c) end
-	elseif sel==6 then Duel.SendtoExtraP(c,nil,REASON_EFFECT)
-	elseif sel==7 then
-		if Duel.GetMatchingGroupCount(Cookie3.NoEmFzonefilter,tp,LOCATION_MZONE,0,nil)>0 then
-		local cookie=Duel.SelectMatchingCard(tp,Cookie3.NoEmFzonefilter,tp,LOCATION_MZONE,0,1,1,nil):GetFirst()
-		Duel.SendtoDeck(c,nil,SEQ_DECKTOP,REASON_EFFECT)
-		Cookie7.hpaddop(e,tp,eg,ep,ev,re,r,rp,cookie,1)	end
-	end
-end
-
-function Cookie2.BrakePosition(c)
-	local e1=Effect.CreateEffect(c)
-	e1:SetDescription(aux.Stringid(10060002,1))
-	e1:SetType(EFFECT_TYPE_QUICK_O)
-	e1:SetCode(EVENT_FREE_CHAIN)
-	e1:SetRange(LOCATION_EXTRA)
-	e1:SetCondition(Cookie2.BattlePositioncon)
-	e1:SetTarget(Cookie3.notg)
-	e1:SetOperation(Cookie2.ExtraPositionop)
-	c:RegisterEffect(e1)
-end
-function Cookie2.ExtraPositionop(e,tp,eg,ep,ev,re,r,rp)
-	local c=e:GetHandler()
-	Duel.DisableShuffleCheck()
-	Duel.Hint(HINT_SELECTMSG,tp,aux.Stringid(10061003,0))
-	local opts = {
-		aux.Stringid(10061002,12),
-		aux.Stringid(10061002,0),
-		aux.Stringid(10061002,1),
-		aux.Stringid(10061002,5),
-		aux.Stringid(10061002,6),
-		aux.Stringid(10061002,7),
-		aux.Stringid(10061002,11),
-	}
-	Duel.Hint(HINT_SELECTMSG,tp,aux.Stringid(10061003,1))
-	local sel=Duel.SelectOption(tp,table.unpack(opts))+1
-	if sel==1 then return end
-	if sel==2 and c:IsRace(RACE_WARRIOR) then Duel.SendtoGrave(c,REASON_EFFECT)
-		Duel.SpecialSummon(c,0,tp,tp,false,false,POS_FACEUP_ATTACK)
-	elseif sel==2 then
-	elseif sel==3 then
-		local deckopts = {
-			aux.Stringid(10061002,2),
-			aux.Stringid(10061002,3),
-			aux.Stringid(10061002,4),
-		}
-		Duel.Hint(HINT_SELECTMSG,tp,aux.Stringid(10061003,2))
-		local decksel=Duel.SelectOption(tp,table.unpack(deckopts))+1
-		if decksel==1 then Duel.SendtoDeck(c,nil,SEQ_DECKSHUFFLE,REASON_EFFECT)
-			Duel.ShuffleDeck(tp)
-		elseif decksel==2 then 
-			Duel.SendtoDeck(c,nil,SEQ_DECKTOP,REASON_EFFECT)
-		else 
-			Duel.SendtoDeck(c,nil,SEQ_DECKBOTTOM,REASON_EFFECT)
-		end
-	elseif sel==4 then Duel.SendtoHand(c,nil,REASON_EFFECT)
-		Duel.ConfirmCards(1-tp,c)
-		Duel.ShuffleHand(tp)
-	elseif sel==5 then Duel.SendtoGrave(c,REASON_EFFECT)
-	elseif sel==6 then
-		local removeopts = {
-			aux.Stringid(10061002,8),
-			aux.Stringid(10061002,9),
-		}
-		Duel.Hint(HINT_SELECTMSG,tp,aux.Stringid(10061003,3))
-		local removesel=Duel.SelectOption(tp,table.unpack(removeopts))+1
-		if removesel==1 then Duel.Remove(c,POS_FACEUP,REASON_EFFECT)
-		else local ally=Duel.GetMatchingGroup(nil,tp,LOCATION_EMZONE,0,nil):GetFirst()
-		Duel.Overlay(ally,c) end
-	elseif sel==7 then
-		if Duel.GetMatchingGroupCount(Cookie3.NoEmFzonefilter,tp,LOCATION_MZONE,0,nil)>0 then
-		local cookie=Duel.SelectMatchingCard(tp,Cookie3.NoEmFzonefilter,tp,LOCATION_MZONE,0,1,1,nil):GetFirst()
-		Duel.SendtoDeck(c,nil,SEQ_DECKTOP,REASON_EFFECT)
-		Cookie7.hpaddop(e,tp,eg,ep,ev,re,r,rp,cookie,1)	end
-	end
+	gtbl.andoperation(e,tp,eg,ep,ev,re,r,rp) end
 end
 
 --쿠키 배틀 마나코스트
@@ -556,19 +140,22 @@ function Cookie2.battlemanacost(attr,colorCount,mixCount)
 	e1:SetType(EFFECT_TYPE_SINGLE)
 	e1:SetCode(EFFECT_ATTACK_COST)
 	e1:SetCost(function(e,c,tp)
+	local c=e:GetHandler()
 	local g=Duel.GetMatchingGroup(Card.IsFaceup,tp,LOCATION_REMOVED,0,nil)
 	return #g>=mixCount and
 	aux.SelectUnselectGroup(g,e,tp,mixCount,mixCount,Cookie3.hasColorCount(attr,colorCount),0)
-	end)
+end)
 	e1:SetOperation(function (e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
 		if c:IsLocation(LOCATION_MZONE) then
 		local g=Duel.GetMatchingGroup(Card.IsFaceup,tp,LOCATION_REMOVED,0,nil)
 		local tg=aux.SelectUnselectGroup(g,e,tp,mixCount,mixCount,Cookie3.hasColorCount(attr,colorCount),1,tp,aux.Stringid(10060000,4))
-		local ally=Duel.GetMatchingGroup(nil,tp,LOCATION_EMZONE,0,nil):GetFirst()
-		Duel.Overlay(ally,tg)
+		Duel.SendtoGrave(tg,REASON_RULE|REASON_RETURN)
+		Duel.Remove(tg,POS_FACEDOWN,REASON_RULE)
 		Duel.ChangePosition(c,POS_FACEUP_DEFENSE)
-		Duel.AttackCostPaid() end
+		Duel.AttackCostPaid()
+	end
 end)
-	c:RegisterEffect(e1) end
+	c:RegisterEffect(e1)
+	end
 end

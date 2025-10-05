@@ -1,4 +1,32 @@
 local s,id=GetID()
 function s.initial_effect(c)
-	Cookie2.CookieCharacter(c,ATTRIBUTE_LIGHT,1,1)
+	local e1=Cookie6.SSCookieEffect(c,ATTRIBUTE_LIGHT,1,1)
+	e1:SetOperation(s.operation)
+	c:RegisterEffect(e1)
+end
+function s.filter(c)
+	return c:IsLevel(1)
+end
+function s.operation(e,tp,eg,ep,ev,re,r,rp)
+	Cookie8.resetevent(e,tp,eg,ep,ev,re,r,rp)
+	local cost2=Cookie3.manacostcon(e,tp,eg,ep,ev,re,r,rp,ATTRIBUTE_LIGHT,1,1)
+	if not cost2 then return end
+	if not Duel.SelectYesNo(tp,aux.Stringid(id,0)) then return end
+	Cookie3.manacost(e,tp,eg,ep,ev,re,r,rp,ATTRIBUTE_LIGHT,1,1)
+	local c=e:GetHandler()
+	Duel.Hint(HINT_SELECTMSG,tp,aux.Stringid(10060001,1))
+    local g=Duel.SelectMatchingCard(tp,Cookie3.NoEmFzonefilter,tp,0,LOCATION_MZONE,0,1,nil)
+	local tc=g:GetFirst()
+	local e1=Effect.CreateEffect(c)
+	e1:SetType(EFFECT_TYPE_SINGLE)
+	e1:SetCode(EFFECT_ADD_SETCODE)
+	e1:SetValue(0xa03)
+	e1:SetReset(RESETS_STANDARD_PHASE_END)
+	tc:RegisterEffect(e1) 
+	local e2=Effect.CreateEffect(c)
+	e2:SetDescription(aux.Stringid(10060001,5))
+	e2:SetType(EFFECT_TYPE_SINGLE)
+	e2:SetProperty(EFFECT_FLAG_CLIENT_HINT+EFFECT_FLAG_CANNOT_DISABLE)
+	e2:SetReset(RESETS_STANDARD_PHASE_END)
+	tc:RegisterEffect(e2)
 end

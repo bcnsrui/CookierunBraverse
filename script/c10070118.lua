@@ -1,4 +1,45 @@
 local s,id=GetID()
 function s.initial_effect(c)
-	Cookie6.ItemEffect(c,ATTRIBUTE_FIRE,3,3)
+	local e1=Cookie6.ItemEffect(c)
+	e1:SetTarget(s.target)
+	e1:SetOperation(s.operation)
+	c:RegisterEffect(e1)
+end
+function s.NoEmFzonefilter(c)
+	return c:GetOverlayCount()==1
+end
+function s.target(e,tp,eg,ep,ev,re,r,rp,chk)
+	if chk==0 then return
+	Cookie3.manacon(e,tp,eg,ep,ev,re,r,rp,chk,ATTRIBUTE_FIRE,3,3) end
+	Duel.SetChainLimit(aux.FALSE)
+end
+function s.operation(e,tp,eg,ep,ev,re,r,rp)
+	Cookie3.manacost(e,tp,eg,ep,ev,re,r,rp,ATTRIBUTE_FIRE,3,3)
+	local c=e:GetHandler()
+	Duel.Hint(HINT_SELECTMSG,tp,aux.Stringid(10060001,1))
+	local g=Duel.SelectMatchingCard(tp,s.NoEmFzonefilter,tp,LOCATION_MZONE,0,0,1,nil)
+	local tc=g:GetFirst()
+	local e1=Effect.CreateEffect(c)
+	e1:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
+	e1:SetCode(EVENT_ATTACK_ANNOUNCE)
+	e1:SetRange(LOCATION_MZONE)
+	e1:SetCondition(s.Blockercon)
+	e1:SetOperation(s.operation2)
+	e1:SetReset(RESETS_STANDARD_PHASE_END,2)
+	tc:RegisterEffect(e1)
+	local e2=Effect.CreateEffect(c)
+	e2:SetDescription(aux.Stringid(id,0))
+	e2:SetType(EFFECT_TYPE_SINGLE)
+	e2:SetProperty(EFFECT_FLAG_CLIENT_HINT+EFFECT_FLAG_CANNOT_DISABLE)
+	e2:SetReset(RESETS_STANDARD_PHASE_END,2)
+	tc:RegisterEffect(e2)
+end
+function s.Blockercon(e,tp,eg,ep,ev,re,r,rp)
+	local c=e:GetHandler()
+	local bt=Duel.GetAttackTarget()
+	return c==bt and bt:IsFaceup() and bt:GetControler()==c:GetControler()
+end
+function s.operation2(e,tp,eg,ep,ev,re,r,rp,chk)
+	local at=Duel.GetAttacker()
+	Cookie7.cookieatkchange(e,tp,eg,ep,ev,re,r,rp,PHASE_DAMAGE_CAL,1,at,-2)
 end
