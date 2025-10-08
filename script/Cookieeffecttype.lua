@@ -8,22 +8,51 @@ function Cookie6.ItemEffect(c,attr,colorCount,mixCount)
 	e1:SetType(EFFECT_TYPE_QUICK_O)
 	e1:SetCode(EVENT_FREE_CHAIN)
 	e1:SetRange(LOCATION_HAND)
-	e1:SetCondition(Cookie2.Itemcon)
+	e1:SetCondition(Cookie6.Itemcon)
 	e1:SetTarget(function(e,tp,eg,ep,ev,re,r,rp,chk)
-		if chk==0 then return Cookie3.manacon(e,tp,eg,ep,ev,re,r,rp,chk,attr,colorCount,mixCount) end
+		local code=c:GetCode()
+		local gtbl=_G["c" .. code]
+		local cost1=true
+		if gtbl and type(gtbl.Itemcost) == "function" then
+			cost1=gtbl.Itemcost(e,tp,eg,ep,ev,re,r,rp,chk) end
+		if chk==0 then return Cookie3.manacon(e,tp,eg,ep,ev,re,r,rp,chk,attr,colorCount,mixCount) and cost1 end
 		Duel.SetChainLimit(aux.FALSE) end)
 	e1:SetOperation(function(e,tp,eg,ep,ev,re,r,rp)
-		Cookie3.manacost(e,tp,eg,ep,ev,re,r,rp,attr,colorCount,mixCount)
-		Duel.SendtoGrave(e:GetHandler(),REASON_RULE) end)
+		local code=c:GetCode()
+		local gtbl=_G["c" .. code]
+		local condition1=true
+		local costop1=function(e,tp,eg,ep,ev,re,r,rp) return end
+		local operation1=function(e,tp,eg,ep,ev,re,r,rp) return end
+		if gtbl and type(gtbl.Itemeffcondition) == "function" then
+			condition1=gtbl.Itemeffcondition(e,tp,eg,ep,ev,re,r,rp) end
+		if condition1 then
+			Duel.SendtoGrave(e:GetHandler(),REASON_RULE)
+			Cookie3.manacost(e,tp,eg,ep,ev,re,r,rp,attr,colorCount,mixCount)
+		if gtbl and type(gtbl.Itemcostoperation) == "function" then
+			costop1=gtbl.Itemcostoperation(e,tp,eg,ep,ev,re,r,rp) end
+		if gtbl and type(gtbl.Itemoperation) == "function" then
+			operation1=gtbl.Itemoperation(e,tp,eg,ep,ev,re,r,rp) end
+		elseif not condition1 and Duel.SelectYesNo(tp,aux.Stringid(10060001,10)) then
+			Duel.SendtoGrave(e:GetHandler(),REASON_RULE)
+			Cookie3.manacost(e,tp,eg,ep,ev,re,r,rp,attr,colorCount,mixCount)
+		if gtbl and type(gtbl.Itemcostoperation) == "function" then
+			costop1=gtbl.Itemcostoperation(e,tp,eg,ep,ev,re,r,rp) end
+		else return end
+	end)
 	c:RegisterEffect(e1)
 	local e2=Effect.CreateEffect(c)
 	e2:SetDescription(aux.Stringid(10060000,10))
 	e2:SetType(EFFECT_TYPE_QUICK_O)
 	e2:SetCode(EVENT_FREE_CHAIN)
 	e2:SetRange(LOCATION_HAND)
-	e2:SetCondition(Cookie2.Itemcon)
+	e2:SetCondition(Cookie6.Itemcon)
 	e2:SetTarget(function(e,tp,eg,ep,ev,re,r,rp,chk)
-		if chk==0 then return not Cookie3.manacon(e,tp,eg,ep,ev,re,r,rp,chk,attr,colorCount,mixCount) end		
+		local code=c:GetCode()
+		local gtbl=_G["c" .. code]
+		local cost1=true
+		if gtbl and type(gtbl.Itemcost) == "function" then
+			cost1=gtbl.Itemcost(e,tp,eg,ep,ev,re,r,rp,chk)	end
+		if chk==0 then return not (Cookie3.manacon(e,tp,eg,ep,ev,re,r,rp,chk,attr,colorCount,mixCount) and cost1) end
 		Duel.SetChainLimit(aux.FALSE) end)
 	c:RegisterEffect(e2)
 	Cookie2.GravePosition(c)
@@ -31,7 +60,7 @@ function Cookie6.ItemEffect(c,attr,colorCount,mixCount)
 	Cookie2.HandPosition(c)
 	Cookie2.BrakePosition(c)
 end
-function Cookie2.Itemcon(e)
+function Cookie6.Itemcon(e)
 	local tp=e:GetHandlerPlayer()
 	return Duel.GetTurnPlayer()==tp and Duel.GetCurrentPhase()==PHASE_BATTLE_STEP
 	and not (Duel.GetAttacker() and Duel.GetAttacker():IsControler(tp))
@@ -44,22 +73,37 @@ function Cookie6.TrapEffect(c,attr,colorCount,mixCount)
 	e1:SetType(EFFECT_TYPE_QUICK_O)
 	e1:SetCode(EVENT_FREE_CHAIN)
 	e1:SetRange(LOCATION_HAND)
-	e1:SetCondition(Cookie2.Trapcon)
+	e1:SetCondition(Cookie6.Trapcon)
 	e1:SetTarget(function(e,tp,eg,ep,ev,re,r,rp,chk)
-		if chk==0 then return Cookie3.manacon(e,tp,eg,ep,ev,re,r,rp,chk,attr,colorCount,mixCount) end
+		local code=c:GetCode()
+		local gtbl=_G["c" .. code]
+		local cost2=true
+		if gtbl and type(gtbl.Trapcost) == "function" then
+			cost2=gtbl.Trapcost(e,tp,eg,ep,ev,re,r,rp,chk)	end
+		if chk==0 then return Cookie3.manacon(e,tp,eg,ep,ev,re,r,rp,chk,attr,colorCount,mixCount) and cost2 end
 		Duel.SetChainLimit(aux.FALSE) end)
 	e1:SetOperation(function(e,tp,eg,ep,ev,re,r,rp)
 		Cookie3.manacost(e,tp,eg,ep,ev,re,r,rp,attr,colorCount,mixCount)
-		Duel.SendtoGrave(e:GetHandler(),REASON_RULE) end)
+		Duel.SendtoGrave(e:GetHandler(),REASON_RULE)
+		local code=c:GetCode()
+		local gtbl=_G["c" .. code]
+		if gtbl and type(gtbl.Trapoperation) == "function" then
+		gtbl.Trapoperation(e,tp,eg,ep,ev,re,r,rp) end
+	end)
 	c:RegisterEffect(e1)
 	local e2=Effect.CreateEffect(c)
 	e2:SetDescription(aux.Stringid(10060000,11))
 	e2:SetType(EFFECT_TYPE_QUICK_O)
 	e2:SetCode(EVENT_FREE_CHAIN)
 	e2:SetRange(LOCATION_HAND)
-	e2:SetCondition(Cookie2.Trapcon)
+	e2:SetCondition(Cookie6.Trapcon)
 	e2:SetTarget(function(e,tp,eg,ep,ev,re,r,rp,chk)
-		if chk==0 then return not Cookie3.manacon(e,tp,eg,ep,ev,re,r,rp,chk,attr,colorCount,mixCount) end
+		local code=c:GetCode()
+		local gtbl=_G["c" .. code]
+		local cost2=true
+		if gtbl and type(gtbl.Trapcost) == "function" then
+			cost2=gtbl.Trapcost(e,tp,eg,ep,ev,re,r,rp,chk) end
+		if chk==0 then return not (Cookie3.manacon(e,tp,eg,ep,ev,re,r,rp,chk,attr,colorCount,mixCount) and cost2) end
 		Duel.SetChainLimit(aux.FALSE) end)
 	c:RegisterEffect(e2)
 	Cookie2.GravePosition(c)
@@ -67,7 +111,7 @@ function Cookie6.TrapEffect(c,attr,colorCount,mixCount)
 	Cookie2.HandPosition(c)
 	Cookie2.BrakePosition(c)
 end
-function Cookie2.Trapcon(e)
+function Cookie6.Trapcon(e)
 	local tp=e:GetHandlerPlayer()
 	return Duel.GetTurnPlayer()==1-tp and Cookie2.BattlePositioncon(e)
 end
@@ -79,7 +123,7 @@ function Cookie6.StageEffect(c,attr,colorCount,mixCount)
 	e1:SetType(EFFECT_TYPE_QUICK_O)
 	e1:SetCode(EVENT_FREE_CHAIN)
 	e1:SetRange(LOCATION_HAND)
-	e1:SetCondition(Cookie2.Itemcon)
+	e1:SetCondition(Cookie6.Itemcon)
 	e1:SetTarget(function(e,tp,eg,ep,ev,re,r,rp,chk)
 		if chk==0 then return Cookie3.manacon(e,tp,eg,ep,ev,re,r,rp,chk,attr,colorCount,mixCount) end
 		Duel.SetChainLimit(aux.FALSE) end)
@@ -92,7 +136,7 @@ function Cookie6.StageEffect(c,attr,colorCount,mixCount)
 	e2:SetType(EFFECT_TYPE_QUICK_O)
 	e2:SetCode(EVENT_FREE_CHAIN)
 	e2:SetRange(LOCATION_HAND)
-	e2:SetCondition(Cookie2.Itemcon)
+	e2:SetCondition(Cookie6.Itemcon)
 	e2:SetTarget(function(e,tp,eg,ep,ev,re,r,rp,chk)
 		if chk==0 then return not Cookie3.manacon(e,tp,eg,ep,ev,re,r,rp,chk,attr,colorCount,mixCount) end
 		Duel.SetChainLimit(aux.FALSE) end)
@@ -105,14 +149,14 @@ function Cookie6.StageEffect(c,attr,colorCount,mixCount)
 	e3:SetHintTiming(TIMING_BATTLE_PHASE,TIMING_BATTLE_PHASE)
 	e3:SetCondition(Cookie2.BattlePositioncon)
 	e3:SetTarget(Cookie3.notg)
-	e3:SetOperation(Cookie2.FzonePositionop)
+	e3:SetOperation(Cookie6.FzonePositionop)
 	c:RegisterEffect(e3)
 	Cookie2.GravePosition(c)
 	Cookie2.SupportPosition(c)
 	Cookie2.HandPosition(c)
 	Cookie2.BrakePosition(c)
 end
-function Cookie2.FzonePositionop(e,tp,eg,ep,ev,re,r,rp)
+function Cookie6.FzonePositionop(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
 	Duel.DisableShuffleCheck()
 	Duel.Hint(HINT_SELECTMSG,tp,aux.Stringid(10061003,0))

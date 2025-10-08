@@ -1,6 +1,8 @@
 --쿠키런 브레이버스의 공통적인 임플란트
 Cookie3={}
 
+ALL_COLOR=ATTRIBUTE_FIRE+ATTRIBUTE_WATER+ATTRIBUTE_EARTH+ATTRIBUTE_WIND+ATTRIBUTE_LIGHT+ATTRIBUTE_DARK
+
 --체인불가
 function Cookie3.notg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return true end
@@ -14,6 +16,10 @@ function Cookie3.hasColorCount(attr,count)
 	end
 end
 
+--레스트 코스트
+function Cookie3.restcon(e,tp,eg,ep,ev,re,r,rp,chk)
+	return e:GetHandler():IsAttackPos()
+end
 --마나 코스트
 function Cookie3.manacon(e,tp,eg,ep,ev,re,r,rp,chk,attr,colorCount,mixCount)
 	local c=e:GetHandler()
@@ -28,6 +34,16 @@ function Cookie3.manacost(e,tp,eg,ep,ev,re,r,rp,attr,colorCount,mixCount)
 	local ally=Duel.GetMatchingGroup(nil,tp,LOCATION_EMZONE,0,nil):GetFirst()
 	Duel.Overlay(ally,tg)
 end
+--핸드 코스트
+function Cookie3.handcon(e,tp,eg,ep,ev,re,r,rp,chk,attr,handcost1,handcost2)
+	return Duel.GetMatchingGroupCount(Card.IsAttribute,tp,LOCATION_HAND,0,e:GetHandler(),attr)>=handcost1
+end
+function Cookie3.handcost(e,tp,eg,ep,ev,re,r,rp,attr,handcost1,handcost2)
+	Duel.Hint(HINT_SELECTMSG,tp,aux.Stringid(10060000,6))
+	local hg=Duel.SelectMatchingCard(tp,Card.IsAttribute,tp,LOCATION_HAND,0,handcost1,handcost2,e:GetHandler(),attr)
+	Duel.SendtoGrave(hg,REASON_RULE)
+end
+
 --배틀 페이즈 기동
 function Cookie3.Battleskillcon(e)
 	local tp=e:GetHandlerPlayer()
