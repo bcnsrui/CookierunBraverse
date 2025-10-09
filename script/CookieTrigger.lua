@@ -47,7 +47,7 @@ function Cookie4.damagetriggerop(e,tp,eg,ep,ev,re,r,rp)
 	local g=Duel.SelectMatchingCard(tp,nil,tp,LOCATION_HAND,0,1,1,nil)
 	Duel.SendtoGrave(g,REASON_RULE)
 	Duel.Hint(HINT_SELECTMSG,tp,aux.Stringid(10060001,1))
-	local ag=Duel.SelectMatchingCard(tp,Cookie3.NoEmFzonefilter,tp,0,LOCATION_MZONE,0,1,nil)
+	local ag=Duel.SelectMatchingCard(tp,Cookie3.NoEmFzonefilter,tp,0,LOCATION_MZONE,0,1,nil,tp)
 	Cookie7.damageeff(e,tp,eg,ep,ev,re,r,rp,ag,1) end end
 end
 
@@ -68,7 +68,7 @@ end
 function Cookie4.drawtriggerop(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
 	if Duel.SelectYesNo(tp,aux.Stringid(10060001,0)) then
-	Duel.Draw(tp,1,REASON_RULE)
+	Cookie3.CookieDrawop(e,tp,eg,ep,ev,re,r,rp,1)
 	Cookie3.Refreshop(e,tp,eg,ep,ev,re,r,rp) end
 end
 
@@ -149,13 +149,9 @@ function Cookie4.FrostQueentriggerop(e,tp,eg,ep,ev,re,r,rp)
 	local ac=Duel.AnnounceNumber(tp,2,1,0)
 	e:SetLabel(ac)
 	if ac==2 then
-	Duel.Draw(tp,1,REASON_EFFECT)
-	Cookie3.Refreshop(e,tp,eg,ep,ev,re,r,rp)
-	Duel.Draw(tp,1,REASON_EFFECT)
-	Cookie3.Refreshop(e,tp,eg,ep,ev,re,r,rp)
+	Cookie3.CookieDrawop(e,tp,eg,ep,ev,re,r,rp,2)
 	elseif ac==1 then
-	Duel.Draw(tp,1,REASON_EFFECT)
-	Cookie3.Refreshop(e,tp,eg,ep,ev,re,r,rp)
+	Cookie3.CookieDrawop(e,tp,eg,ep,ev,re,r,rp,1)
 	else end end
 end
 
@@ -313,7 +309,7 @@ function Cookie4.schtriggerop(e,tp,eg,ep,ev,re,r,rp)
 	Cookie7.damageeff(e,tp,eg,ep,ev,re,r,rp,ag,1) end
 end
 function Cookie4.schtriggerfilter(c)
-	return c:GetOverlayCount()>=2 and Cookie3.NoEmFzonefilter(c)
+	return c:GetOverlayCount()>=2 and Cookie3.NoEmFzonefilter(c,tp)
 end
 
 --아레나드로우 플립
@@ -340,13 +336,9 @@ function Cookie4.ARdrawtriggerop(e,tp,eg,ep,ev,re,r,rp)
 	local ac=Duel.AnnounceNumber(tp,2,1,0)
 	e:SetLabel(ac)
 	if ac==2 then
-	Duel.Draw(tp,1,REASON_EFFECT)
-	Cookie3.Refreshop(e,tp,eg,ep,ev,re,r,rp)
-	Duel.Draw(tp,1,REASON_EFFECT)
-	Cookie3.Refreshop(e,tp,eg,ep,ev,re,r,rp)
+	Cookie3.CookieDrawop(e,tp,eg,ep,ev,re,r,rp,2)
 	elseif ac==1 then
-	Duel.Draw(tp,1,REASON_EFFECT)
-	Cookie3.Refreshop(e,tp,eg,ep,ev,re,r,rp)
+	Cookie3.CookieDrawop(e,tp,eg,ep,ev,re,r,rp,1)
 	else end end
 end
 

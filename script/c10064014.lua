@@ -14,6 +14,7 @@ function s.blockercookiecon(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
 	local bt=Duel.GetAttackTarget()
 	return c~=bt and bt:GetControler()==c:GetControler() and c:IsAttackPos()
+	and Duel.GetMatchingGroupCount(Card.IsSetCard,tp,0,LOCATION_MZONE,nil,0xa01)==0
 end
 function s.blockercookieop(e,tp,eg,ep,ev,re,r,rp)
 	if Duel.SelectYesNo(tp,aux.Stringid(10061009,0)) then

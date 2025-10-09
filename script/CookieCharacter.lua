@@ -341,8 +341,8 @@ function Cookie2.GravePositionop(e,tp,eg,ep,ev,re,r,rp)
 	elseif sel==6 then Duel.SendtoExtraP(g,nil,REASON_EFFECT)
 		Duel.ConfirmCards(1-tp,g)
 	elseif sel==7 and #g==1 then
-		if Duel.GetMatchingGroupCount(Cookie3.NoEmFzonefilter,tp,LOCATION_MZONE,0,nil)>0 then
-			local cookie=Duel.SelectMatchingCard(tp,Cookie3.NoEmFzonefilter,tp,LOCATION_MZONE,0,1,1,nil):GetFirst()
+		if Duel.GetMatchingGroupCount(Cookie3.NoEmFzonefilter,tp,LOCATION_MZONE,0,nil,tp)>0 then
+			local cookie=Duel.SelectMatchingCard(tp,Cookie3.NoEmFzonefilter,tp,LOCATION_MZONE,0,1,1,nil,tp):GetFirst()
 			Duel.SendtoDeck(g,nil,SEQ_DECKTOP,REASON_EFFECT)
 			Duel.ConfirmCards(1-tp,g)
 			Cookie7.hpaddop(e,tp,eg,ep,ev,re,r,rp,cookie,1)	end
@@ -380,8 +380,6 @@ function Cookie2.SupportPositionop(e,tp,eg,ep,ev,re,r,rp)
 	if sel==1 then return end
 	if sel==2 and #g==1 and c:IsRace(RACE_WARRIOR) then Duel.SpecialSummon(g,0,tp,tp,false,false,POS_FACEUP_ATTACK)
 	elseif sel==2 then
-	elseif sel==2 then local tc=g:Select(tp,1,1,nil):GetFirst()
-	Duel.SpecialSummon(tc,0,tp,tp,false,false,POS_FACEUP_ATTACK)
 	elseif sel==3 then
 		local deckopts = {
 			aux.Stringid(10061002,2),
@@ -410,8 +408,8 @@ function Cookie2.SupportPositionop(e,tp,eg,ep,ev,re,r,rp)
 	elseif sel==6 then Duel.SendtoExtraP(g,nil,REASON_EFFECT)
 		Duel.ConfirmCards(1-tp,g)
 	elseif sel==7 and #g==1 then
-		if Duel.GetMatchingGroupCount(Cookie3.NoEmFzonefilter,tp,LOCATION_MZONE,0,nil)>0 then
-			local cookie=Duel.SelectMatchingCard(tp,Cookie3.NoEmFzonefilter,tp,LOCATION_MZONE,0,1,1,nil):GetFirst()
+		if Duel.GetMatchingGroupCount(Cookie3.NoEmFzonefilter,tp,LOCATION_MZONE,0,nil,tp)>0 then
+			local cookie=Duel.SelectMatchingCard(tp,Cookie3.NoEmFzonefilter,tp,LOCATION_MZONE,0,1,1,nil,tp):GetFirst()
 			Duel.SendtoDeck(g,nil,SEQ_DECKTOP,REASON_EFFECT)
 			Duel.ConfirmCards(1-tp,g)
 			Cookie7.hpaddop(e,tp,eg,ep,ev,re,r,rp,cookie,1)	end
@@ -475,8 +473,8 @@ function Cookie2.HandPositionop(e,tp,eg,ep,ev,re,r,rp)
 		Duel.Overlay(ally,c) end
 	elseif sel==6 then Duel.SendtoExtraP(c,nil,REASON_EFFECT)
 	elseif sel==7 then
-		if Duel.GetMatchingGroupCount(Cookie3.NoEmFzonefilter,tp,LOCATION_MZONE,0,nil)>0 then
-		local cookie=Duel.SelectMatchingCard(tp,Cookie3.NoEmFzonefilter,tp,LOCATION_MZONE,0,1,1,nil):GetFirst()
+		if Duel.GetMatchingGroupCount(Cookie3.NoEmFzonefilter,tp,LOCATION_MZONE,0,nil,tp)>0 then
+		local cookie=Duel.SelectMatchingCard(tp,Cookie3.NoEmFzonefilter,tp,LOCATION_MZONE,0,1,1,nil,tp):GetFirst()
 		Duel.SendtoDeck(c,nil,SEQ_DECKTOP,REASON_EFFECT)
 		Cookie7.hpaddop(e,tp,eg,ep,ev,re,r,rp,cookie,1)	end
 	end
@@ -542,8 +540,8 @@ function Cookie2.ExtraPositionop(e,tp,eg,ep,ev,re,r,rp)
 		else local ally=Duel.GetMatchingGroup(nil,tp,LOCATION_EMZONE,0,nil):GetFirst()
 		Duel.Overlay(ally,c) end
 	elseif sel==7 then
-		if Duel.GetMatchingGroupCount(Cookie3.NoEmFzonefilter,tp,LOCATION_MZONE,0,nil)>0 then
-		local cookie=Duel.SelectMatchingCard(tp,Cookie3.NoEmFzonefilter,tp,LOCATION_MZONE,0,1,1,nil):GetFirst()
+		if Duel.GetMatchingGroupCount(Cookie3.NoEmFzonefilter,tp,LOCATION_MZONE,0,nil,tp)>0 then
+		local cookie=Duel.SelectMatchingCard(tp,Cookie3.NoEmFzonefilter,tp,LOCATION_MZONE,0,1,1,nil,tp):GetFirst()
 		Duel.SendtoDeck(c,nil,SEQ_DECKTOP,REASON_EFFECT)
 		Cookie7.hpaddop(e,tp,eg,ep,ev,re,r,rp,cookie,1)	end
 	end

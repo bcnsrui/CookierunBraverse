@@ -116,10 +116,7 @@ function Cookie.drawop(e,tp,eg,ep,ev,re,r,rp)
 	Duel.SpecialSummon(sc2,0,1-tp,1-tp,false,false,POS_FACEUP_ATTACK) end
 
 	if Duel.GetTurnCount()~=1 then
-	Duel.Draw(tp,1,REASON_EFFECT)
-	Cookie3.Refreshop(e,tp,eg,ep,ev,re,r,rp)
-	Duel.Draw(tp,1,REASON_EFFECT)
-	Cookie3.Refreshop(e,tp,eg,ep,ev,re,r,rp) end
+	Cookie3.CookieDrawop(e,tp,eg,ep,ev,re,r,rp,2) end
 	
 	Duel.Hint(HINT_SELECTMSG,tp,aux.Stringid(10060000,0))
 	local supportcard=Duel.SelectMatchingCard(tp,nil,tp,LOCATION_HAND,0,0,1,nil)
@@ -245,6 +242,7 @@ function Cookie.gameoverop(e,tp,eg,ep,ev,re,r,rp)
 end
 function Cookie.Refreshcon(e)
 	return Duel.GetFieldGroupCount(e:GetHandlerPlayer(),LOCATION_DECK,0)==0
+	and Duel.GetFieldGroupCount(e:GetHandlerPlayer(),LOCATION_GRAVE,0)>0
 end
 
 --메인 캐릭터 기동효과
@@ -485,5 +483,5 @@ function Cookie.maincookieop2(e,tp,eg,ep,ev,re,r,rp)
 	Duel.Hint(HINT_SELECTMSG,tp,aux.Stringid(10060001,7))
 	local count=Duel.AnnounceNumber(tp,0,1,2,3)
 	if count==0 then return end
-	Duel.Draw(tp,count,REASON_EFFECT)
+	Cookie3.CookieDrawop(e,tp,eg,ep,ev,re,r,rp,count)
 end

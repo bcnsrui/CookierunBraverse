@@ -24,12 +24,14 @@ end
 function Cookie3.manacon(e,tp,eg,ep,ev,re,r,rp,chk,attr,colorCount,mixCount)
 	local c=e:GetHandler()
 	local g=Duel.GetMatchingGroup(Card.IsFaceup,tp,LOCATION_REMOVED,0,nil)
+	if mixCount==0 then return true end
 	if chk==0 then return #g>=mixCount and
 	aux.SelectUnselectGroup(g,e,tp,mixCount,mixCount,Cookie3.hasColorCount(attr,colorCount),0) end
 end
 function Cookie3.manacost(e,tp,eg,ep,ev,re,r,rp,attr,colorCount,mixCount)
 	local c=e:GetHandler()
 	local g=Duel.GetMatchingGroup(Card.IsFaceup,tp,LOCATION_REMOVED,0,nil)
+	if mixCount==0 then return true end
 	local tg=aux.SelectUnselectGroup(g,e,tp,mixCount,mixCount,Cookie3.hasColorCount(attr,colorCount),1,tp,aux.Stringid(10060000,6))
 	local ally=Duel.GetMatchingGroup(nil,tp,LOCATION_EMZONE,0,nil):GetFirst()
 	Duel.Overlay(ally,tg)
@@ -52,8 +54,21 @@ function Cookie3.Battleskillcon(e)
 end
 
 --메인 쿠키 제외
-function Cookie3.NoEmFzonefilter(c)
-	return not (c:IsLocation(LOCATION_EMZONE+LOCATION_FZONE) or c:GetOverlayCount()==0)
+function Cookie3.NoEmFzonefilter(c,tp)
+	return not (c:IsLocation(LOCATION_EMZONE+LOCATION_FZONE) or (c:IsControler(1-tp) and c:IsSetCard(0xa05)))
+end
+
+--서포트 에리어 지정
+function Cookie3.SupportAreafilter(e,tp,eg,ep,ev,re,r,rp,allymanazone1,allymanazone2,enemymanazone1,enemymanazone2)
+	if allymanazone1==1 then allymanazone1=LOCATION_REMOVED end
+	if enemymanazone1==1 then enemymanazone1=LOCATION_REMOVED end
+	if allymanazone2==1 then allymanazone2=LOCATION_EMZONE end
+	if enemymanazone2==1 then enemymanazone2=LOCATION_EMZONE end
+	local activemana=Duel.GetFieldGroup(tp,allymanazone1,enemymanazone1,nil)
+	local allycookie=Duel.GetMatchingGroup(Card.IsFaceup,tp,allymanazone2,enemymanazone2,nil):GetFirst()
+	local restmana=allycookie:GetOverlayGroup()
+	activemana:Merge(restmana)
+	return activemana
 end
 
 --리프레시
@@ -65,4 +80,33 @@ function Cookie3.Refreshop(e,tp,eg,ep,ev,re,r,rp)
 	local refill=Duel.GetFieldGroup(tp,LOCATION_GRAVE,0)
 	Duel.SendtoDeck(refill,nil,SEQ_DECKSHUFFLE,REASON_RULE)
 	Duel.ShuffleDeck(tp)
+end
+
+--상대 배틀에리어 쿠키 트래시로 보내기
+function Cookie3.bttrashop(e,tp,eg,ep,ev,re,r,rp,g)
+	if #g==0 then return end
+	Duel.Remove(g,POS_FACEUP,REASON_EFFECT)
+	Duel.SendtoGrave(g,REASON_EFFECT)
+end
+
+--쿠키런 드로우
+function Cookie3.CookieDrawop(e,tp,eg,ep,ev,re,r,rp,draw)
+	local refill=Duel.GetMatchingGroup(nil,tp,LOCATION_GRAVE,0,nil)
+	local deckcount=Duel.GetFieldGroupCount(tp,LOCATION_DECK,0)
+	if deckcount<=draw then
+	Duel.Draw(tp,deckcount,REASON_EFFECT)
+	Cookie3.Refreshop(e,tp,eg,ep,ev,re,r,rp)
+	Duel.Draw(tp,draw-deckcount,REASON_EFFECT)
+	else Duel.Draw(tp,draw,REASON_EFFECT) end
+end
+
+--쿠키런 트래시
+function Cookie3.CookieTrashop(e,tp,eg,ep,ev,re,r,rp,trash)
+	local refill=Duel.GetMatchingGroup(nil,tp,LOCATION_GRAVE,0,nil)
+	local deckcount=Duel.GetFieldGroupCount(tp,LOCATION_DECK,0)
+	if deckcount<=trash then
+	Duel.SendtoGrave(deckcount,REASON_EFFECT)
+	Cookie3.Refreshop(e,tp,eg,ep,ev,re,r,rp)
+	Duel.SendtoGrave(trash-deckcount,REASON_EFFECT)
+	else Duel.SendtoGrave(trash,REASON_EFFECT) end
 end
