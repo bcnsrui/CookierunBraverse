@@ -10,6 +10,5 @@ function s.Itemoperation(e,tp,eg,ep,ev,re,r,rp)
 	local g=Duel.SelectMatchingCard(tp,Cookie3.NoEmFzonefilter,tp,0,LOCATION_MZONE,0,1,nil,tp)
 	if #g>0 then Cookie7.damageeff(e,tp,eg,ep,ev,re,r,rp,g,2) end
 	local count=Duel.AnnounceNumber(tp,3,2,1,0)
-	local tg=Duel.GetDecktopGroup(tp,count)
-	Duel.SendtoGrave(tg,REASON_EFFECT)
+	Cookie3.CookieTrashop(e,tp,eg,ep,ev,re,r,rp,count)
 end

@@ -104,9 +104,10 @@ end
 function Cookie3.CookieTrashop(e,tp,eg,ep,ev,re,r,rp,trash)
 	local refill=Duel.GetMatchingGroup(nil,tp,LOCATION_GRAVE,0,nil)
 	local deckcount=Duel.GetFieldGroupCount(tp,LOCATION_DECK,0)
+	local deck=Duel.GetFieldGroup(tp,LOCATION_DECK,0)
 	if deckcount<=trash then
-	Duel.SendtoGrave(deckcount,REASON_EFFECT)
+	Duel.DiscardDeck(tp,deckcount,REASON_EFFECT)
 	Cookie3.Refreshop(e,tp,eg,ep,ev,re,r,rp)
-	Duel.SendtoGrave(trash-deckcount,REASON_EFFECT)
-	else Duel.SendtoGrave(trash,REASON_EFFECT) end
+	Duel.DiscardDeck(tp,trash-deckcount,REASON_EFFECT)
+	else Duel.DiscardDeck(tp,trash,REASON_EFFECT) end
 end
