@@ -139,6 +139,10 @@ function Cookie2.BattlePosition(c)
 	e7:SetDescription(aux.Stringid(10061001,9))
 	e7:SetOperation(Cookie2.Cookienosumop)
 	c:RegisterEffect(e7)
+	local e8=e2:Clone()
+	e8:SetDescription(aux.Stringid(10061001,10))
+	e8:SetOperation(Cookie2.EnemyPositionop)
+	c:RegisterEffect(e8)
 end
 function Cookie2.BattlePositioncon(e)
 	return Duel.GetCurrentPhase()==PHASE_BATTLE_STEP
@@ -265,6 +269,58 @@ function Cookie2.BattlePositionop(e,tp,eg,ep,ev,re,r,rp)
 		else local ally=Duel.GetMatchingGroup(nil,tp,LOCATION_EMZONE,0,nil):GetFirst()
 		Duel.Overlay(ally,c) end
 	elseif sel==6 then Duel.SendtoExtraP(c,nil,REASON_EFFECT) end
+end
+function Cookie2.EnemyPositionop(e,tp,eg,ep,ev,re,r,rp)
+	local c=e:GetHandler()
+	Duel.DisableShuffleCheck()
+	Duel.Hint(HINT_SELECTMSG,tp,aux.Stringid(10061003,0))
+	local opts = {
+		aux.Stringid(10061002,12),
+		aux.Stringid(10061002,1),
+		aux.Stringid(10061002,5),
+		aux.Stringid(10061002,6),
+		aux.Stringid(10061002,7),
+		aux.Stringid(10061002,10),
+	}
+	Duel.Hint(HINT_SELECTMSG,tp,aux.Stringid(10061003,1))
+	local sel=Duel.SelectOption(tp,table.unpack(opts))+1
+	if sel==1 then return end
+	if sel==2 then
+		local deckopts = {
+			aux.Stringid(10061002,2),
+			aux.Stringid(10061002,3),
+			aux.Stringid(10061002,4),
+		}
+		Duel.Hint(HINT_SELECTMSG,tp,aux.Stringid(10061003,2))
+		local decksel=Duel.SelectOption(tp,table.unpack(deckopts))+1
+		if decksel==1 and Duel.SelectYesNo(1-tp,aux.Stringid(10061005,0)) then
+			Duel.SendtoDeck(c,nil,SEQ_DECKSHUFFLE,REASON_EFFECT)
+			Duel.ShuffleDeck(tp)
+		elseif decksel==2 and Duel.SelectYesNo(1-tp,aux.Stringid(10061005,1)) then
+			Duel.SendtoDeck(c,nil,SEQ_DECKTOP,REASON_EFFECT)
+		elseif decksel==3 and Duel.SelectYesNo(1-tp,aux.Stringid(10061005,2)) then
+			Duel.SendtoDeck(c,nil,SEQ_DECKBOTTOM,REASON_EFFECT)
+		end
+	elseif sel==3 and Duel.SelectYesNo(1-tp,aux.Stringid(10061005,3)) then
+		Duel.SendtoHand(c,nil,REASON_EFFECT)
+		Duel.ShuffleHand(1-tp)
+	elseif sel==4 and Duel.SelectYesNo(1-tp,aux.Stringid(10061005,4)) then
+		Duel.Remove(c,POS_FACEUP,REASON_EFFECT)
+		Duel.SendtoGrave(c,REASON_EFFECT)
+	elseif sel==5 then
+		local removeopts = {
+			aux.Stringid(10061002,8),
+			aux.Stringid(10061002,9),
+		}
+		Duel.Hint(HINT_SELECTMSG,tp,aux.Stringid(10061003,3))
+		local removesel=Duel.SelectOption(tp,table.unpack(removeopts))+1
+		if removesel==1 and Duel.SelectYesNo(1-tp,aux.Stringid(10061005,5)) then
+		Duel.Remove(c,POS_FACEUP,REASON_EFFECT)
+		elseif removesel==2 and Duel.SelectYesNo(1-tp,aux.Stringid(10061005,6)) then
+		local ally=Duel.GetMatchingGroup(nil,tp,0,LOCATION_EMZONE,nil):GetFirst()
+		Duel.Overlay(ally,c) end
+	elseif sel==6 and Duel.SelectYesNo(1-tp,aux.Stringid(10061005,7)) then
+		Duel.SendtoExtraP(c,nil,REASON_EFFECT) end
 end
 
 function Cookie2.GravePosition(c)
