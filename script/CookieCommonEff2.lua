@@ -189,6 +189,29 @@ function Cookie7.hptrasheff(e,tp,eg,ep,ev,re,r,rp,ag,dam)
 	if tg:GetOverlayCount()==0 and tg:IsLocation(LOCATION_MZONE) then Duel.Destroy(tg,REASON_RULE) end
 end
 
+--쿠키 hp 덱 맨위로 보내기
+function Cookie7.hpdecktop(e,tp,eg,ep,ev,re,r,rp,ag,dam)
+	local c=e:GetHandler()
+	local typ=type(ag)
+	if typ=="Card" and ag==nil then return
+	elseif typ=="Group" and #ag==0 then return end
+	local tg
+	if typ=="Card" then tg=ag
+	elseif typ=="Group" then tg=ag:GetFirst() end
+	Duel.Damage(1-c:GetControler(),dam,REASON_EFFECT)
+	local damage=0
+	while damage<dam and tg:GetOverlayCount()>0 do
+	g=tg:GetOverlayGroup()
+	last=g:GetFirst()
+	tc=g:GetNext()
+	for tc in aux.Next(g) do
+		if tc:GetSequence()>last:GetSequence() then last=tc end
+	end
+	Duel.SendtoDeck(last,nil,SEQ_DECKTOP,REASON_EFFECT)
+	damage=damage+1 end
+	if tg:GetOverlayCount()==0 and tg:IsLocation(LOCATION_MZONE) then Duel.Destroy(tg,REASON_RULE) end
+end
+
 --공격대미지 변화
 function Cookie7.cookieatkchange(e,tp,eg,ep,ev,re,r,rp,reset1,reset2,g,atk)
 	local typ=type(g)

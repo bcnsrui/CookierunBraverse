@@ -83,12 +83,26 @@ function Cookie6.TrapEffect(c,attr,colorCount,mixCount)
 		if chk==0 then return Cookie3.manacon(e,tp,eg,ep,ev,re,r,rp,chk,attr,colorCount,mixCount) and cost2 end
 		Duel.SetChainLimit(aux.FALSE) end)
 	e1:SetOperation(function(e,tp,eg,ep,ev,re,r,rp)
-		Cookie3.manacost(e,tp,eg,ep,ev,re,r,rp,attr,colorCount,mixCount)
-		Duel.SendtoGrave(e:GetHandler(),REASON_RULE)
 		local code=c:GetCode()
 		local gtbl=_G["c" .. code]
+		local condition1=true
+		local costop1=function(e,tp,eg,ep,ev,re,r,rp) return end
+		local operation1=function(e,tp,eg,ep,ev,re,r,rp) return end
+		if gtbl and type(gtbl.Trapeffcondition) == "function" then
+			condition1=gtbl.Trapeffcondition(e,tp,eg,ep,ev,re,r,rp) end
+		if condition1 then
+			Duel.SendtoGrave(e:GetHandler(),REASON_RULE)
+			Cookie3.manacost(e,tp,eg,ep,ev,re,r,rp,attr,colorCount,mixCount)
+		if gtbl and type(gtbl.Trapcostoperation) == "function" then
+			costop1=gtbl.Trapcostoperation(e,tp,eg,ep,ev,re,r,rp) end
 		if gtbl and type(gtbl.Trapoperation) == "function" then
-		gtbl.Trapoperation(e,tp,eg,ep,ev,re,r,rp) end
+			operation1=gtbl.Trapoperation(e,tp,eg,ep,ev,re,r,rp) end
+		elseif not condition1 and Duel.SelectYesNo(tp,aux.Stringid(10060001,10)) then
+			Duel.SendtoGrave(e:GetHandler(),REASON_RULE)
+			Cookie3.manacost(e,tp,eg,ep,ev,re,r,rp,attr,colorCount,mixCount)
+		if gtbl and type(gtbl.Trapcostoperation) == "function" then
+			costop1=gtbl.Trapcostoperation(e,tp,eg,ep,ev,re,r,rp) end
+		else return end
 	end)
 	c:RegisterEffect(e1)
 	local e2=Effect.CreateEffect(c)
@@ -113,7 +127,8 @@ function Cookie6.TrapEffect(c,attr,colorCount,mixCount)
 end
 function Cookie6.Trapcon(e)
 	local tp=e:GetHandlerPlayer()
-	return Duel.GetTurnPlayer()==1-tp and Cookie2.BattlePositioncon(e)
+	return Duel.GetTurnPlayer()==1-tp and Duel.GetAttacker()
+	and Duel.GetAttacker():IsControler(1-tp) and Duel.GetCurrentPhase()<=PHASE_BATTLE
 end
 
 --S스테이지

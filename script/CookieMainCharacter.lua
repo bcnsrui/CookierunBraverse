@@ -235,7 +235,7 @@ end
 function Cookie.gameovercon(e)
 	local tp=e:GetHandlerPlayer()
 	local ally=Duel.GetMatchingGroup(Card.IsFaceup,tp,LOCATION_EXTRA,0,nil):GetSum(Card.GetLevel)
-	return ally>=10
+	return ally>=10 and Duel.GetLP(tp)>10
 end
 function Cookie.gameoverop(e,tp,eg,ep,ev,re,r,rp)
 	Duel.SetLP(tp,10)
