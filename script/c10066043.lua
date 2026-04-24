@@ -1,4 +1,4 @@
-local s,id=GetID()
+﻿local s,id=GetID()
 function s.initial_effect(c)
 	Cookie6.StageEffect(c,ATTRIBUTE_LIGHT,1,1,0,0)
 	Cookie6.QECoookieEffect(c,ATTRIBUTE_LIGHT,0,0)
