@@ -1,4 +1,4 @@
-﻿--쿠키런 브레이버스의 공통적인 임플란트3
+--쿠키런 브레이버스의 공통적인 임플란트3
 Cookie8={}
 LOCATION_TRIGGERZONE=LOCATION_MZONE+LOCATION_GRAVE+LOCATION_EXTRA+LOCATION_FZONE
 

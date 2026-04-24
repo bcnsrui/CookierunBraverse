@@ -1,4 +1,4 @@
-﻿local s,id=GetID()
+local s,id=GetID()
 function s.initial_effect(c)
 	Cookie2.CookieCharacter(c,ATTRIBUTE_WIND,1,1)
 	Cookie6.IGCoookieEffect(c,1,ATTRIBUTE_WIND,1,1)
