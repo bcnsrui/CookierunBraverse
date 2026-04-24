@@ -1,5 +1,20 @@
+local function LoadCookieCore()
+	pcall(Duel.LoadScript,"CS_init.lua")
+	if not Cookie2 then pcall(Duel.LoadScript,"expansions/script/CS_init.lua") end
+	if not Cookie2 then pcall(Duel.LoadScript,"script/CS_init.lua") end
+	if not Cookie2 then
+		pcall(Duel.LoadScript,"CookieMainCharacter.lua")
+		pcall(Duel.LoadScript,"CookieCharacter.lua")
+		pcall(Duel.LoadScript,"CookieCommonEff.lua")
+		pcall(Duel.LoadScript,"CookieCommonEff2.lua")
+		pcall(Duel.LoadScript,"CookieCommonEff3.lua")
+		pcall(Duel.LoadScript,"CookieTrigger.lua")
+		pcall(Duel.LoadScript,"Cookieeffecttype.lua")
+	end
+end
+
 if not load then
-	Duel.LoadScript("CS_init.lua")
+	LoadCookieCore()
 	return
 end
 local function make_deprecated_function_alias(old_funcname,new_funcname)
@@ -53,4 +68,4 @@ make_deleted_function("Auxiliary.CallToken","Use Duel.LoadCardScript or Duel.Loa
 make_deleted_function("Auxiliary.SpiritReturnCondition","Check Spirit.MandatoryReturnCondition and Spirit.OptionalReturnCondition for more details.")
 make_deleted_function("Auxiliary.SpiritReturnTarget","Check Spirit.MandatoryReturnTarget and Spirit.OptionalReturnTarget for more details.")
 
-Duel.LoadScript("CS_init.lua")
+LoadCookieCore()
