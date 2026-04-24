@@ -2,7 +2,7 @@ if not Cookie2 then Duel.LoadScript("deprecated_function.lua") end
 local s,id=GetID()
 function s.initial_effect(c)
 	Cookie2.CookieCharacter(c,ATTRIBUTE_DARK,2,2)
-	Cookie6.QECoookieEffect(c,ATTRIBUTE_DARK,0,0)
+	Cookie6.QECoookieEffect2(c)
 	local e2=Effect.CreateEffect(c)
 	e2:SetType(EFFECT_TYPE_SINGLE)
 	e2:SetCode(EFFECT_ADD_SETCODE)

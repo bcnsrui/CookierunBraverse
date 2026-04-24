@@ -1,4 +1,4 @@
---쿠키런 브레이버스는 갓겜이다
+﻿--쿠키런 브레이버스는 갓겜이다
 Cookie={}
 
 --메인 캐릭터 유틸
@@ -85,7 +85,7 @@ function Cookie.DrawStMainCharacter(c)
 	c:RegisterEffect(e4)
 end
 function Cookie.ResetPositionfilter(c)
-	return c:IsFaceup() and c:IsDefensePos() and c:IsSetCard(0xa10) and not c:IsLocation(LOCATION_EMZONE)
+	return c:IsFaceup() and c:IsDefensePos() and not c:IsSetCard(0xa10)
 end
 function Cookie.Resetop(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
