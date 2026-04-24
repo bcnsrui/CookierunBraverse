@@ -1,4 +1,21 @@
 local s,id=GetID()
 function s.initial_effect(c)
 	Cookie2.CookieCharacter(c,ATTRIBUTE_WIND,1,2)
+	local e1=Effect.CreateEffect(c)
+	e1:SetType(EFFECT_TYPE_SINGLE)
+	e1:SetCode(EFFECT_ADD_SETCODE)
+	e1:SetValue(0xd031)
+	c:RegisterEffect(e1)
+end
+function s.lv1cookiefilter(c)
+	return c:IsRace(RACE_WARRIOR) and c:IsLevel(1)
+end
+function s.AndCookieoperation(e,tp,eg,ep,ev,re,r,rp)
+	local g=Cookie3.SupportAreafilter(e,tp,eg,ep,ev,re,r,rp,1,1,0,0)
+	local sg=g:Filter(s.lv1cookiefilter,nil)
+	if #sg>0 then
+		Duel.Hint(HINT_SELECTMSG,tp,aux.Stringid(10060001,1))
+		local tg=sg:Select(tp,0,1,nil)
+		Duel.SendtoHand(tg,nil,REASON_EFFECT)
+	end
 end

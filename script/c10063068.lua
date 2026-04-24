@@ -4,10 +4,11 @@ function s.initial_effect(c)
 end
 function s.Itemoperation(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
-	Duel.Hint(HINT_SELECTMSG,tp,aux.Stringid(10061003,13))
+	Duel.Hint(HINT_SELECTMSG,tp,aux.Stringid(10060002,2))
 	local sel=Duel.SelectOption(tp,aux.Stringid(id,0),aux.Stringid(id,1))+1
 	if sel==1 then
 		local ally=Duel.GetMatchingGroup(Card.IsFaceup,tp,LOCATION_EMZONE,0,nil):GetFirst()
+		if not ally then return end
 		Duel.Overlay(ally,c)
 	elseif sel==2 then
 		local g=Duel.GetMatchingGroup(Cookie3.NoEmFzonefilter,tp,0,LOCATION_MZONE,nil,tp)

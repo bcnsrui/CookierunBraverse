@@ -10,5 +10,5 @@ function s.Itemeffcondition(e,tp,eg,ep,ev,re,r,rp)
 end
 function s.Itemoperation(e,tp,eg,ep,ev,re,r,rp)
 	local g=Duel.GetMatchingGroup(Cookie3.NoEmFzonefilter,tp,0,LOCATION_MZONE,nil,tp)
-	Cookie7.doubledamageeff(e,tp,eg,ep,ev,re,r,rp,g,2,2)
+	Cookie7.Alldamageeff(e,tp,eg,ep,ev,re,r,rp,g,2)
 end

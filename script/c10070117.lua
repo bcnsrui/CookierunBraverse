@@ -5,6 +5,9 @@ end
 function s.hp1cookiefilter(c,tp)
 	return c:IsLevelAbove(2) and c:IsRace(RACE_WARRIOR) and c:GetOverlayCount()==1 and Cookie3.NoEmFzonefilter(c,tp)
 end
+function s.Itemeffcondition(e,tp,eg,ep,ev,re,r,rp)
+	return Duel.GetMatchingGroupCount(s.hp1cookiefilter,tp,LOCATION_MZONE,0,nil,tp)>=1
+end
 function s.Itemoperation(e,tp,eg,ep,ev,re,r,rp)
 	Duel.Hint(HINT_SELECTMSG,tp,aux.Stringid(10060001,1))
 	local ag=Duel.SelectMatchingCard(tp,s.hp1cookiefilter,tp,LOCATION_MZONE,0,0,1,nil,tp)

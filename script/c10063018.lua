@@ -9,10 +9,11 @@ function s.Itemoperation(e,tp,eg,ep,ev,re,r,rp)
 	if not has_c02 then
 		table.insert(opts,aux.Stringid(id,1))
 	end
-	Duel.Hint(HINT_SELECTMSG,tp,aux.Stringid(10061003,13))
+	Duel.Hint(HINT_SELECTMSG,tp,aux.Stringid(10060002,2))
 	local sel=Duel.SelectOption(tp,table.unpack(opts))+1
 	if sel==1 then
 		local ally=Duel.GetMatchingGroup(Card.IsFaceup,tp,LOCATION_EMZONE,0,nil):GetFirst()
+		if not ally then return end
 		local e1=Effect.CreateEffect(c)
 		e1:SetType(EFFECT_TYPE_SINGLE)
 		e1:SetCode(EFFECT_ADD_SETCODE)

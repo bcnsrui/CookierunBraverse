@@ -3,7 +3,7 @@ function s.initial_effect(c)
 	Cookie6.ItemEffect(c,ATTRIBUTE_DARK,2,2)
 end
 function s.arenafilter(c)
-	return c:IsSetCard(0xc01) and c:IsRace(RACE_WARRIOR)
+	return not c:IsSetCard(0xc01) and c:IsRace(RACE_WARRIOR)
 end
 function s.Itemeffcondition(e,tp,eg,ep,ev,re,r,rp)
 	return Duel.GetLocationCount(tp,LOCATION_MZONE)>0
@@ -14,6 +14,6 @@ function s.Itemoperation(e,tp,eg,ep,ev,re,r,rp)
 	local g=Duel.SelectMatchingCard(tp,s.arenafilter,tp,LOCATION_GRAVE,0,0,1,nil)
 	if #g>0 then
 	local tc=g:GetFirst()
-	Duel.SpecialSummon(tc,0,tp,tp,false,false,POS_FACEUP_ATTACK)
+	Cookie3.Cookiesummonop(e,tp,eg,ep,ev,re,r,rp,tc)
 	Cookie7.hpaddop(e,tp,eg,ep,ev,re,r,rp,tc,1)	end
 end

@@ -1,6 +1,7 @@
 local s,id=GetID()
 function s.initial_effect(c)
 	Cookie6.TrapEffect(c,ATTRIBUTE_WIND,1,1)
+	Cookie6.QECoookieEffect2(c)
 end
 function s.Trapoperation(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
@@ -9,19 +10,23 @@ function s.Trapoperation(e,tp,eg,ep,ev,re,r,rp)
 	e1:SetCode(EVENT_DESTROYED)
 	e1:SetCondition(s.descon)
 	e1:SetOperation(s.desop)
-	e1:SetReset(RESET_PHASE+PHASE_DAMAGE)
+	e1:SetReset(RESET_PHASE+PHASE_BATTLE)
 	Duel.RegisterEffect(e1,tp)
 end
 function s.desfilter(c,tp)
 	return c:IsPreviousLocation(LOCATION_MZONE) and c:IsPreviousControler(tp)
-	and c:IsReason(REASON_DESTROY) and c:IsAttribute(ATTRIBUTE_WIND) and c:IsRace(RACE_WARRIOR)
+		and c:IsReason(REASON_DESTROY) and c:IsAttribute(ATTRIBUTE_WIND) and c:IsRace(RACE_WARRIOR)
 end
 function s.descon(e,tp,eg,ep,ev,re,r,rp)
 	return eg:IsExists(s.desfilter,1,nil,tp)
 end
 function s.desop(e,tp,eg,ep,ev,re,r,rp)
+	Cookie8.eventop(e,tp,eg,ep,ev,re,r,rp,e:GetHandler())
+end
+function s.QECookieoperation(e,tp,eg,ep,ev,re,r,rp)
 	Duel.DisableShuffleCheck()
 	local ally=Duel.GetMatchingGroup(Card.IsFaceup,tp,LOCATION_EMZONE,0,nil):GetFirst()
+	if not ally then return end
 	local tc=Duel.GetDecktopGroup(tp,1)
 	Duel.Overlay(ally,tc)
 end

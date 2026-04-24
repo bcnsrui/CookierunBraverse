@@ -1,29 +1,28 @@
 local s,id=GetID()
 function s.initial_effect(c)
-	Cookie6.TrapEffect(c,ATTRIBUTE_WIND,2,2)
-end
-function s.Trapoperation(e,tp,eg,ep,ev,re,r,rp)
-	local c=e:GetHandler()
+	Cookie2.CookieCharacter(c,ATTRIBUTE_LIGHT,3,3)
+	Cookie6.IGCoookieEffect(c,1,ATTRIBUTE_LIGHT,0,0)
 	local e1=Effect.CreateEffect(c)
-	e1:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
-	e1:SetCode(EVENT_DESTROYED)
-	e1:SetCondition(s.descon)
-	e1:SetOperation(s.desop)
-	e1:SetReset(RESET_PHASE+PHASE_DAMAGE)
-	Duel.RegisterEffect(e1,tp)
+	e1:SetType(EFFECT_TYPE_SINGLE)
+	e1:SetCode(EFFECT_ADD_SETCODE)
+	e1:SetValue(0xd03)
+	c:RegisterEffect(e1)
 end
-function s.desfilter(c,tp)
-	return c:IsPreviousLocation(LOCATION_MZONE) and c:IsPreviousControler(tp)
-		and c:IsReason(REASON_DESTROY) and c:IsRace(RACE_WARRIOR)
+function s.IGCookieeffcondition(e,tp,eg,ep,ev,re,r,rp)
+	local c=e:GetHandler()
+	local ally=Duel.GetMatchingGroup(nil,tp,LOCATION_EMZONE,0,nil):GetFirst()
+	return c:GetOverlayCount()<=5 and ally and ally:IsSetCard(0xa07)
 end
-function s.descon(e,tp,eg,ep,ev,re,r,rp)
-	return eg:IsExists(s.desfilter,1,nil,tp)
+function s.IGCookieoperation(e,tp,eg,ep,ev,re,r,rp)
+	Cookie7.hpaddop(e,tp,eg,ep,ev,re,r,rp,e:GetHandler(),1)
 end
-function s.spfilter(c)
-	return c:IsAttribute(ATTRIBUTE_WIND) and c:IsRace(RACE_WARRIOR)
+function s.AndCookiecost(e,tp,eg,ep,ev,re,r,rp)
+	return e:GetHandler():GetOverlayCount()>=2
 end
-function s.desop(e,tp,eg,ep,ev,re,r,rp)
-	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_SPSUMMON)
-	local g=Duel.SelectMatchingCard(tp,s.spfilter,tp,LOCATION_GRAVE,0,1,1,nil)
-	if #g>0 then Duel.SpecialSummon(g,0,tp,tp,false,false,POS_FACEUP_ATTACK) end
+function s.AndCookiecostoperation(e,tp,eg,ep,ev,re,r,rp)
+	Cookie7.hptrasheff(e,tp,eg,ep,ev,re,r,rp,e:GetHandler(),2)
+end
+function s.AndCookieoperation(e,tp,eg,ep,ev,re,r,rp)
+	local bc=e:GetHandler():GetBattleTarget()
+	if bc then Cookie7.damageeff(e,tp,eg,ep,ev,re,r,rp,bc,1) end
 end

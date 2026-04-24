@@ -11,7 +11,7 @@ end
 function s.Itemcostoperation(e,tp,eg,ep,ev,re,r,rp)
 	Duel.Hint(HINT_SELECTMSG,tp,aux.Stringid(10060000,6))
 	local g=Duel.SelectMatchingCard(tp,s.yellowcookiefilter,tp,LOCATION_MZONE,0,1,1,nil,tp)
-	Duel.SendtoGrave(g,REASON_COST)
+	Duel.SendtoExtraP(g,nil,REASON_COST)
 end
 function s.Itemoperation(e,tp,eg,ep,ev,re,r,rp)
 	Duel.Hint(HINT_SELECTMSG,tp,aux.Stringid(10060001,1))

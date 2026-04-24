@@ -9,5 +9,5 @@ function s.Itemoperation(e,tp,eg,ep,ev,re,r,rp)
 	local g=Duel.GetFieldGroup(tp,LOCATION_HAND,0)
 	Duel.SendtoDeck(g,nil,SEQ_DECKSHUFFLE,REASON_EFFECT)
 	Duel.ShuffleDeck(tp)
-	Duel.Draw(tp,#g,REASON_EFFECT)
+	Cookie3.CookieDrawop(e,tp,eg,ep,ev,re,r,rp,#g)
 end

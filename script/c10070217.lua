@@ -11,9 +11,10 @@ function s.initial_effect(c)
 end
 function s.check(e,tp,eg,ep,ev,re,r,rp)
 	for tc in aux.Next(eg) do
-	if tc:IsPreviousLocation(LOCATION_MZONE) and tc:IsLocation(LOCATION_EXTRA)
-	and tc:GetPreviousControler()==1-tp then
-	Duel.RegisterFlagEffect(tp,id,RESET_PHASE+PHASE_END,0,1) end end
+		if tc:IsPreviousLocation(LOCATION_MZONE) and tc:GetPreviousControler()==1-tp then
+			Duel.RegisterFlagEffect(tp,id,RESET_PHASE+PHASE_END,0,1)
+		end
+	end
 end
 function s.Itemeffcondition(e,tp,eg,ep,ev,re,r,rp)
 	return Duel.GetFlagEffect(tp,id)>0

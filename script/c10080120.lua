@@ -1,4 +1,34 @@
 local s,id=GetID()
 function s.initial_effect(c)
-	Cookie4.HTCookieEffect(c,ATTRIBUTE_WIND,3,3)
+	Cookie2.CookieCharacter(c,ATTRIBUTE_DARK,3,3)
+	Cookie6.QECoookieEffect2(c)
+	local e1=Effect.CreateEffect(c)
+	e1:SetType(EFFECT_TYPE_SINGLE)
+	e1:SetCode(EFFECT_ADD_SETCODE)
+	e1:SetValue(0xd014)
+	c:RegisterEffect(e1)
+	local e2=Effect.CreateEffect(c)
+	e2:SetType(EFFECT_TYPE_SINGLE)
+	e2:SetCode(EFFECT_ADD_SETCODE)
+	e2:SetValue(0xd03)
+	c:RegisterEffect(e2)
+end
+function s.purple2filter(c,tp)
+	return c:IsRace(RACE_WARRIOR) and c:IsAttribute(ATTRIBUTE_DARK) and c:IsLevelBelow(2) and Cookie3.NoEmFzonefilter(c,tp)
+end
+function s.QECookieoperation(e,tp,eg,ep,ev,re,r,rp)
+	Duel.Hint(HINT_SELECTMSG,tp,aux.Stringid(10060001,1))
+	local g=Duel.SelectMatchingCard(tp,s.purple2filter,tp,LOCATION_MZONE,0,0,1,nil,tp)
+	if #g>0 then Cookie3.bttrashop(e,tp,eg,ep,ev,re,r,rp,g) end
+end
+function s.recoverfilter(c)
+	return c:IsSetCard(0xc01) and c:IsAttribute(ATTRIBUTE_DARK)
+end
+function s.AndCookieoperation(e,tp,eg,ep,ev,re,r,rp)
+	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_ATOHAND)
+	local g=Duel.SelectMatchingCard(tp,s.recoverfilter,tp,LOCATION_GRAVE,0,0,1,nil)
+	if #g>0 then
+		Duel.SendtoHand(g,nil,REASON_EFFECT)
+		Duel.ConfirmCards(1-tp,g)
+	end
 end

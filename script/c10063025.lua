@@ -1,41 +1,35 @@
 local s,id=GetID()
 function s.initial_effect(c)
+	Cookie2.CookieCharacter(c,ATTRIBUTE_LIGHT,4,4)
 	local e1=Effect.CreateEffect(c)
-	e1:SetDescription(aux.Stringid(10061004,0))
+	e1:SetDescription(aux.Stringid(id,0))
 	e1:SetType(EFFECT_TYPE_QUICK_O)
 	e1:SetCode(EVENT_FREE_CHAIN)
-	e1:SetRange(LOCATION_MZONE)
+	e1:SetRange(LOCATION_EXTRA)
 	e1:SetHintTiming(TIMING_BATTLE_PHASE,TIMING_BATTLE_PHASE)
-	e1:SetCondition(s.ExtraAwakencon)
-	e1:SetTarget(Cookie3.notg)
-	e1:SetOperation(s.ExtraAwakenop)
+	e1:SetCountLimit(1,id,EFFECT_COUNT_CODE_DUEL)
+	e1:SetCondition(s.skillcon)
+	e1:SetTarget(s.skilltg)
+	e1:SetOperation(s.skillop)
 	c:RegisterEffect(e1)
-	Cookie2.CookieCharacter(c,ATTRIBUTE_LIGHT,4,4)
 end
-function s.ExtraAwakenfilter(c)
-	return c:IsFacedown() and c:IsCode(10068027)
-end
-function s.ExtraAwakencon(e,tp,eg,ep,ev,re,r,rp)
-	return Duel.IsExistingMatchingCard(s.ExtraAwakenfilter,tp,LOCATION_EXTRA,0,1,nil)
-	and Cookie2.BattlePositioncon(e)
-end
-function s.ExtraAwakenop(e,tp,eg,ep,ev,re,r,rp)
+function s.skillcon(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
-	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_SPSUMMON)
-	local sc=Duel.SelectMatchingCard(tp,s.ExtraAwakenfilter,tp,LOCATION_EXTRA,0,1,1,nil):GetFirst()
-	Duel.Overlay(sc,c)
-	Duel.SpecialSummon(sc,0,tp,tp,false,false,POS_FACEUP_ATTACK)
-	Duel.Equip(tp,c,sc)
-	local e1=Effect.CreateEffect(c)
-	e1:SetType(EFFECT_TYPE_SINGLE)
-	e1:SetCode(EFFECT_EQUIP_LIMIT)
-	e1:SetReset(RESET_EVENT|RESETS_STANDARD)
-	e1:SetValue(function(e,c)return c==e:GetLabelObject()end)
-	e1:SetLabelObject(sc)
-	c:RegisterEffect(e1)
-	local e2=Effect.CreateEffect(c)
-	e2:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_CONTINUOUS)
-	e2:SetCode(EVENT_DESTROYED)
-	e2:SetOperation(function(e,tp,eg,ep,ev,re,r,rp) Duel.SendtoGrave(e:GetHandler(),REASON_EFFECT) end)
-	c:RegisterEffect(e2)
+	return c:IsFaceup() and Duel.GetTurnPlayer()==tp
+		and Duel.GetCurrentPhase()==PHASE_BATTLE_STEP
+		and not (Duel.GetAttacker() and Duel.GetAttacker():IsControler(tp))
+		and Duel.GetCurrentChain()==0
+		and Duel.GetLocationCount(tp,LOCATION_MZONE)>0
+end
+function s.skilltg(e,tp,eg,ep,ev,re,r,rp,chk)
+	if chk==0 then return Cookie3.manacon(e,tp,eg,ep,ev,re,r,rp,chk,ATTRIBUTE_LIGHT,1,1) end
+	Duel.SetChainLimit(aux.FALSE)
+end
+function s.skillop(e,tp,eg,ep,ev,re,r,rp)
+	local c=e:GetHandler()
+	if not c:IsRelateToEffect(e) then return end
+	if not Cookie3.manacon(e,tp,eg,ep,ev,re,r,rp,0,ATTRIBUTE_LIGHT,1,1) then return end
+	Cookie3.manacost(e,tp,eg,ep,ev,re,r,rp,ATTRIBUTE_LIGHT,1,1)
+	Cookie3.Cookiesummonop(e,tp,eg,ep,ev,re,r,rp,c)
+	Cookie7.hpaddop(e,tp,eg,ep,ev,re,r,rp,c,1)
 end

@@ -32,7 +32,7 @@ function Cookie.DuelStartop(e,tp,eg,ep,ev,re,r,rp)
 	local enemymain=Duel.GetMatchingGroup(Cookie.DuelStartfilter,1-tp,LOCATION_EXTRA,0,nil):GetFirst()
 	Duel.SpecialSummon(enemymain,0,1-tp,1-tp,true,true,POS_FACEUP_ATTACK) end
 	
-	if c:IsCode(10060000) then return end
+	if c:IsSetCard(0x001) then return end
 	local shuffle=Duel.GetFieldGroup(tp,LOCATION_HAND,0)
 	Duel.SendtoDeck(shuffle,nil,SEQ_DECKSHUFFLE,REASON_RULE)
 	Duel.ShuffleDeck(tp)
@@ -44,7 +44,7 @@ function Cookie.DuelStartop(e,tp,eg,ep,ev,re,r,rp)
 	Duel.Draw(tp,6,REASON_RULE) end
 end
 
---드로우 스탠바이페이즈 처리
+--드로우 스탠바이페이즈 엔드페이즈 처리
 function Cookie.DrawStMainCharacter(c)
 	local e1=Effect.CreateEffect(c)
 	e1:SetType(EFFECT_TYPE_FIELD)
@@ -74,9 +74,18 @@ function Cookie.DrawStMainCharacter(c)
 	e3:SetCondition(function(_,tp) return Duel.GetTurnPlayer()==tp end)
 	e3:SetOperation(Cookie.drawop)
 	c:RegisterEffect(e3)
+	local e4=Effect.CreateEffect(c)
+	e4:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
+	e4:SetCode(EVENT_PHASE+PHASE_END)
+	e4:SetProperty(EFFECT_FLAG_CANNOT_DISABLE)
+	e4:SetRange(LOCATION_EMZONE)
+	e4:SetCountLimit(1)
+	e4:SetCondition(Cookie.endcon)
+	e4:SetOperation(Cookie.endop)
+	c:RegisterEffect(e4)
 end
 function Cookie.ResetPositionfilter(c)
-	return c:IsFaceup() and c:IsDefensePos() and not c:IsLocation(LOCATION_EMZONE)
+	return c:IsFaceup() and c:IsDefensePos() and c:IsSetCard(0xa10) and not c:IsLocation(LOCATION_EMZONE)
 end
 function Cookie.Resetop(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
@@ -85,13 +94,13 @@ function Cookie.Resetop(e,tp,eg,ep,ev,re,r,rp)
 	e1:SetCode(EFFECT_MUST_ATTACK)
 	e1:SetReset(RESET_PHASE+PHASE_BATTLE_START)
 	c:RegisterEffect(e1)
-	if Duel.GetTurnCount()==1 and c:IsCode(10060000) then
-	local sg=Duel.SelectMatchingCard(1-tp,Cookie.cookiefilter,1-tp,LOCATION_HAND,0,0,3,nil,e,tp)
-	Duel.SpecialSummon(sg,0,1-tp,1-tp,false,false,POS_FACEUP_ATTACK)
-	local sg2=Duel.SelectMatchingCard(tp,Cookie.cookiefilter,tp,LOCATION_HAND,0,0,2,nil,e,tp)
-	Duel.SpecialSummon(sg2,0,tp,tp,false,false,POS_FACEUP_ATTACK) end
+	if Duel.GetTurnCount()==1 and c:IsSetCard(0x001) then
+		local sg=Duel.SelectMatchingCard(1-tp,Cookie.cookiefilter,1-tp,LOCATION_HAND,0,0,3,nil,e,tp)
+		Cookie3.Cookiesummonop(e,1-tp,eg,ep,ev,re,r,rp,sg)
+		local sg2=Duel.SelectMatchingCard(tp,Cookie.cookiefilter,tp,LOCATION_HAND,0,0,2,nil,e,tp)
+		Cookie3.Cookiesummonop(e,tp,eg,ep,ev,re,r,rp,sg2) end
 
-	if Duel.GetTurnCount()==1 and not c:IsCode(10060000) then
+	if Duel.GetTurnCount()==1 and not c:IsSetCard(0x001) then
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_SPSUMMON)
 	local sc1=Duel.SelectMatchingCard(tp,Cookie.cookiefilter,tp,LOCATION_HAND,0,1,1,nil,e,tp):GetFirst()
 	Duel.SpecialSummon(sc1,0,tp,tp,false,false,POS_FACEDOWN_DEFENSE)
@@ -107,7 +116,7 @@ function Cookie.Resetop(e,tp,eg,ep,ev,re,r,rp)
 end
 function Cookie.drawop(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
-	if Duel.GetTurnCount()==1 and not c:IsCode(10060000) then
+	if Duel.GetTurnCount()==1 and not c:IsSetCard(0x001) then
 	local sc=Duel.GetMatchingGroup(Card.IsDefensePos,tp,LOCATION_MZONE,0,nil):GetFirst()	
 	Duel.SendtoHand(sc,nil,REASON_RULE)
 	Duel.SpecialSummon(sc,0,tp,tp,false,false,POS_FACEUP_ATTACK)
@@ -122,6 +131,40 @@ function Cookie.drawop(e,tp,eg,ep,ev,re,r,rp)
 	local supportcard=Duel.SelectMatchingCard(tp,nil,tp,LOCATION_HAND,0,0,1,nil)
 	Duel.Remove(supportcard,POS_FACEUP,REASON_RULE)
 	Duel.SkipPhase(tp,PHASE_MAIN1,RESET_PHASE+PHASE_END,0)
+end
+function Cookie.Counterfilter(c)
+	return c:IsFaceup() and c:GetCounter(0x1001)>0
+end
+function Cookie.endcon(e)
+	return Duel.GetTurnPlayer()==e:GetHandlerPlayer()
+end
+function Cookie.endop(e,tp,eg,ep,ev,re,r,rp)
+	local stage=Duel.GetMatchingGroup(nil,tp,LOCATION_FZONE,0,nil):GetFirst()
+	if stage then stage:RemoveCounter(tp,0x1000,1,REASON_RULE) end
+	local g=Duel.GetMatchingGroup(Cookie.Counterfilter,tp,LOCATION_MZONE,LOCATION_MZONE,nil)
+	local tc=g:GetFirst()
+	for tc in aux.Next(g) do tc:RemoveCounter(tp,0x1001,1,REASON_RULE) end
+	local eg=Duel.GetMatchingGroup(aux.TRUE,tp,LOCATION_MZONE+LOCATION_FZONE,LOCATION_MZONE+LOCATION_FZONE,nil)
+	local trg=Group.CreateGroup()
+	for tc2 in aux.Next(eg) do
+		local turnp=Duel.GetTurnPlayer()
+		local cp=tc2:GetControler()
+		if tc2:IsSetCard(0xd131) or tc2:IsSetCard(0xd132)
+			or ((tc2:IsSetCard(0xd133) or tc2:IsSetCard(0xd134)) and turnp==cp)
+			or ((tc2:IsSetCard(0xd135) or tc2:IsSetCard(0xd136)) and turnp~=cp) then
+			trg:AddCard(tc2)
+		end
+	end
+	if #trg>0 then Cookie8.eventop2(e,tp,eg,ep,ev,re,r,rp,trg)
+	local e1=Effect.CreateEffect(e:GetHandler())
+	e1:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_TRIGGER_F)
+	e1:SetCode(EVENT_PHASE+PHASE_END)
+	e1:SetRange(LOCATION_EMZONE)
+	e1:SetCountLimit(1)
+	e1:SetOperation(function(e,tp,eg,ep,ev,re,r,rp) end)
+	e1:SetReset(RESET_PHASE|PHASE_END)
+	e:GetHandler():RegisterEffect(e1)
+	end
 end
 
 --유희왕과 다른 룰1(1메인2스킵,2공격대상안됨,3패매수제한X,4표시형식변경불가,5공격불가,6필드봉인,7전투데미지없음,8선공배페)
@@ -182,7 +225,7 @@ function Cookie.MainCharacterEff1(c)
 	c:RegisterEffect(e8)
 end
 
---유희왕과 다른 룰2(1공격력=남은마나,2수비력=총마나,3랭크=브레이크에리어레벨,4승리조건,5덱0장)
+--유희왕과 다른 룰2(1공격력=남은마나,2수비력=총마나,3랭크=브레이크에리어레벨,4승리조건,5덱0장,6브레이크)
 function Cookie.MainCharacterEff2(c)
 	local e1=Effect.CreateEffect(c)
 	e1:SetType(EFFECT_TYPE_SINGLE)
@@ -220,6 +263,14 @@ function Cookie.MainCharacterEff2(c)
 	e5:SetCondition(Cookie.Refreshcon)
 	e5:SetOperation(Cookie3.Refreshop)
 	c:RegisterEffect(e5)
+	local e6=Effect.CreateEffect(c)
+	e6:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
+	e6:SetProperty(EFFECT_FLAG_IGNORE_IMMUNE+EFFECT_FLAG_CANNOT_DISABLE)
+	e6:SetRange(LOCATION_EMZONE)
+	e6:SetCode(EVENT_TO_DECK)
+	e6:SetCondition(Cookie.BreakAreacon)
+	e6:SetOperation(Cookie.BreakAreaop)
+	c:RegisterEffect(e6)
 end
 function Cookie.restmanaat(e,c)
 	return Duel.GetFieldGroupCount(c:GetControler(),LOCATION_REMOVED,0)
@@ -244,29 +295,36 @@ function Cookie.Refreshcon(e)
 	return Duel.GetFieldGroupCount(e:GetHandlerPlayer(),LOCATION_DECK,0)==0
 	and Duel.GetFieldGroupCount(e:GetHandlerPlayer(),LOCATION_GRAVE,0)>0
 end
+function Cookie.BreakAreafilter(c,tp)
+	return c:IsRace(RACE_WARRIOR) and c:IsLocation(LOCATION_EXTRA) and c:IsSetCard(0xc01) and c:GetControler()==tp
+end
+function Cookie.BreakAreacon(e,tp,eg,ep,ev,re,r,rp)
+	return eg:IsExists(Cookie.BreakAreafilter,1,nil,tp) and not e:GetHandler():IsSetCard(0xa09)
+end
+function Cookie.BreakAreaop(e,tp,eg,ep,ev,re,r,rp)
+	local c=e:GetHandler()
+	local e1=Effect.CreateEffect(c)
+	e1:SetType(EFFECT_TYPE_SINGLE)
+	e1:SetCode(EFFECT_ADD_SETCODE)
+	e1:SetValue(0xa09)
+	e1:SetReset(RESET_EVENT+RESETS_STANDARD+RESET_PHASE+PHASE_END)
+	c:RegisterEffect(e1)
+end
+
 
 --메인 캐릭터 기동효과
---1패정렬,2등장카운터,3쿠키등장,45코스트지불회수,6덱맨위
+--1패정렬,2등장카운터,3쿠키등장
 function Cookie.MainCharacterSpEff(c)
 	local e1=Effect.CreateEffect(c)
 	e1:SetDescription(aux.Stringid(10060002,0))
 	e1:SetType(EFFECT_TYPE_QUICK_O)
 	e1:SetCode(EVENT_FREE_CHAIN)
+	e1:SetProperty(EFFECT_FLAG_BOTH_SIDE)
 	e1:SetRange(LOCATION_EMZONE)
 	e1:SetCondition(Cookie2.BattlePositioncon)
 	e1:SetTarget(Cookie3.notg)
 	e1:SetOperation(Cookie.handop)
 	c:RegisterEffect(e1)
-	local e7=Effect.CreateEffect(c)
-	e7:SetDescription(aux.Stringid(10060002,12))
-	e7:SetType(EFFECT_TYPE_QUICK_O)
-	e7:SetCode(EVENT_FREE_CHAIN)
-	e7:SetProperty(EFFECT_FLAG_DAMAGE_CAL)
-	e7:SetRange(LOCATION_EMZONE)
-	e7:SetCondition(Cookie2.BattlePositioncon)
-	e7:SetTarget(Cookie3.notg)
-	e7:SetOperation(Cookie.maincookieop2)
-	c:RegisterEffect(e7)
 	local e2=Effect.CreateEffect(c)
 	e2:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
 	e2:SetCode(EVENT_LEAVE_FIELD)
@@ -275,43 +333,28 @@ function Cookie.MainCharacterSpEff(c)
 	e2:SetOperation(Cookie.leavecookieop)
 	c:RegisterEffect(e2)
 	local e3=Effect.CreateEffect(c)
-	e3:SetDescription(aux.Stringid(10060002,8))
-	e3:SetType(EFFECT_TYPE_QUICK_O)
-	e3:SetCode(EVENT_FREE_CHAIN)
+	e3:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_TRIGGER_F)
+	e3:SetCode(EVENT_CHAIN_END)
 	e3:SetRange(LOCATION_EMZONE)
-	e3:SetCondition(Cookie.mainskillcon)
+	e3:SetCondition(Cookie.leavecookiecon2)
 	e3:SetTarget(Cookie3.notg)
 	e3:SetOperation(Cookie.leavecookieop2)
 	c:RegisterEffect(e3)
-	local e4=Effect.CreateEffect(c)
-	e4:SetDescription(aux.Stringid(10060002,9))
-	e4:SetType(EFFECT_TYPE_QUICK_O)
-	e4:SetCode(EVENT_FREE_CHAIN)
-	e4:SetProperty(EFFECT_FLAG_DAMAGE_CAL)
-	e4:SetRange(LOCATION_EMZONE)
-	e4:SetCondition(Cookie.cookiemanacon)
-	e4:SetTarget(Cookie3.notg)
-	e4:SetOperation(Cookie.cookiemanaop)
-	c:RegisterEffect(e4)
-	local e5=Effect.CreateEffect(c)
-	e5:SetDescription(aux.Stringid(10060002,10))
-	e5:SetType(EFFECT_TYPE_QUICK_O)
-	e5:SetCode(EVENT_FREE_CHAIN)
-	e5:SetProperty(EFFECT_FLAG_DAMAGE_CAL)
-	e5:SetRange(LOCATION_EMZONE)
-	e5:SetCondition(Cookie.cookiemanacon2)
-	e5:SetTarget(Cookie3.notg)
-	e5:SetOperation(Cookie.cookiemanaop2)
+	local e5=e3:Clone()
+	e5:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_TRIGGER_F)
+	e5:SetCode(EVENT_DAMAGE_STEP_END)
 	c:RegisterEffect(e5)
-	local e6=Effect.CreateEffect(c)
-	e6:SetDescription(aux.Stringid(10060002,11))
-	e6:SetType(EFFECT_TYPE_QUICK_O)
-	e6:SetCode(EVENT_FREE_CHAIN)
-	e6:SetProperty(EFFECT_FLAG_DAMAGE_CAL)
-	e6:SetRange(LOCATION_EMZONE)
-	e6:SetCondition(Cookie2.BattlePositioncon)
-	e6:SetTarget(Cookie3.notg)
-	e6:SetOperation(Cookie.maincookieop)
+	local e4=Effect.CreateEffect(c)
+	e4:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_TRIGGER_F)
+	e4:SetCode(EVENT_CHAIN_END)
+	e4:SetRange(LOCATION_EMZONE)
+	e4:SetCondition(Cookie.leavecookiecon3)
+	e4:SetTarget(Cookie3.notg)
+	e4:SetOperation(Cookie.leavecookieop3)
+	c:RegisterEffect(e4)
+	local e6=e4:Clone()
+	e6:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_TRIGGER_F)
+	e6:SetCode(EVENT_DAMAGE_STEP_END)
 	c:RegisterEffect(e6)
 end
 function Cookie.handop(e,tp,eg,ep,ev,re,r,rp)
@@ -338,76 +381,161 @@ end
 function Cookie.cookiefilter(c)
 	return c:IsRace(RACE_WARRIOR)
 end
-function Cookie.mainskillcon(e)
+function Cookie.leavecookiecon2(e)
 	local tp=e:GetHandlerPlayer()
 	local c=e:GetHandler()
 	local enemymain=Duel.GetMatchingGroup(nil,1-tp,LOCATION_EMZONE,0,nil):GetFirst()
-	return (c:GetCounter(0xa01)>0 or enemymain:GetCounter(0xa01)>0) and Cookie2.BattlePositioncon(e)
+	if not enemymain then return false end
+	local g=Duel.GetMatchingGroup(aux.TRUE,tp,LOCATION_TRIGGERZONE,LOCATION_TRIGGERZONE,nil)
+	for tc in aux.Next(g) do
+		local val=tc:GetTurnCounter() or 0
+		if val~=0 then return false end	end
+	return c:GetCounter(0xa01)>0 and Duel.GetTurnPlayer()==tp
 end
 function Cookie.leavecookieop2(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
-	local enemymain=Duel.GetMatchingGroup(nil,1-tp,LOCATION_EMZONE,0,nil):GetFirst()
-	
 	local allyzones=Duel.GetLocationCount(tp,LOCATION_MZONE)
-	local enemyzones=Duel.GetLocationCount(1-tp,LOCATION_MZONE)
 	local allycounter=c:GetCounter(0xa01)
-	local enemycounter=enemymain:GetCounter(0xa01)
-
-	local allymin=0
-	local enemymin=0
-	if allyzones==2 and allycounter>0 then allymin=1 end
-	if enemyzones==2 and enemycounter>0 then enemymin=1 end
-	
-	local allymax=math.min(allycounter,allyzones,2)
-	local enemymax=math.min(enemycounter,enemyzones,2)
-	
-	if allycounter>0 then Duel.Hint(HINT_SELECTMSG,tp,aux.Stringid(10060000,1))
-		local sg=Duel.SelectMatchingCard(tp,Cookie.cookiefilter,tp,LOCATION_HAND,0,allymin,allymax,nil,e,tp)
-		if #sg>0 then Duel.SpecialSummon(sg,0,tp,tp,false,false,POS_FACEUP_ATTACK) end
-		c:RemoveCounter(tp,0xa01,c:GetCounter(0xa01),REASON_RULE) end
-	
-	if enemycounter>0 then Duel.Hint(HINT_SELECTMSG,1-tp,aux.Stringid(10060000,1))
-		local ssg=Duel.SelectMatchingCard(1-tp,Cookie.cookiefilter,1-tp,LOCATION_HAND,0,enemymin,enemymax,nil,e,tp)
-		if #ssg>0 then Duel.SpecialSummon(ssg,0,1-tp,1-tp,false,false,POS_FACEUP_ATTACK) end
-		enemymain:RemoveCounter(tp,0xa01,enemymain:GetCounter(0xa01),REASON_RULE) end
+	if allycounter==0 then return end
+	if allyzones==2 then
+		Duel.Hint(HINT_SELECTMSG,tp,aux.Stringid(10060000,1))
+		local sg=Duel.SelectMatchingCard(tp,Cookie.cookiefilter,tp,LOCATION_HAND,0,1,1,nil,e,tp)
+		if #sg>0 then Cookie3.Cookiesummonop(e,tp,eg,ep,ev,re,r,rp,sg) end
+		c:RemoveCounter(tp,0xa01,1,REASON_RULE)
+	elseif allyzones==1 then
+		if Duel.SelectYesNo(tp,aux.Stringid(10060002,4)) then
+			Duel.Hint(HINT_SELECTMSG,tp,aux.Stringid(10060000,1))
+			local sg=Duel.SelectMatchingCard(tp,Cookie.cookiefilter,tp,LOCATION_HAND,0,1,1,nil,e,tp)
+			if #sg>0 then Cookie3.Cookiesummonop(e,tp,eg,ep,ev,re,r,rp,sg) end
+			c:RemoveCounter(tp,0xa01,1,REASON_RULE) end
+		c:RemoveCounter(tp,0xa01,c:GetCounter(0xa01),REASON_RULE)
+		else c:RemoveCounter(tp,0xa01,c:GetCounter(0xa01),REASON_RULE) end
 end
-function Cookie.cookiemanaop(e,tp,eg,ep,ev,re,r,rp)
-	local c=e:GetHandler()
-	Duel.Hint(HINT_SELECTMSG,tp,aux.Stringid(10060002,9))
-	local sg=Duel.SelectMatchingCard(tp,Card.IsFaceup,tp,LOCATION_REMOVED,0,0,99,nil)
-	Duel.Overlay(c,sg)
-end
-function Cookie.cookiemanacon(e)
-	local c=e:GetHandler()
-	return Duel.GetFieldGroupCount(c:GetControler(),LOCATION_REMOVED,0)>0 and Cookie2.BattlePositioncon(e)
-end
-function Cookie.cookiemanacon2(e)
-	local c=e:GetHandler()
-	return c:GetOverlayCount()>0 and Cookie2.BattlePositioncon(e)
-end
-function Cookie.cookiemanaop2(e,tp,eg,ep,ev,re,r,rp)
-	local c=e:GetHandler()
-	local g=c:GetOverlayGroup()
-	Duel.Hint(HINT_SELECTMSG,tp,aux.Stringid(10060002,10))
-	local sg=g:Select(tp,0,99,nil)
-	Duel.Remove(sg,POS_FACEUP,REASON_RULE)
-end
-function Cookie.maincookiecon(e)
+function Cookie.leavecookiecon3(e)
 	local tp=e:GetHandlerPlayer()
-	return Duel.GetCurrentPhase()==PHASE_BATTLE_STEP
+	local c=e:GetHandler()
+	local enemymain=Duel.GetMatchingGroup(nil,1-tp,LOCATION_EMZONE,0,nil):GetFirst()
+	if not enemymain then return false end
+	local g=Duel.GetMatchingGroup(aux.TRUE,tp,LOCATION_TRIGGERZONE,LOCATION_TRIGGERZONE,nil)
+	for tc in aux.Next(g) do
+	local val=tc:GetTurnCounter() or 0
+	if val~=0 then return false end end
+	return enemymain:GetCounter(0xa01)>0 and c:GetCounter(0xa01)==0 and Duel.GetTurnPlayer()==tp
 end
-function Cookie.maincookieop(e,tp,eg,ep,ev,re,r,rp)
+function Cookie.leavecookieop3(e,tp,eg,ep,ev,re,r,rp)
+	local c=e:GetHandler()
+	local enemymain=Duel.GetMatchingGroup(nil,1-tp,LOCATION_EMZONE,0,nil):GetFirst()
+	local enemyzones=Duel.GetLocationCount(1-tp,LOCATION_MZONE)
+	local enemycounter=enemymain:GetCounter(0xa01)
+	if enemycounter==0 then return end
+	if enemyzones==2 then
+		Duel.Hint(HINT_SELECTMSG,1-tp,aux.Stringid(10060000,1))
+		local sg=Duel.SelectMatchingCard(1-tp,Cookie.cookiefilter,1-tp,LOCATION_HAND,0,1,1,nil,e,tp)
+		if #sg>0 then Cookie3.Cookiesummonop(e,1-tp,eg,ep,ev,re,r,rp,sg) end
+		enemymain:RemoveCounter(tp,0xa01,1,REASON_RULE)
+	elseif enemyzones==1 then
+		if Duel.SelectYesNo(1-tp,aux.Stringid(10060002,4)) then
+			Duel.Hint(HINT_SELECTMSG,1-tp,aux.Stringid(10060000,1))
+			local sg=Duel.SelectMatchingCard(1-tp,Cookie.cookiefilter,1-tp,LOCATION_HAND,0,1,1,nil,e,tp)
+			if #sg>0 then Cookie3.Cookiesummonop(e,1-tp,eg,ep,ev,re,r,rp,sg) end
+			enemymain:RemoveCounter(tp,0xa01,1,REASON_RULE) end
+		enemymain:RemoveCounter(tp,0xa01,enemymain:GetCounter(0xa01),REASON_RULE)
+		else enemymain:RemoveCounter(tp,0xa01,enemymain:GetCounter(0xa01),REASON_RULE) end
+end
+
+--메인 캐릭터 기동효과
+function Cookie.TestMainCharacter(c)
+	local e1=Effect.CreateEffect(c)
+	e1:SetDescription(aux.Stringid(10060002,1))
+	e1:SetType(EFFECT_TYPE_QUICK_O)
+	e1:SetCode(EVENT_FREE_CHAIN)
+	e1:SetProperty(EFFECT_FLAG_BOTH_SIDE)
+	e1:SetRange(LOCATION_EMZONE)
+	e1:SetCondition(Cookie2.BattlePositioncon)
+	e1:SetTarget(function(e,tp,eg,ep,ev,re,r,rp,chk) if chk==0 then return true end Duel.SetChainLimit(aux.FALSE) end)
+	e1:SetOperation(Cookie.testmaincounterop)
+	c:RegisterEffect(e1)
+	local e2=Effect.CreateEffect(c)
+	e2:SetDescription(aux.Stringid(10060003,0))
+	e2:SetType(EFFECT_TYPE_QUICK_O)
+	e2:SetCode(EVENT_FREE_CHAIN)
+	e1:SetProperty(EFFECT_FLAG_BOTH_SIDE)
+	e2:SetRange(LOCATION_EMZONE)
+	e2:SetCondition(Cookie2.BattlePositioncon)
+	e2:SetTarget(function(e,tp,eg,ep,ev,re,r,rp,chk) if chk==0 then return true end Duel.SetChainLimit(aux.FALSE) end)
+	e2:SetOperation(Cookie.testmanaop)
+	c:RegisterEffect(e2)
+	local e3=Effect.CreateEffect(c)
+	e3:SetDescription(aux.Stringid(10060003,2))
+	e3:SetType(EFFECT_TYPE_QUICK_O)
+	e3:SetCode(EVENT_FREE_CHAIN)
+	e1:SetProperty(EFFECT_FLAG_BOTH_SIDE)
+	e3:SetRange(LOCATION_EMZONE)
+	e3:SetCondition(Cookie2.BattlePositioncon)
+	e3:SetTarget(Cookie3.notg)
+	e3:SetOperation(Cookie.testbrakeop)
+	c:RegisterEffect(e3)
+	local e4=Effect.CreateEffect(c)
+	e4:SetDescription(aux.Stringid(10060003,3))
+	e4:SetType(EFFECT_TYPE_QUICK_O)
+	e4:SetCode(EVENT_FREE_CHAIN)
+	e1:SetProperty(EFFECT_FLAG_BOTH_SIDE)
+	e4:SetRange(LOCATION_EMZONE)
+	e4:SetCondition(Cookie2.BattlePositioncon)
+	e4:SetTarget(Cookie3.notg)
+	e4:SetOperation(Cookie.testmaincookieop)
+	c:RegisterEffect(e4)
+end
+function Cookie.testmaincounterop(e,tp,eg,ep,ev,re,r,rp)
+	local c=e:GetHandler()
+	local enemymain=Duel.GetMatchingGroup(nil,1-tp,LOCATION_EMZONE,0,nil):GetFirst()
+	local ct=Duel.AnnounceNumber(tp,0,1,2)
+	c:AddCounter(0xa01,ct)
+	local ct2=Duel.AnnounceNumber(tp,0,1,2)	
+	enemymain:AddCounter(0xa01,ct2)
+end
+function Cookie.testmanaop(e,tp,eg,ep,ev,re,r,rp)
+	local attr=Duel.AnnounceAttribute(tp,1,ALL_COLOR)
+	local g=Duel.GetMatchingGroup(Card.IsAttribute,tp,LOCATION_DECK,0,nil,attr)
+	local maxct=math.min(10,#g)
+	if maxct<1 then return end
+	local options={}
+	for i=1,maxct do table.insert(options,i) end
+	local ct=Duel.AnnounceNumber(tp,table.unpack(options))
+	local sg=g:RandomSelect(tp,ct)
+	Duel.Remove(sg,POS_FACEUP,REASON_EFFECT)
+end
+function Cookie.testbrakeop(e,tp,eg,ep,ev,re,r,rp)
+	local target=Duel.AnnounceNumber(tp,1,2,3,4,5,6,7,8,9,10)
+	local sg=Group.CreateGroup()
+	for _=1,200 do
+		local sum=0
+		local pool=Duel.GetMatchingGroup(Card.IsRace,tp,LOCATION_DECK,0,nil,RACE_WARRIOR)
+		local pick=Group.CreateGroup()
+		while #pool>0 and sum<target do
+			local rc=pool:RandomSelect(tp,1):GetFirst()
+			pool:RemoveCard(rc)
+			local lv=rc:GetLevel()
+			if lv>0 and sum+lv<=target then
+				pick:AddCard(rc)
+				sum=sum+lv
+			end
+		end
+		if sum==target and #pick>0 then
+			sg=pick
+			break
+		end
+	end
+	if #sg>0 then
+		Duel.SendtoExtraP(sg,nil,REASON_EFFECT)
+	end
+end
+function Cookie.testmaincookieop(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
 	Duel.DisableShuffleCheck()
-	Duel.Hint(HINT_SELECTMSG,tp,aux.Stringid(10061003,4))
-	local count=Duel.AnnounceNumber(tp,0,1,2,3,4,5,6,7,8,9,10)
-	if count==0 then return end
-	local g=Duel.GetDecktopGroup(tp,count)
-	Duel.Hint(HINT_SELECTMSG,tp,aux.Stringid(10061003,0))
-	local sg=g:Select(tp,0,count,nil)
-	local rest=g:Clone()
-	rest:Sub(sg)
-	if #sg>0 then
+	Duel.Hint(HINT_SELECTMSG,tp,aux.Stringid(10060001,1))
+	local g=Duel.SelectMatchingCard(tp,aux.TRUE,tp,LOCATION_DECK,0,0,99,nil,e,tp)
+	if #g>0 then
 	local opts = {
 		aux.Stringid(10061002,12),
 		aux.Stringid(10061002,5),
@@ -418,11 +546,11 @@ function Cookie.maincookieop(e,tp,eg,ep,ev,re,r,rp)
 	Duel.Hint(HINT_SELECTMSG,tp,aux.Stringid(10061003,1))
 	local sel=Duel.SelectOption(tp,table.unpack(opts))+1
 	if sel==1 then
-	elseif sel==2 then Duel.SendtoHand(sg,nil,REASON_EFFECT)
-		Duel.ConfirmCards(1-tp,sg)
+	elseif sel==2 then Duel.SendtoHand(g,nil,REASON_EFFECT)
+		Duel.ConfirmCards(1-tp,g)
 		Duel.ShuffleHand(tp)
-	elseif sel==3 then Duel.SendtoGrave(sg,REASON_EFFECT)
-		Duel.ConfirmCards(1-tp,sg)
+	elseif sel==3 then Duel.SendtoGrave(g,REASON_EFFECT)
+		Duel.ConfirmCards(1-tp,g)
 	elseif sel==4 then
 		local removeopts = {
 			aux.Stringid(10061002,8),
@@ -430,58 +558,8 @@ function Cookie.maincookieop(e,tp,eg,ep,ev,re,r,rp)
 		}
 		Duel.Hint(HINT_SELECTMSG,tp,aux.Stringid(10061003,3))
 		local removesel=Duel.SelectOption(tp,table.unpack(removeopts))+1
-		if removesel==1 then Duel.Remove(sg,POS_FACEUP,REASON_EFFECT)
+		if removesel==1 then Duel.Remove(g,POS_FACEUP,REASON_EFFECT)
 		else local ally=Duel.GetMatchingGroup(nil,tp,LOCATION_EMZONE,0,nil):GetFirst()
-		Duel.Overlay(ally,sg) end
-	elseif sel==5 then Duel.SendtoExtraP(sg,nil,REASON_EFFECT) end end
-	if #rest==0 then return end
-	local opts2 = {
-		aux.Stringid(10061002,1),
-		aux.Stringid(10061002,5),
-		aux.Stringid(10061002,6),
-		aux.Stringid(10061002,7),
-		aux.Stringid(10061002,10),
-	}
-	Duel.Hint(HINT_SELECTMSG,tp,aux.Stringid(10061003,5))
-	local sel2=Duel.SelectOption(tp,table.unpack(opts2))+1
-	if sel2==1 then
-	local deckopts = {
-		aux.Stringid(10061002,2),
-		aux.Stringid(10061002,3),
-		aux.Stringid(10061002,4),
-	}
-	Duel.Hint(HINT_SELECTMSG,tp,aux.Stringid(10061003,2))
-	local decksel=Duel.SelectOption(tp,table.unpack(deckopts))+1
-	if decksel==1 then Duel.SendtoDeck(rest,nil,SEQ_DECKSHUFFLE,REASON_EFFECT)
-		Duel.ShuffleDeck(tp)
-	elseif decksel==2 then 
-		Duel.SendtoDeck(rest,nil,SEQ_DECKTOP,REASON_EFFECT)
-		if #rest>1 then Duel.SortDecktop(tp,tp,#rest) end
-	else 
-		Duel.SendtoDeck(rest,nil,SEQ_DECKBOTTOM,REASON_EFFECT)
-		if #rest>1 then Duel.SortDeckbottom(tp,tp,#rest) end
-	end
-	elseif sel2==2 then Duel.SendtoHand(rest,nil,REASON_EFFECT)
-		Duel.ConfirmCards(1-tp,rest)
-		Duel.ShuffleHand(tp)
-	elseif sel2==3 then Duel.SendtoGrave(rest,REASON_EFFECT)
-		Duel.ConfirmCards(1-tp,rest)
-	elseif sel2==4 then
-		local removeopts = {
-			aux.Stringid(10061002,8),
-			aux.Stringid(10061002,9),
-		}
-		Duel.Hint(HINT_SELECTMSG,tp,aux.Stringid(10061003,3))
-		local removesel2=Duel.SelectOption(tp,table.unpack(removeopts))+1
-		if removesel2==1 then Duel.Remove(rest,POS_FACEUP,REASON_EFFECT)
-		else local ally=Duel.GetMatchingGroup(nil,tp,LOCATION_EMZONE,0,nil):GetFirst()
-		Duel.Overlay(ally,rest) end
-	elseif sel2==5 then Duel.SendtoExtraP(rest,nil,REASON_EFFECT) end
-end
-function Cookie.maincookieop2(e,tp,eg,ep,ev,re,r,rp)
-	local c=e:GetHandler()
-	Duel.Hint(HINT_SELECTMSG,tp,aux.Stringid(10060001,7))
-	local count=Duel.AnnounceNumber(tp,0,1,2,3)
-	if count==0 then return end
-	Cookie3.CookieDrawop(e,tp,eg,ep,ev,re,r,rp,count)
+		Duel.Overlay(ally,g) end
+	elseif sel==5 then Duel.SendtoExtraP(g,nil,REASON_EFFECT) end end
 end

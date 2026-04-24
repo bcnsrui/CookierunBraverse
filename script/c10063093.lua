@@ -10,6 +10,7 @@ function s.Trapoperation(e,tp,eg,ep,ev,re,r,rp)
 	local ag=Duel.SelectMatchingCard(tp,Cookie3.NoEmFzonefilter,tp,0,LOCATION_MZONE,0,1,nil,tp)
 	if #ag>0 then Cookie7.cookieatkchange(e,tp,eg,ep,ev,re,r,rp,PHASE_END,1,ag,-1) end
 	local tc=Duel.GetDecktopGroup(tp,1):GetFirst()
+	if not tc then return end
 	Duel.ConfirmCards(1-tp,tc)
 	if tc:IsAttribute(ATTRIBUTE_WATER) and tc:IsLevel(2) and tc:IsRace(RACE_WARRIOR) then
 	Duel.Hint(HINT_SELECTMSG,tp,aux.Stringid(10060001,1))

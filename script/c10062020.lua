@@ -13,8 +13,8 @@ function s.Itemoperation(e,tp,eg,ep,ev,re,r,rp)
 	local g=Duel.SelectMatchingCard(tp,s.hpcookiefilter,tp,LOCATION_MZONE,0,0,1,nil,tp)
 	Cookie7.hptrasheff(e,tp,eg,ep,ev,re,r,rp,g,1)
 	local sg=Duel.GetFieldGroup(tp,LOCATION_GRAVE,0)
-	last=sg:GetFirst()
-	tc=sg:GetNext()
+	if #sg==0 then return end
+	local last=sg:GetFirst()
 	for tc in aux.Next(sg) do
 		if tc:GetSequence()>last:GetSequence() then last=tc end
 	end

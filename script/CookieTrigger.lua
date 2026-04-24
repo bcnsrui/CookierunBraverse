@@ -305,7 +305,7 @@ function Cookie4.schtriggerop(e,tp,eg,ep,ev,re,r,rp)
 	if ally<6 then return end
 	if Duel.SelectYesNo(tp,aux.Stringid(10060001,0)) then
 	Duel.Hint(HINT_SELECTMSG,tp,aux.Stringid(10060001,1))
-	local ag=Duel.SelectMatchingCard(tp,Cookie4.schtriggerfilter,tp,0,LOCATION_MZONE,0,1,nil)
+	local ag=Duel.SelectMatchingCard(tp,Cookie4.schtriggerfilter,tp,0,LOCATION_MZONE,0,1,nil,tp)
 	Cookie7.damageeff(e,tp,eg,ep,ev,re,r,rp,ag,1) end
 end
 function Cookie4.schtriggerfilter(c)
@@ -363,4 +363,23 @@ function Cookie4.ARhealtriggerop(e,tp,eg,ep,ev,re,r,rp)
 	if not hg:IsSetCard(0xc01) then return end
 	if Duel.SelectYesNo(tp,aux.Stringid(10060001,0)) then
 	Cookie7.hpaddop(e,tp,eg,ep,ev,re,r,rp,hg,1) end
+end
+
+--패회수 플립
+function Cookie4.RTCookieEffect(c,attr,colorCount,mixCount)
+	Cookie2.CookieCharacter(c,attr,colorCount,mixCount)
+	local e1=Effect.CreateEffect(c)
+	e1:SetType(EFFECT_TYPE_SINGLE)
+	e1:SetCode(EFFECT_ADD_SETCODE)
+	e1:SetValue(0xb15)
+	c:RegisterEffect(e1)
+	local e2=Effect.CreateEffect(c)
+	e2:SetType(EFFECT_TYPE_SINGLE)
+	e2:SetCode(EFFECT_ADD_SETCODE)
+	e2:SetValue(0xb00)
+	c:RegisterEffect(e2)
+end
+function Cookie4.returntriggerop(e,tp,eg,ep,ev,re,r,rp)
+	Duel.SendtoHand(e:GetHandler(),nil,REASON_EFFECT)
+	Duel.ConfirmCards(1-tp,e:GetHandler())
 end

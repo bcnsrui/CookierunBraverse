@@ -1,4 +1,22 @@
 local s,id=GetID()
 function s.initial_effect(c)
 	Cookie2.CookieCharacter(c,ATTRIBUTE_DARK,2,2)
+	Cookie6.QECoookieEffect(c,ATTRIBUTE_DARK,1,1)
+	local e1=Effect.CreateEffect(c)
+	e1:SetType(EFFECT_TYPE_SINGLE)
+	e1:SetCode(EFFECT_ADD_SETCODE)
+	e1:SetValue(0xd011)
+	c:RegisterEffect(e1)
+	local e2=Effect.CreateEffect(c)
+	e2:SetType(EFFECT_TYPE_SINGLE)
+	e2:SetCode(EFFECT_ADD_SETCODE)
+	e2:SetValue(0xd031)
+	c:RegisterEffect(e2)
+end
+function s.QECookieoperation(e,tp,eg,ep,ev,re,r,rp)
+	local c=e:GetHandler()
+	Cookie7.hpaddop(e,tp,eg,ep,ev,re,r,rp,c,1)
+end
+function s.AndCookieoperation(e,tp,eg,ep,ev,re,r,rp)
+	Cookie3.hptrasheff(e,tp,eg,ep,ev,re,r,rp,e:GetHandler(),1)
 end

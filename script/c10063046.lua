@@ -38,6 +38,6 @@ function s.desop(e,tp,eg,ep,ev,re,r,rp)
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_SPSUMMON)
 	local g=Duel.SelectMatchingCard(tp,s.spfilter,tp,LOCATION_EXTRA,0,0,1,nil)
 	if #g>0 then
-	Duel.SendtoGrave(g,REASON_EFFECT)
-	Duel.SpecialSummon(g,0,tp,tp,false,false,POS_FACEUP_ATTACK) end
+		Cookie3.Cookiesummonop(e,tp,eg,ep,ev,re,r,rp,g)
+	end
 end

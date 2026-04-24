@@ -10,6 +10,7 @@ function s.Itemoperation(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
 	Duel.Hint(HINT_SELECTMSG,tp,aux.Stringid(10060001,1))
 	local supportarea=Cookie3.SupportAreafilter(e,tp,eg,ep,ev,re,r,rp,1,1,0,0)
+	if #supportarea==0 then return end
 	local mana=supportarea:Select(tp,1,1,nil)
 	Duel.SendtoHand(mana,nil,REASON_EFFECT)
 	Duel.ConfirmCards(1-tp,mana)
@@ -44,6 +45,7 @@ function s.activecon(e,tp,eg,ep,ev,re,r,rp)
 end
 function s.activeop(e,tp,eg,ep,ev,re,r,rp)
 	local ally=Duel.GetMatchingGroup(Card.IsFaceup,tp,LOCATION_EMZONE,0,nil):GetFirst()
+	if not ally then return end
 	local restmana=ally:GetOverlayGroup()
 	if #restmana==0 then return end
 	Duel.Hint(HINT_SELECTMSG,tp,aux.Stringid(10060001,1))

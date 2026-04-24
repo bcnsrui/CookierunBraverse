@@ -23,6 +23,8 @@ end
 --마나 코스트
 function Cookie3.manacon(e,tp,eg,ep,ev,re,r,rp,chk,attr,colorCount,mixCount)
 	local c=e:GetHandler()
+	local ally=Duel.GetMatchingGroup(nil,tp,LOCATION_EMZONE,0,nil):GetFirst()
+	if ally:IsCode(10060000) then return true end
 	local g=Duel.GetMatchingGroup(Card.IsFaceup,tp,LOCATION_REMOVED,0,nil)
 	if mixCount==0 then return true end
 	if chk==0 then return #g>=mixCount and
@@ -30,6 +32,8 @@ function Cookie3.manacon(e,tp,eg,ep,ev,re,r,rp,chk,attr,colorCount,mixCount)
 end
 function Cookie3.manacost(e,tp,eg,ep,ev,re,r,rp,attr,colorCount,mixCount)
 	local c=e:GetHandler()
+	local ally=Duel.GetMatchingGroup(nil,tp,LOCATION_EMZONE,0,nil):GetFirst()
+	if ally:IsCode(10060000) then return end
 	local g=Duel.GetMatchingGroup(Card.IsFaceup,tp,LOCATION_REMOVED,0,nil)
 	if mixCount==0 then return true end
 	local tg=aux.SelectUnselectGroup(g,e,tp,mixCount,mixCount,Cookie3.hasColorCount(attr,colorCount),1,tp,aux.Stringid(10060000,6))
@@ -66,9 +70,23 @@ function Cookie3.SupportAreafilter(e,tp,eg,ep,ev,re,r,rp,allymanazone1,allymanaz
 	if enemymanazone2==1 then enemymanazone2=LOCATION_EMZONE end
 	local activemana=Duel.GetFieldGroup(tp,allymanazone1,enemymanazone1,nil)
 	local allycookie=Duel.GetMatchingGroup(Card.IsFaceup,tp,allymanazone2,enemymanazone2,nil):GetFirst()
+	if allycookie then
 	local restmana=allycookie:GetOverlayGroup()
-	activemana:Merge(restmana)
+	activemana:Merge(restmana) end
 	return activemana
+end
+
+function Cookie3.SupportAreaCount(e,tp,eg,ep,ev,re,r,rp,allymanazone1,allymanazone2,enemymanazone1,enemymanazone2)
+	if allymanazone1==1 then allymanazone1=LOCATION_REMOVED end
+	if enemymanazone1==1 then enemymanazone1=LOCATION_REMOVED end
+	if allymanazone2==1 then allymanazone2=LOCATION_EMZONE end
+	if enemymanazone2==1 then enemymanazone2=LOCATION_EMZONE end
+	local activemana=Duel.GetFieldGroup(tp,allymanazone1,enemymanazone1,nil)
+	local allycookie=Duel.GetMatchingGroup(Card.IsFaceup,tp,allymanazone2,enemymanazone2,nil):GetFirst()
+	if allycookie then
+	local restmana=allycookie:GetOverlayGroup()
+	activemana:Merge(restmana) end
+	return #activemana
 end
 
 --리프레시
@@ -84,13 +102,19 @@ end
 
 --상대 배틀에리어 쿠키 트래시로 보내기
 function Cookie3.bttrashop(e,tp,eg,ep,ev,re,r,rp,g)
+	if Duel.IsExistingMatchingCard(Card.IsSetCard,tp,0,LOCATION_MZONE,1,nil,0xd10) then return end
+	local stage=Duel.GetMatchingGroup(Card.IsCode,tp,LOCATION_FZONE,0,nil,10070522)
 	if #g==0 then return end
 	Duel.Remove(g,POS_FACEUP,REASON_EFFECT)
 	Duel.SendtoGrave(g,REASON_EFFECT)
+	for tc in aux.Next(g) do
+	if tc:IsSetCard(0xd09) then Cookie8.eventop(e,tp,eg,ep,ev,re,r,rp,tc) end
+	if #stage>0 and stage:GetFirst():GetCounter(0x1000)==0 and tc:IsControler(1-tp) then Cookie8.eventop(e,tp,eg,ep,ev,re,r,rp,stage) end end
 end
 
 --쿠키런 드로우
 function Cookie3.CookieDrawop(e,tp,eg,ep,ev,re,r,rp,draw)
+	if draw==0 then return end
 	local refill=Duel.GetMatchingGroup(nil,tp,LOCATION_GRAVE,0,nil)
 	local deckcount=Duel.GetFieldGroupCount(tp,LOCATION_DECK,0)
 	if deckcount<=draw then
@@ -102,6 +126,7 @@ end
 
 --쿠키런 트래시
 function Cookie3.CookieTrashop(e,tp,eg,ep,ev,re,r,rp,trash)
+	if trash==0 then return end
 	local refill=Duel.GetMatchingGroup(nil,tp,LOCATION_GRAVE,0,nil)
 	local deckcount=Duel.GetFieldGroupCount(tp,LOCATION_DECK,0)
 	local deck=Duel.GetFieldGroup(tp,LOCATION_DECK,0)
@@ -110,4 +135,80 @@ function Cookie3.CookieTrashop(e,tp,eg,ep,ev,re,r,rp,trash)
 	Cookie3.Refreshop(e,tp,eg,ep,ev,re,r,rp)
 	Duel.DiscardDeck(tp,trash-deckcount,REASON_EFFECT)
 	else Duel.DiscardDeck(tp,trash,REASON_EFFECT) end
+end
+
+--쿠키런 등장시
+function Cookie3.Cookiesummonop(e,tp,eg,ep,ev,re,r,rp,ag)
+	local function sourceok(c)
+		-- 0xe011: 트래시에서 등장했을 때
+		if c:IsSetCard(0xe011) and not c:IsLocation(LOCATION_GRAVE) then return false end
+		-- 0xe012: 서포트에리어에서 등장했을 때 (액티브/레스트)
+		if c:IsSetCard(0xe012) and not (c:IsLocation(LOCATION_REMOVED) or c:IsLocation(LOCATION_OVERLAY)) then return false end
+		-- 0xe013: 브레이크에리어에서 등장했을 때
+		if c:IsSetCard(0xe013) and not c:IsLocation(LOCATION_EXTRA) then return false end
+		return true
+	end
+
+	local typ=type(ag)
+	local ally=Duel.GetMatchingGroup(nil,tp,LOCATION_EMZONE,0,nil):GetFirst()
+	local c=e:GetHandler()
+	if typ=="Card" then
+	if ag:IsLocation(LOCATION_GRAVE) then
+	local e1=Effect.CreateEffect(c)
+	e1:SetType(EFFECT_TYPE_SINGLE)
+	e1:SetCode(EFFECT_ADD_SETCODE)
+	e1:SetValue(0xa08)
+	e1:SetReset(RESET_EVENT+RESETS_STANDARD+RESET_PHASE+PHASE_END)
+	ally:RegisterEffect(e1) end
+	elseif typ=="Group" then
+	for tc in aux.Next(ag) do
+	if tc:IsLocation(LOCATION_GRAVE) then
+	local e1=Effect.CreateEffect(c)
+	e1:SetType(EFFECT_TYPE_SINGLE)
+	e1:SetCode(EFFECT_ADD_SETCODE)
+	e1:SetValue(0xa08)
+	e1:SetReset(RESET_EVENT+RESETS_STANDARD+RESET_PHASE+PHASE_END)
+	ally:RegisterEffect(e1) end end end
+
+	if typ=="Card" and ag==nil then return
+	elseif typ=="Group" and #ag==0 then return end
+	local tg
+	if typ=="Card" then tg=ag
+	local areacheck=sourceok(tg) and 0 or 1
+	if tg:IsLocation(LOCATION_EXTRA) then Duel.SendtoGrave(tg,REASON_RULE) end
+	Duel.SpecialSummon(tg,0,tp,tp,false,false,POS_FACEUP_ATTACK)
+	if (ag:IsSetCard(0xd011) or ag:IsSetCard(0xd014)) and areacheck==0 then Cookie8.eventop(e,tp,eg,ep,ev,re,r,rp,ag)
+	elseif (ag:IsSetCard(0xd012) or ag:IsSetCard(0xd015)) and areacheck==0 and Duel.GetTurnPlayer()==tp then Cookie8.eventop(e,tp,eg,ep,ev,re,r,rp,ag)
+	elseif (ag:IsSetCard(0xd013) or ag:IsSetCard(0xd016)) and areacheck==0 and Duel.GetTurnPlayer()~=tp then Cookie8.eventop(e,tp,eg,ep,ev,re,r,rp,ag) end
+	elseif typ=="Group" then
+	local validg=Group.CreateGroup()
+	for tc in aux.Next(ag) do
+	local areacheck=sourceok(tc) and 0 or 1
+	if tc:IsLocation(LOCATION_EXTRA) then Duel.SendtoGrave(tc,REASON_RULE) end
+	Duel.SpecialSummon(tc,0,tp,tp,false,false,POS_FACEUP_ATTACK)
+	if areacheck==0 then validg:AddCard(tc) end
+	end
+	local ag2=validg:Filter(function(c) return (c:IsSetCard(0xd011) or c:IsSetCard(0xd014)) end,nil)
+	Cookie8.eventop(e,tp,eg,ep,ev,re,r,rp,ag2)
+	if Duel.GetTurnPlayer()==tp then
+	local ag3=validg:Filter(function(c) return (c:IsSetCard(0xd012) or c:IsSetCard(0xd015)) end,nil)
+	Cookie8.eventop(e,tp,eg,ep,ev,re,r,rp,ag3) end
+	if Duel.GetTurnPlayer()~=tp then
+	local ag4=validg:Filter(function(c) return (c:IsSetCard(0xd013) or c:IsSetCard(0xd016)) end,nil)
+	Cookie8.eventop(e,tp,eg,ep,ev,re,r,rp,ag4) end end
+end
+
+--쿠키런 기절시
+function Cookie3.Cookiedestroyop(e,tp,eg,ep,ev,re,r,rp,ag)
+	local typ=type(ag)
+	if typ=="Card" and ag==nil then return
+	elseif typ=="Group" and #ag==0 then return end
+	local tg
+	if typ=="Card" then tg=ag
+	elseif typ=="Group" then tg=ag:GetFirst() end
+	Duel.Destroy(tg,REASON_EFFECT)
+	local tcp=tg:GetControler()
+	if tg:IsSetCard(0xd021) or tg:IsSetCard(0xd024) then Cookie8.eventop(e,tp,eg,ep,ev,re,r,rp,tg)
+	elseif (tg:IsSetCard(0xd022) or tg:IsSetCard(0xd025)) and Duel.GetTurnPlayer()==tcp then Cookie8.eventop(e,tp,eg,ep,ev,re,r,rp,tg)
+	elseif (tg:IsSetCard(0xd023) or tg:IsSetCard(0xd026)) and Duel.GetTurnPlayer()~=tcp then Cookie8.eventop(e,tp,eg,ep,ev,re,r,rp,tg) end
 end

@@ -5,6 +5,7 @@ end
 function s.Itemoperation(e,tp,eg,ep,ev,re,r,rp)
 	Cookie3.CookieDrawop(e,tp,eg,ep,ev,re,r,rp,2)
 	local ally=Duel.GetMatchingGroup(Card.IsFaceup,tp,LOCATION_EMZONE,0,nil):GetFirst()
+	if not ally then return end
 	local supportarea=Cookie3.SupportAreafilter(e,tp,eg,ep,ev,re,r,rp,1,1,0,0)
 	if #supportarea<=6 then
 		Duel.Hint(HINT_SELECTMSG,tp,aux.Stringid(10060001,1))

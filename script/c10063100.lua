@@ -1,66 +1,40 @@
 local s,id=GetID()
 function s.initial_effect(c)
-	local e1=Effect.CreateEffect(c)
-	e1:SetDescription(aux.Stringid(10061004,0))
-	e1:SetType(EFFECT_TYPE_QUICK_O)
-	e1:SetCode(EVENT_FREE_CHAIN)
-	e1:SetRange(LOCATION_MZONE)
-	e1:SetHintTiming(TIMING_BATTLE_PHASE,TIMING_BATTLE_PHASE)
-	e1:SetCondition(s.ExtraAwakencon)
-	e1:SetTarget(Cookie3.notg)
-	e1:SetOperation(s.ExtraAwakenop)
-	c:RegisterEffect(e1)
 	Cookie2.CookieCharacter(c,ATTRIBUTE_DARK,4,4)
-end
-function s.ExtraAwakenfilter(c)
-	return c:IsFacedown() and c:IsCode(10068104)
-end
-function s.ExtraAwakencon(e,tp,eg,ep,ev,re,r,rp)
-	return Duel.IsExistingMatchingCard(s.ExtraAwakenfilter,tp,LOCATION_EXTRA,0,1,nil)
-	and Cookie2.BattlePositioncon(e)
-end
-function s.ExtraAwakenop(e,tp,eg,ep,ev,re,r,rp)
-	local c=e:GetHandler()
-	local equip_group=c:GetEquipGroup()
-	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_SPSUMMON)
-	local sc=Duel.SelectMatchingCard(tp,s.ExtraAwakenfilter,tp,LOCATION_EXTRA,0,1,1,nil):GetFirst()
-	Duel.Overlay(sc,c)
-	Duel.SpecialSummon(sc,0,tp,tp,false,false,POS_FACEUP_ATTACK)
-	for tc in equip_group:Iter() do
-		Duel.Equip(tp,tc,sc)
-		local e1=Effect.CreateEffect(tc)
-		e1:SetType(EFFECT_TYPE_SINGLE)
-		e1:SetCode(EFFECT_EQUIP_LIMIT)
-		e1:SetReset(RESET_EVENT|RESETS_STANDARD)
-		e1:SetValue(function(e,c)return c==e:GetLabelObject()end)
-		e1:SetLabelObject(sc)
-		tc:RegisterEffect(e1)
-		if tc:IsCode(10063115) then
-			local e2=Effect.CreateEffect(tc)
-			e2:SetType(EFFECT_TYPE_SINGLE)
-			e2:SetCode(EFFECT_ADD_SETCODE)
-			e2:SetValue(0xa05)
-			e2:SetReset(RESET_EVENT|RESETS_STANDARD)
-			sc:RegisterEffect(e2)
-			local e3=Effect.CreateEffect(tc)
-			e3:SetDescription(aux.Stringid(10063115,0))
-			e3:SetType(EFFECT_TYPE_SINGLE)
-			e3:SetProperty(EFFECT_FLAG_CLIENT_HINT+EFFECT_FLAG_CANNOT_DISABLE)
-			e3:SetReset(RESET_EVENT|RESETS_STANDARD)
-			sc:RegisterEffect(e3)
-		end
-	end
-	Duel.Equip(tp,c,sc)
+	Cookie6.QECoookieEffect(c,ATTRIBUTE_DARK,2,2)
 	local e1=Effect.CreateEffect(c)
 	e1:SetType(EFFECT_TYPE_SINGLE)
-	e1:SetCode(EFFECT_EQUIP_LIMIT)
-	e1:SetReset(RESET_EVENT|RESETS_STANDARD)
-	e1:SetValue(function(e,c)return c==e:GetLabelObject()end)
-	e1:SetLabelObject(sc)
+	e1:SetCode(EFFECT_ADD_SETCODE)
+	e1:SetValue(0xd011)
 	c:RegisterEffect(e1)
 	local e2=Effect.CreateEffect(c)
-	e2:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_CONTINUOUS)
-	e2:SetCode(EVENT_DESTROYED)
-	e2:SetOperation(function(e,tp,eg,ep,ev,re,r,rp) Duel.SendtoGrave(e:GetHandler(),REASON_EFFECT) end)
+	e2:SetType(EFFECT_TYPE_SINGLE)
+	e2:SetCode(EFFECT_ADD_SETCODE)
+	e2:SetValue(0xd031)
 	c:RegisterEffect(e2)
+end
+function s.peelone(tc)
+	if tc:GetOverlayCount()==0 then return end
+	local og=tc:GetOverlayGroup()
+	local last=og:GetFirst()
+	for oc in aux.Next(og) do
+		if oc:GetSequence()>last:GetSequence() then last=oc end
+	end
+	Duel.SendtoGrave(last,REASON_EFFECT)
+end
+function s.QECookieeffcondition(e,tp,eg,ep,ev,re,r,rp)
+	return Duel.IsExistingMatchingCard(Cookie3.NoEmFzonefilter,tp,0,LOCATION_MZONE,1,nil,tp)
+end
+function s.QECookieoperation(e,tp,eg,ep,ev,re,r,rp)
+	Duel.Hint(HINT_SELECTMSG,tp,aux.Stringid(10060001,1))
+	local rg=Duel.SelectMatchingCard(tp,Cookie3.NoEmFzonefilter,tp,0,LOCATION_MZONE,0,2,nil,tp)
+	for tc in aux.Next(rg) do
+		s.peelone(tc)
+	end
+end
+function s.AndCookieoperation(e,tp,eg,ep,ev,re,r,rp)
+	Duel.Hint(HINT_SELECTMSG,tp,aux.Stringid(10060001,1))
+	local g=Duel.SelectMatchingCard(tp,Cookie3.NoEmFzonefilter,tp,0,LOCATION_MZONE,0,1,nil,tp)
+	if #g==0 then return end
+	s.peelone(g:GetFirst())
 end

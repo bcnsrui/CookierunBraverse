@@ -4,7 +4,8 @@ function s.initial_effect(c)
 end
 function s.Trapeffcondition(e,tp,eg,ep,ev,re,r,rp)
 	local atk=Duel.GetAttacker()
-	return atk and atk:GetAttack()>=4 and Duel.GetMatchingGroupCount(Cookie3.NoEmFzonefilter,tp,0,LOCATION_MZONE,nil,tp)>=1
+	return atk:IsControler(1-tp) and atk:GetAttack()>=4
+		and Duel.GetMatchingGroupCount(Cookie3.NoEmFzonefilter,tp,0,LOCATION_MZONE,nil,tp)>=1
 end
 function s.Trapoperation(e,tp,eg,ep,ev,re,r,rp)
 	Duel.Hint(HINT_SELECTMSG,tp,aux.Stringid(10060001,1))

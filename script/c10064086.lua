@@ -3,7 +3,7 @@ function s.initial_effect(c)
 	Cookie6.TrapEffect(c,ATTRIBUTE_WATER,2,2)
 end
 function s.Trapeffcondition(e,tp,eg,ep,ev,re,r,rp)
-	return Duel.GetFieldGroupCount(tp,LOCATION_HAND,0)<=3
+	return Duel.GetFieldGroupCount(tp,LOCATION_HAND,0)<=2
 	and Duel.GetMatchingGroupCount(Cookie3.NoEmFzonefilter,tp,0,LOCATION_MZONE,nil,tp)>=1
 end
 function s.Trapoperation(e,tp,eg,ep,ev,re,r,rp)

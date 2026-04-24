@@ -6,5 +6,7 @@ function s.Itemeffcondition(e,tp,eg,ep,ev,re,r,rp)
 	return Duel.GetFieldGroupCount(tp,0,LOCATION_GRAVE)>=30
 end
 function s.Itemoperation(e,tp,eg,ep,ev,re,r,rp)
-	Cookie3.CookieDrawop(e,tp,eg,ep,ev,re,r,rp,2)
+	local count=Duel.AnnounceNumber(tp,2,1,0)
+	if count==0 then return end
+	Cookie3.CookieDrawop(e,tp,eg,ep,ev,re,r,rp,count)
 end

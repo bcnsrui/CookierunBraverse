@@ -19,5 +19,5 @@ function s.Trapoperation(e,tp,eg,ep,ev,re,r,rp)
 	Duel.Hint(HINT_SELECTMSG,tp,aux.Stringid(10060001,1))
 	local hg=Duel.SelectMatchingCard(tp,nil,tp,LOCATION_HAND,0,1,1,nil)
 	local ally=Duel.GetMatchingGroup(nil,tp,LOCATION_EMZONE,0,nil):GetFirst()
-	if #hg>0 then Duel.Overlay(ally,hg) end end
+	if ally and #hg>0 then Duel.Overlay(ally,hg) end end
 end
