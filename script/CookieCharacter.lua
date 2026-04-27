@@ -1,6 +1,11 @@
 --쿠키런 브레이버스의 쿠키들
 Cookie2={}
 
+--카드명 지정
+CARD_CAPSAICIN={10063015,10064012,10067014,10070609}
+CARD_PRUNE_JUICE={10063112,10067104}
+CARD_KOUIGN_AMANN={10063086,10067035}
+
 --쿠키 유틸
 function Cookie2.CookieCharacter(c,attr,colorCount,mixCount)
 	c:EnableCounterPermit(0xa02)

@@ -10,7 +10,7 @@ function s.initial_effect(c)
 	c:RegisterEffect(e1)
 end
 function s.IGCookiecostoperation(e,tp,eg,ep,ev,re,r,rp)
-	Duel.SendtoGrave(e:GetHandler(),REASON_COST)
+	Cookie3.bttrashop(e,tp,eg,ep,ev,re,r,rp,e:GetHandler())
 end
 function s.IGCookieoperation(e,tp,eg,ep,ev,re,r,rp)
 	Cookie3.CookieTrashop(e,tp,eg,ep,ev,re,r,rp,2)

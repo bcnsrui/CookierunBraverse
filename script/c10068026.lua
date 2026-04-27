@@ -1,4 +1,4 @@
-if not Cookie2 then Duel.LoadScript("deprecated_function.lua") end
+﻿if not Cookie2 then Duel.LoadScript("deprecated_function.lua") end
 local s,id=GetID()
 function s.initial_effect(c)
 	local e1=Effect.CreateEffect(c)
@@ -12,6 +12,11 @@ function s.initial_effect(c)
 	e1:SetOperation(s.ExtraAwakenop)
 	c:RegisterEffect(e1)
 	Cookie2.CookieCharacter(c,ATTRIBUTE_LIGHT,3,3)
+	local e0=Effect.CreateEffect(c)
+	e0:SetType(EFFECT_TYPE_SINGLE)
+	e0:SetCode(EFFECT_ADD_SETCODE)
+	e0:SetValue(0xc05)
+	c:RegisterEffect(e0)
 end
 function s.ExtraAwakenfilter(c)
 	return c:IsFacedown() and c:IsCode(10068027)
@@ -40,3 +45,8 @@ function s.ExtraAwakenop(e,tp,eg,ep,ev,re,r,rp)
 	e2:SetOperation(function(e,tp,eg,ep,ev,re,r,rp) Duel.SendtoGrave(e:GetHandler(),REASON_EFFECT) end)
 	c:RegisterEffect(e2)
 end
+
+
+
+
+

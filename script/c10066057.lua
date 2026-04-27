@@ -12,7 +12,7 @@ function s.IGCookiecost(e,tp,eg,ep,ev,re,r,rp,chk)
 	return mana:IsExists(s.supportcookiefilter,1,nil)
 end
 function s.IGCookiecostoperation(e,tp,eg,ep,ev,re,r,rp)
-	Duel.SendtoGrave(e:GetHandler(),REASON_COST)
+	Cookie3.bttrashop(e,tp,eg,ep,ev,re,r,rp,e:GetHandler())
 	local mana=Cookie3.SupportAreafilter(e,tp,eg,ep,ev,re,r,rp,1,1,0,0)
 	local g=mana:Filter(s.supportcookiefilter,nil)
 	Duel.Hint(HINT_SELECTMSG,tp,aux.Stringid(10060001,1))

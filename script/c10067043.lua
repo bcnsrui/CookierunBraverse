@@ -3,7 +3,10 @@ local s,id=GetID()
 function s.initial_effect(c)
 	Cookie6.StageEffect(c,ATTRIBUTE_LIGHT,2,2,1,1)
 end
-function s.Stagecostoperation(e,tp,eg,ep,ev,re,r,rp)
+function s.Stageeffcondition(e,tp,eg,ep,ev,re,r,rp)
+	local c=e:GetHandler()
+	local ally=Duel.GetMatchingGroup(nil,tp,LOCATION_EMZONE,0,nil):GetFirst()
+	return ally:IsSetCard(0xa09)
 end
 function s.Stageoperation(e,tp,eg,ep,ev,re,r,rp)
 	Duel.Hint(HINT_SELECTMSG,tp,aux.Stringid(10060001,1))

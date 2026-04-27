@@ -12,7 +12,8 @@ function s.IGCookiecostoperation(e,tp,eg,ep,ev,re,r,rp)
 	Cookie3.handcost(e,tp,eg,ep,ev,re,r,rp,ALL_COLOR,1,1)
 end
 function s.lv1skillfilter(c,tp)
-	return c:IsRace(RACE_WARRIOR) and c:IsLevel(1) and Cookie3.NoEmFzonefilter(c,tp)
+	return (c:IsSetCard(0xc05) or c:IsSetCard(0xb00)) and c:IsRace(RACE_WARRIOR)
+	and c:IsLevel(1) and Cookie3.NoEmFzonefilter(c,tp)
 end
 function s.IGCookieoperation(e,tp,eg,ep,ev,re,r,rp)
 	local g=Duel.SelectMatchingCard(tp,s.lv1skillfilter,tp,0,LOCATION_MZONE,0,1,nil,tp)

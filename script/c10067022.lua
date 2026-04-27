@@ -5,6 +5,9 @@ function s.initial_effect(c)
 end
 function s.Stagecostoperation(e,tp,eg,ep,ev,re,r,rp)
 end
+function s.Stageeffcondition(e,tp,eg,ep,ev,re,r,rp)
+	return Duel.GetFlagEffect(tp,10080106)>0
+end
 function s.Stageoperation(e,tp,eg,ep,ev,re,r,rp)
 	Duel.Hint(HINT_SELECTMSG,tp,aux.Stringid(10060001,1))
 	local ag=Duel.SelectMatchingCard(tp,Cookie3.NoEmFzonefilter,tp,0,LOCATION_MZONE,0,1,nil,tp)

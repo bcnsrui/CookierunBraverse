@@ -8,7 +8,7 @@ function s.IGCookiecost(e,tp,eg,ep,ev,re,r,rp,chk)
 	return e:GetHandler():IsAbleToGraveAsCost()
 end
 function s.IGCookiecostoperation(e,tp,eg,ep,ev,re,r,rp)
-	Duel.SendtoGrave(e:GetHandler(),REASON_COST)
+	Cookie3.bttrashop(e,tp,eg,ep,ev,re,r,rp,e:GetHandler())
 end
 function s.IGCookieoperation(e,tp,eg,ep,ev,re,r,rp)
 	local ally=Cookie3.SupportAreaCount(e,tp,eg,ep,ev,re,r,rp,1,1,0,0)

@@ -326,20 +326,20 @@ function Cookie4.ARDRTCookieEffect(c,attr,colorCount,mixCount)
 	e2:SetValue(0xb00)
 	c:RegisterEffect(e2)
 end
+function Cookie4.ARdrawfilter(c)
+	return c:IsSetCard(0xc01) and c:IsRace(RACE_WARRIOR)
+end
 function Cookie4.ARdrawtriggerop(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
+	local attr=c:GetAttribute()
+	local ag=Duel.GetMatchingGroup(Cookie4.ARdrawfilter,tp,LOCATION_MZONE,0,nil)
+	if ag:FilterCount(Card.IsAttribute,nil,attr)==0 then return end
 	local hg=e:GetLabelObject()
 	if Duel.GetFieldGroupCount(tp,LOCATION_HAND,0)>5 then return end
-	if not hg:IsSetCard(0xc01) then return end
 	if Duel.SelectYesNo(tp,aux.Stringid(10060001,0)) then
 	Duel.Hint(HINT_SELECTMSG,tp,aux.Stringid(10060001,7))
-	local ac=Duel.AnnounceNumber(tp,2,1,0)
-	e:SetLabel(ac)
-	if ac==2 then
-	Cookie3.CookieDrawop(e,tp,eg,ep,ev,re,r,rp,2)
-	elseif ac==1 then
-	Cookie3.CookieDrawop(e,tp,eg,ep,ev,re,r,rp,1)
-	else end end
+	local count=Duel.AnnounceNumber(tp,2,1,0)
+	if count>0 then Cookie3.CookieDrawop(e,tp,eg,ep,ev,re,r,rp,count) end end
 end
 
 --아레나힐 플립
@@ -356,11 +356,16 @@ function Cookie4.ARHTCookieEffect(c,attr,colorCount,mixCount)
 	e2:SetValue(0xb00)
 	c:RegisterEffect(e2)
 end
+function Cookie4.ARhealfilter(c)
+	return c:IsSetCard(0xc01) and c:IsRace(RACE_WARRIOR)
+end
 function Cookie4.ARhealtriggerop(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
+	local attr=c:GetAttribute()
+	local ag=Duel.GetMatchingGroup(Cookie4.ARhealfilter,tp,LOCATION_MZONE,0,nil)
+	if ag:FilterCount(Card.IsAttribute,nil,attr)==0 then return end
 	local hg=e:GetLabelObject()
 	if hg:GetLevel()<2 then return end
-	if not hg:IsSetCard(0xc01) then return end
 	if Duel.SelectYesNo(tp,aux.Stringid(10060001,0)) then
 	Cookie7.hpaddop(e,tp,eg,ep,ev,re,r,rp,hg,1) end
 end

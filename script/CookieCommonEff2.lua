@@ -121,10 +121,10 @@ function Cookie7.hpcookietomove(e,tp,eg,ep,ev,re,r,rp)
 	elseif hpcookie2:IsSetCard(0xb12) then
 	Cookie4.schtriggerop(e,tp,eg,ep,ev,re,r,rp)
 	--아레나드로우 플립
-	elseif hpcookie2:IsSetCard(0xb13) and hg:GetAttribute()==hpcookie2:GetAttribute() then
+	elseif hpcookie2:IsSetCard(0xb13) then
 	Cookie4.ARdrawtriggerop(e,tp,eg,ep,ev,re,r,rp)
 	--아레나힐 플립
-	elseif hpcookie2:IsSetCard(0xb14) and hg:GetAttribute()==hpcookie2:GetAttribute() then
+	elseif hpcookie2:IsSetCard(0xb14) then
 	Cookie4.ARhealtriggerop(e,tp,eg,ep,ev,re,r,rp)
 	--패회수 플립
 	elseif hpcookie2:IsSetCard(0xb15) then
@@ -198,6 +198,9 @@ function Cookie7.damageeff(e,tp,eg,ep,ev,re,r,rp,ag,dam)
 	elseif dam>2 and tg:IsSetCard(0xd062) then dam=2 end
 	if tg:IsSetCard(0xd081) then dam=math.max(0,dam-1)
 	elseif tg:IsSetCard(0xd082) then dam=math.max(0,dam-2) end
+	--[칠리] 배틀에 있을 때, 레드 LV.2+ [아레나] 쿠키의 효과 대미지+1
+	if c:IsSetCard(0xc01) and c:IsAttribute(ATTRIBUTE_FIRE) and c:IsLevelAbove(2)
+	and Duel.IsExistingMatchingCard(Card.IsCode,tp,LOCATION_MZONE,0,1,nil,10067013) then dam=dam+1 end
 	Duel.Damage(1-c:GetControler(),dam,REASON_EFFECT)
 	local damage=0
 	while damage<dam and ((tg:GetOverlayCount()>0 and not tg:IsSetCard(0xa03)) or tg:GetOverlayCount()>1) do
