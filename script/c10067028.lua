@@ -5,7 +5,6 @@ function s.initial_effect(c)
 	Cookie6.IGCoookieEffect(c,1,ATTRIBUTE_LIGHT,0,0)
 end
 function s.IGCookieeffcondition(e,tp,eg,ep,ev,re,r,rp)
-	local c=e:GetHandler()
 	local ally=Duel.GetMatchingGroup(nil,tp,LOCATION_EMZONE,0,nil):GetFirst()
 	return ally:IsSetCard(0xa09)
 end

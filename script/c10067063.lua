@@ -15,7 +15,7 @@ function s.Itemoperation(e,tp,eg,ep,ev,re,r,rp)
 		Duel.Hint(HINT_SELECTMSG,tp,aux.Stringid(10060001,1))
 		local tc=sg:Select(tp,1,1,nil)
 		local ally=Duel.GetMatchingGroup(Card.IsFaceup,tp,LOCATION_EMZONE,0,nil):GetFirst()
-		Duel.Overlay(ally,tc)
+		if ally and #tc>0 then Duel.Overlay(ally,tc) end
 		g:RemoveCard(tc) end
 	if #g>0 then Duel.SendtoGrave(g,REASON_EFFECT) end
 end

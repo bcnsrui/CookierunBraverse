@@ -4,7 +4,7 @@ function s.initial_effect(c)
 	Cookie6.StageEffect(c,ATTRIBUTE_WIND,1,1,0,0)
 end
 function s.arenacookiefilter(c)
-	return c:IsRace(RACE_WARRIOR) and not c:IsSetCard(0xc01)
+	return c:IsRace(RACE_WARRIOR) and c:IsSetCard(0xc01)
 end
 function s.Stageeffcondition(e,tp,eg,ep,ev,re,r,rp)
 	local g=Cookie3.SupportAreafilter(e,tp,eg,ep,ev,re,r,rp,1,1,0,0):Filter(s.arenacookiefilter,nil)

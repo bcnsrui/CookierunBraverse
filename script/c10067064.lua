@@ -4,7 +4,7 @@ function s.initial_effect(c)
 	Cookie6.TrapEffect(c,ATTRIBUTE_WIND,1,1)
 end
 function s.cookiefilter(c)
-	return c:IsRace(RACE_WARRIOR)
+	return c:IsRace(RACE_WARRIOR) and c:IsSetCard(0xc01)
 end
 function s.Trapeffcondition(e,tp,eg,ep,ev,re,r,rp)
 	return Duel.GetMatchingGroupCount(Cookie3.NoEmFzonefilter,tp,0,LOCATION_MZONE,nil,tp)>=1
@@ -21,6 +21,6 @@ function s.Trapoperation(e,tp,eg,ep,ev,re,r,rp)
 		Duel.SendtoGrave(sg,REASON_EFFECT)
 		Duel.Hint(HINT_SELECTMSG,tp,aux.Stringid(10060001,1))
 		local dg=Duel.SelectMatchingCard(tp,s.cookiefilter,tp,LOCATION_GRAVE,0,0,1,nil)
-		if #dg>0 then Duel.Overlay(ally,dg) end
+		if ally and #dg>0 then Duel.Overlay(ally,dg) end
 	end
 end

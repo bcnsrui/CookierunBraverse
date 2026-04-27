@@ -5,7 +5,8 @@ function s.initial_effect(c)
 	Cookie6.IGCoookieEffect(c,1,ATTRIBUTE_LIGHT,1,1)
 end
 function s.IGCookieeffcondition(e,tp,eg,ep,ev,re,r,rp)
-	return Duel.GetFlagEffect(tp,10080106)>0
+	local ally=Duel.GetMatchingGroup(nil,tp,LOCATION_EMZONE,0,nil):GetFirst()
+	return ally:IsSetCard(0xa09)
 end
 function s.IGCookieoperation(e,tp,eg,ep,ev,re,r,rp)
 	Duel.Hint(HINT_SELECTMSG,tp,aux.Stringid(10060001,1))
