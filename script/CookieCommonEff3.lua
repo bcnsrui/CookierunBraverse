@@ -15,6 +15,20 @@ function Cookie8.eventcon(e,tp,eg,ep,ev,re,r,rp)
 	return my_val==max_val
 end
 
+function Cookie8.eventcon2(e,tp,eg,ep,ev,re,r,rp)
+	local c=e:GetHandler()
+	if not eg or not eg:IsContains(c) then return false end
+	local my_val=c:GetTurnCounter() or 0
+	if my_val<1 then return false end
+	local max_val=0
+	local g=Duel.GetMatchingGroup(aux.TRUE,tp,LOCATION_TRIGGERZONE,LOCATION_TRIGGERZONE,nil)
+	for tc in aux.Next(g) do
+		local val=tc:GetTurnCounter() or 0
+		if val>max_val then max_val=val end
+	end
+	return my_val==max_val
+end
+
 function Cookie8.eventop(e,tp,eg,ep,ev,re,r,rp,cg)
 	local typcg=type(cg)
 	if typcg=="Card" then

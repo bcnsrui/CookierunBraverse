@@ -14,9 +14,6 @@ function s.QECookiecost(e,tp,eg,ep,ev,re,r,rp,chk)
 		and Duel.IsExistingMatchingCard(Card.IsFaceup,tp,LOCATION_EMZONE,0,1,nil)
 end
 function s.QECookieoperation(e,tp,eg,ep,ev,re,r,rp)
-	Duel.DisableShuffleCheck()
-	local ally=Duel.GetMatchingGroup(Card.IsFaceup,tp,LOCATION_EMZONE,0,nil):GetFirst()
-	if not ally then return end
-	local tc=Duel.GetDecktopGroup(tp,1)
-	Duel.Overlay(ally,tc)
+	local dg=Duel.GetDecktopGroup(tp,1)
+	Duel.Remove(dg,POS_FACEUP,REASON_EFFECT)
 end
