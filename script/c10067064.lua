@@ -4,7 +4,7 @@ function s.initial_effect(c)
 	Cookie6.TrapEffect(c,ATTRIBUTE_WIND,1,1)
 end
 function s.cookiefilter(c)
-	return c:IsRace(RACE_WARRIOR) and c:IsSetCard(0xc01)
+	return c:IsRace(RACE_WARRIOR)
 end
 function s.Trapeffcondition(e,tp,eg,ep,ev,re,r,rp)
 	return Duel.GetMatchingGroupCount(Cookie3.NoEmFzonefilter,tp,0,LOCATION_MZONE,nil,tp)>=1

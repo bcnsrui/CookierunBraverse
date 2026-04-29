@@ -14,7 +14,7 @@ function s.initial_effect(c)
 	c:RegisterEffect(e1)
 end
 function s.lv2yellowfilter(c)
-	return c:IsAttribute(ATTRIBUTE_LIGHT) and c:IsRace(RACE_WARRIOR) and c:IsLevelAbove(2)
+	return c:IsFaceup() and c:IsAttribute(ATTRIBUTE_LIGHT) and c:IsRace(RACE_WARRIOR) and c:IsLevelAbove(2)
 end
 function s.AndCookieoperation(e,tp,eg,ep,ev,re,r,rp)
 	if Duel.IsExistingMatchingCard(s.lv2yellowfilter,tp,LOCATION_EXTRA,0,1,nil) then

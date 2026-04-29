@@ -7,7 +7,7 @@ function s.handfilter(c)
 	return c:IsAttribute(ATTRIBUTE_WATER) and c:IsSetCard(0xc01)
 end
 function s.Stagecost(e,tp,eg,ep,ev,re,r,rp,chk)
-	if chk==0 then return Duel.IsExistingMatchingCard(s.handfilter,tp,LOCATION_HAND,0,1,nil) end
+	return Duel.IsExistingMatchingCard(s.handfilter,tp,LOCATION_HAND,0,1,nil)
 end
 function s.Stagecostoperation(e,tp,eg,ep,ev,re,r,rp)
 	Duel.Hint(HINT_SELECTMSG,tp,aux.Stringid(10060000,6))

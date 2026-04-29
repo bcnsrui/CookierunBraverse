@@ -140,54 +140,68 @@ end
 --쿠키런 등장시
 function Cookie3.Cookiesummonop(e,tp,eg,ep,ev,re,r,rp,ag)
 	local function sourceok(c)
-		-- 0xe011: 트래시에서 등장했을 때
-		if c:IsSetCard(0xe011) and not c:IsLocation(LOCATION_GRAVE) then return false end
-		-- 0xe012: 서포트에리어에서 등장했을 때 (액티브/레스트)
-		if c:IsSetCard(0xe012) and not (c:IsLocation(LOCATION_REMOVED) or c:IsLocation(LOCATION_OVERLAY)) then return false end
-		-- 0xe013: 브레이크에리어에서 등장했을 때
-		if c:IsSetCard(0xe013) and not c:IsLocation(LOCATION_EXTRA) then return false end
-		return true
-	end
+	-- 0xe011: 트래시에서 등장했을 때
+	if c:IsSetCard(0xe011) and not c:IsLocation(LOCATION_GRAVE) then return false end
+	-- 0xe012: 서포트에리어에서 등장했을 때 (액티브/레스트)
+	if c:IsSetCard(0xe012) and not (c:IsLocation(LOCATION_REMOVED) or c:IsLocation(LOCATION_OVERLAY)) then return false end
+	-- 0xe013: 브레이크에리어에서 등장했을 때
+	if c:IsSetCard(0xe013) and not c:IsLocation(LOCATION_EXTRA) then return false end
+	return true end
 
 	local typ=type(ag)
-	local ally=Duel.GetMatchingGroup(nil,tp,LOCATION_EMZONE,0,nil):GetFirst()
-	local c=e:GetHandler()
-	if typ=="Card" then
-	if ag:IsLocation(LOCATION_GRAVE) then
-	local e1=Effect.CreateEffect(c)
-	e1:SetType(EFFECT_TYPE_SINGLE)
-	e1:SetCode(EFFECT_ADD_SETCODE)
-	e1:SetValue(0xa08)
-	e1:SetReset(RESET_EVENT+RESETS_STANDARD+RESET_PHASE+PHASE_END)
-	ally:RegisterEffect(e1) end
-	elseif typ=="Group" then
-	for tc in aux.Next(ag) do
-	if tc:IsLocation(LOCATION_GRAVE) then
-	local e1=Effect.CreateEffect(c)
-	e1:SetType(EFFECT_TYPE_SINGLE)
-	e1:SetCode(EFFECT_ADD_SETCODE)
-	e1:SetValue(0xa08)
-	e1:SetReset(RESET_EVENT+RESETS_STANDARD+RESET_PHASE+PHASE_END)
-	ally:RegisterEffect(e1) end end end
-
 	if typ=="Card" and ag==nil then return
 	elseif typ=="Group" and #ag==0 then return end
-	local tg
-	if typ=="Card" then tg=ag
-	local areacheck=sourceok(tg) and 0 or 1
-	if tg:IsLocation(LOCATION_EXTRA) then Duel.SendtoGrave(tg,REASON_RULE) end
-	Duel.SpecialSummon(tg,0,tp,tp,false,false,POS_FACEUP_ATTACK)
-	if (ag:IsSetCard(0xd011) or ag:IsSetCard(0xd014)) and areacheck==0 then Cookie8.eventop(e,tp,eg,ep,ev,re,r,rp,ag)
-	elseif (ag:IsSetCard(0xd012) or ag:IsSetCard(0xd015)) and areacheck==0 and Duel.GetTurnPlayer()==tp then Cookie8.eventop(e,tp,eg,ep,ev,re,r,rp,ag)
-	elseif (ag:IsSetCard(0xd013) or ag:IsSetCard(0xd016)) and areacheck==0 and Duel.GetTurnPlayer()~=tp then Cookie8.eventop(e,tp,eg,ep,ev,re,r,rp,ag) end
-	elseif typ=="Group" then
+
+	local tg=Group.CreateGroup()
+	if typ=="Card" then tg:AddCard(ag)
+	elseif typ=="Group" then tg:Merge(ag) else return end
+
+	local c=e:GetHandler()
+	local ally=Duel.GetMatchingGroup(nil,tp,LOCATION_EMZONE,0,nil):GetFirst()
+	for tc in aux.Next(tg) do
+	if ally and tc:IsLocation(LOCATION_GRAVE) then
+	local e1=Effect.CreateEffect(c)
+	e1:SetType(EFFECT_TYPE_SINGLE)
+	e1:SetCode(EFFECT_ADD_SETCODE)
+	e1:SetValue(0xa08)
+	e1:SetReset(RESET_EVENT+RESETS_STANDARD+RESET_PHASE+PHASE_END)
+	ally:RegisterEffect(e1) end	end
+	for tc in aux.Next(tg) do
+	if ally and tc:IsLocation(LOCATION_EXTRA) then
+	local e1=Effect.CreateEffect(c)
+	e1:SetType(EFFECT_TYPE_SINGLE)
+	e1:SetCode(EFFECT_ADD_SETCODE)
+	e1:SetValue(0xa13)
+	e1:SetReset(RESET_EVENT+RESETS_STANDARD+RESET_PHASE+PHASE_END)
+	ally:RegisterEffect(e1)	end
+	if tc:IsLocation(LOCATION_EXTRA) and tc:IsCode(table.unpack(CARD_GOLD_CHEESE)) then
+	local e1=Effect.CreateEffect(c)
+	e1:SetType(EFFECT_TYPE_SINGLE)
+	e1:SetCode(EFFECT_ADD_SETCODE)
+	e1:SetValue(0xa131)
+	e1:SetReset(RESET_PHASE+PHASE_END)
+	tc:RegisterEffect(e1) end
+	if tc:IsLocation(LOCATION_EXTRA) and tc:IsLevel(3) then
+	local e1=Effect.CreateEffect(c)
+	e1:SetType(EFFECT_TYPE_SINGLE)
+	e1:SetCode(EFFECT_ADD_SETCODE)
+	e1:SetValue(0xa132)
+	e1:SetReset(RESET_PHASE+PHASE_END)
+	tc:RegisterEffect(e1) end
+	if tc:IsLocation(LOCATION_GRAVE) and tc:IsCode(table.unpack(CARD_DARK_CACAO)) then
+	local e1=Effect.CreateEffect(c)
+	e1:SetType(EFFECT_TYPE_SINGLE)
+	e1:SetCode(EFFECT_ADD_SETCODE)
+	e1:SetValue(0xa133)
+	e1:SetReset(RESET_PHASE+PHASE_END)
+	tc:RegisterEffect(e1) end end
+
 	local validg=Group.CreateGroup()
-	for tc in aux.Next(ag) do
+	for tc in aux.Next(tg) do
 	local areacheck=sourceok(tc) and 0 or 1
 	if tc:IsLocation(LOCATION_EXTRA) then Duel.SendtoGrave(tc,REASON_RULE) end
 	Duel.SpecialSummon(tc,0,tp,tp,false,false,POS_FACEUP_ATTACK)
-	if areacheck==0 then validg:AddCard(tc) end
-	end
+	if areacheck==0 then validg:AddCard(tc) end end
 	local ag2=validg:Filter(function(c) return (c:IsSetCard(0xd011) or c:IsSetCard(0xd014)) end,nil)
 	Cookie8.eventop(e,tp,eg,ep,ev,re,r,rp,ag2)
 	if Duel.GetTurnPlayer()==tp then
@@ -195,7 +209,7 @@ function Cookie3.Cookiesummonop(e,tp,eg,ep,ev,re,r,rp,ag)
 	Cookie8.eventop(e,tp,eg,ep,ev,re,r,rp,ag3) end
 	if Duel.GetTurnPlayer()~=tp then
 	local ag4=validg:Filter(function(c) return (c:IsSetCard(0xd013) or c:IsSetCard(0xd016)) end,nil)
-	Cookie8.eventop(e,tp,eg,ep,ev,re,r,rp,ag4) end end
+	Cookie8.eventop(e,tp,eg,ep,ev,re,r,rp,ag4) end
 end
 
 --쿠키런 기절시

@@ -12,7 +12,7 @@ function s.burningspicecookiefilter(c,tp)
 end
 function s.Itemoperation(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
-	Duel.Hint(HINT_SELECTMSG,tp,aux.Stringid(10060001,1))
+	local ally=Duel.GetMatchingGroup(Card.IsFaceup,tp,LOCATION_EMZONE,0,nil):GetFirst()
 	local g=Duel.GetMatchingGroup(s.cookiefilter,tp,LOCATION_MZONE,LOCATION_MZONE,nil,tp)
 	Cookie7.Alldamageeff(e,tp,eg,ep,ev,re,r,rp,g,1)
 	if Duel.GetMatchingGroupCount(s.burningspicecookiefilter,tp,LOCATION_MZONE,0,nil,tp)>=1
@@ -32,14 +32,14 @@ function s.Itemoperation(e,tp,eg,ep,ev,re,r,rp)
 		local e2=Effect.CreateEffect(c)
 		e2:SetType(EFFECT_TYPE_SINGLE)
 		e2:SetCode(EFFECT_ADD_SETCODE)
+		e2:SetRange(LOCATION_EMZONE)
+		e2:SetCondition(s.mixcon)
 		e2:SetValue(0xa06)
 		e2:SetReset(RESET_EVENT+RESETS_STANDARD)
-		hg:RegisterEffect(e2)
-		local e3=Effect.CreateEffect(c)
-		e3:SetDescription(aux.Stringid(id,0))
-		e3:SetType(EFFECT_TYPE_SINGLE)
-		e3:SetProperty(EFFECT_FLAG_CLIENT_HINT+EFFECT_FLAG_CANNOT_DISABLE)
-		e3:SetReset(RESET_EVENT+RESETS_STANDARD)
-		hg:RegisterEffect(e3)
+		ally:RegisterEffect(e2)
 	end
+end
+function s.mixcon(e)
+	local tp=e:GetHandlerPlayer()
+	return Duel.GetMatchingGroup(Card.IsFaceup,tp,LOCATION_EXTRA,0,nil):GetSum(Card.GetLevel)>=8
 end

@@ -21,7 +21,7 @@ function s.Itemeffcondition(e,tp,eg,ep,ev,re,r,rp)
 	return Duel.GetFlagEffect(tp,id)>0
 end
 function s.lv1cookiefilter(c)
-	return c:IsLevel(1) and c:IsRace(RACE_WARRIOR)
+	return c:IsFaceup() and c:IsLevel(1) and c:IsRace(RACE_WARRIOR)
 end
 function s.Itemoperation(e,tp,eg,ep,ev,re,r,rp)
 	Duel.Hint(HINT_SELECTMSG,tp,aux.Stringid(10060001,1))

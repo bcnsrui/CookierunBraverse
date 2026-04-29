@@ -8,15 +8,14 @@ function s.arenacookiefilter(c)
 end
 function s.Stageeffcondition(e,tp,eg,ep,ev,re,r,rp)
 	local g=Cookie3.SupportAreafilter(e,tp,eg,ep,ev,re,r,rp,1,1,0,0):Filter(s.arenacookiefilter,nil)
-	if #g>0 and Duel.GetFieldGroupCount(tp,LOCATION_MZONE,0)>0 then return true
-	else return false end
+	return #g>0 and Duel.GetFieldGroupCount(tp,LOCATION_MZONE,0)>0
 end
 function s.Stageoperation(e,tp,eg,ep,ev,re,r,rp)
 	local mana=Cookie3.SupportAreafilter(e,tp,eg,ep,ev,re,r,rp,1,1,0,0):Filter(s.arenacookiefilter,nil)
 	if #mana>0 then
 	Duel.Hint(HINT_SELECTMSG,tp,aux.Stringid(10060001,1))
 	local arenacookies=mana:Select(tp,0,1,nil)
-		if #arenacookies>0 then
-			Cookie3.Cookiesummonop(e,tp,eg,ep,ev,re,r,rp,arenacookies)
-		if Duel.SelectYesNo(tp,aux.Stringid(10060001,8)) then Cookie3.CookieDrawop(e,tp,eg,ep,ev,re,r,rp,1) end	end end
+	if #arenacookies>0 then
+	Cookie3.Cookiesummonop(e,tp,eg,ep,ev,re,r,rp,arenacookies)
+	if Duel.SelectYesNo(tp,aux.Stringid(10060001,8)) then Cookie3.CookieDrawop(e,tp,eg,ep,ev,re,r,rp,1) end	end end
 end

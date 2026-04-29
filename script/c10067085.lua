@@ -18,5 +18,6 @@ function s.Trapoperation(e,tp,eg,ep,ev,re,r,rp)
 	and Duel.SelectYesNo(tp,aux.Stringid(10061004,5)) then
 	Duel.Hint(HINT_SELECTMSG,tp,aux.Stringid(10060001,7))
 	local count=Duel.AnnounceNumber(tp,2,1,0)
+	if count==0 then return end
 	Cookie3.CookieDrawop(e,tp,eg,ep,ev,re,r,rp,count) end
 end

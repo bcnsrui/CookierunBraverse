@@ -33,7 +33,7 @@ function s.Stageeffcondition(e,tp,eg,ep,ev,re,r,rp)
 	return s.checklv3(g)
 end
 function s.lv3lightfilter(c)
-	return c:IsLevel(3) and c:IsAttribute(ATTRIBUTE_LIGHT) and c:IsRace(RACE_WARRIOR)
+	return c:IsFaceup() and c:IsLevel(3) and c:IsAttribute(ATTRIBUTE_LIGHT) and c:IsRace(RACE_WARRIOR)
 end
 function s.sum3check(sg,e,tp,mg)
 	local sum=sg:GetSum(Card.GetLevel)

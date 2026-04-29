@@ -31,6 +31,12 @@ function s.skillop(e,tp,eg,ep,ev,re,r,rp)
 	if not c:IsRelateToEffect(e) then return end
 	if not Cookie3.manacon(e,tp,eg,ep,ev,re,r,rp,0,ATTRIBUTE_LIGHT,1,1) then return end
 	Cookie3.manacost(e,tp,eg,ep,ev,re,r,rp,ATTRIBUTE_LIGHT,1,1)
+	local e1=Effect.CreateEffect(c)
+	e1:SetType(EFFECT_TYPE_SINGLE)
+	e1:SetCode(EFFECT_ADD_SETCODE)
+	e1:SetValue(0xa14)
+	e1:SetReset(RESET_PHASE+PHASE_END)
+	c:RegisterEffect(e1)
 	Cookie3.Cookiesummonop(e,tp,eg,ep,ev,re,r,rp,c)
 	Cookie7.hpaddop(e,tp,eg,ep,ev,re,r,rp,c,1)
 end

@@ -5,12 +5,15 @@ Cookie2={}
 CARD_CAPSAICIN={10063015,10064012,10067014,10070609}
 CARD_PRUNE_JUICE={10063112,10067104}
 CARD_KOUIGN_AMANN={10063086,10067035}
+CARD_GOLD_CHEESE={10063025,10068026,10068027}
+CARD_DARK_CACAO={10063100,10068103,10068104}
 
 --쿠키 유틸
 function Cookie2.CookieCharacter(c,attr,colorCount,mixCount)
 	c:EnableCounterPermit(0xa02)
 	c:EnableCounterPermit(0xa03)
 	c:EnableCounterPermit(0x1001)
+	c:EnableCounterPermit(0x1003)
 	Cookie2.SummonCookie(c)
 	Cookie2.CookieEff(c)
 	Cookie2.BattleEff(c,attr,colorCount,mixCount)
@@ -102,15 +105,13 @@ end
 function Cookie2.hpop(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
 	local hp=c:GetBaseDefense()
+	if c:IsSetCard(0xa14) then hp=0 end
 	Cookie7.hpaddop2(e,tp,eg,ep,ev,re,r,rp,c,hp)
 end
 function Cookie2.NoBtDestroy(e,tp,eg,ep,ev,re,r,rp,chk)
 	local c=e:GetHandler()
 	if chk==0 then return c:IsReason(REASON_BATTLE) and not c:IsReason(REASON_REPLACE) end
 	return true
-end
-function Cookie2.BattlePositioncon(e)
-	return Duel.GetCurrentPhase()==PHASE_BATTLE_STEP
 end
 function Cookie2.movecon(e)
 	return e:GetHandler():GetTurnCounter()>0
@@ -170,31 +171,69 @@ function Cookie2.battlemanacost(attr,colorCount,mixCount)
 	local e1=Effect.CreateEffect(c)
 	e1:SetType(EFFECT_TYPE_SINGLE)
 	e1:SetCode(EFFECT_ATTACK_COST)
+
 	e1:SetCost(function(e,c,tp)
+	local _mixCount=mixCount
+	local _colorCount=colorCount
 	local ally=Duel.GetMatchingGroup(nil,tp,LOCATION_EMZONE,0,nil):GetFirst()
 	if ally:IsCode(10060000) then return true end
 	--백면사(10068075)
 	if Duel.IsExistingMatchingCard(Card.IsCode,tp,LOCATION_SZONE,LOCATION_SZONE,1,nil,10068075)
-	and Cookie3.SupportAreaCount(e,tp,eg,ep,ev,re,r,rp,1,1,0,0)>=6 then mixCount=mixCount+1 end
+	and Cookie3.SupportAreaCount(e,tp,eg,ep,ev,re,r,rp,1,1,0,0)>=6 then _mixCount=_mixCount+1 end
+	--결의와 품위가 살아 숨쉬는 시대(10068125)
+	if Duel.IsExistingMatchingCard(Card.IsCode,tp,LOCATION_SZONE,LOCATION_SZONE,1,nil,10068125)
+	and Duel.GetFieldGroupCount(tp,LOCATION_GRAVE,0)>=15
+	and e:GetHandler():IsCode(table.unpack(CARD_DARK_CACAO)) then
+	if _colorCount>0 then _colorCount=_colorCount-1
+	_mixCount=_mixCount-1 end end
 	--0xd16 공격 코스트 감소
 	if e:GetHandler():IsSetCard(0xd16) and e:GetHandler():IsAttribute(ATTRIBUTE_FIRE) then
-	if colorCount>0 then colorCount=colorCount-1
-	mixCount=mixCount-1	else end end
+	if _colorCount>0 then _colorCount=_colorCount-1 _mixCount=_mixCount-1 end end
+	--푸룬주스맛쿠키(10067104) 공격 코스트 믹스
+	if e:GetHandler():IsSetCard(0xa11) then _colorCount=0 end
+	--소르베맛쿠키(10068084)
+	local sherbet=Duel.GetMatchingGroupCount(Cookie2.sherbetfilter,tp,0,LOCATION_MZONE,nil,tp)
 	local g=Duel.GetMatchingGroup(Card.IsFaceup,tp,LOCATION_REMOVED,0,nil)
-	return #g>=mixCount and
-	aux.SelectUnselectGroup(g,e,tp,mixCount,mixCount,Cookie3.hasColorCount(attr,colorCount),0)
+	return #g>=_mixCount
+	and aux.SelectUnselectGroup(g,e,tp,_mixCount,_mixCount,Cookie3.hasColorCount(attr,_colorCount),0)
+	and Duel.GetFieldGroupCount(tp,LOCATION_HAND,0)>=sherbet
 	end)
+
 	e1:SetOperation(function (e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
+	local _mixCount=mixCount
+	local _colorCount=colorCount
 	local ally=Duel.GetMatchingGroup(nil,tp,LOCATION_EMZONE,0,nil):GetFirst()
 	if ally:IsCode(10060000) then return Duel.ChangePosition(c,POS_FACEUP_DEFENSE) and Duel.AttackCostPaid() end
+	--백면사(10068075)
+	if Duel.IsExistingMatchingCard(Card.IsCode,tp,LOCATION_SZONE,LOCATION_SZONE,1,nil,10068075)
+	and Cookie3.SupportAreaCount(e,tp,eg,ep,ev,re,r,rp,1,1,0,0)>=6 then _mixCount=_mixCount+1 end
+	--결의와 품위가 살아 숨쉬는 시대(10068125)
+	if Duel.IsExistingMatchingCard(Card.IsCode,tp,LOCATION_SZONE,LOCATION_SZONE,1,nil,10068125)
+	and Duel.GetFieldGroupCount(tp,LOCATION_GRAVE,0)>=15
+	and (c:IsCode(table.unpack(CARD_DARK_CACAO))) then
+	if _colorCount>0 then _colorCount=_colorCount-1 _mixCount=_mixCount-1 end end
+	--0xd16 공격 코스트 감소
+	if c:IsSetCard(0xd16) and c:IsAttribute(ATTRIBUTE_FIRE) then
+	if _colorCount>0 then _colorCount=_colorCount-1 _mixCount=_mixCount-1 end end
+	--푸룬주스맛쿠키(10067104) 공격 코스트 믹스
+	if c:IsSetCard(0xa11) then _colorCount=0 end
+	--소르베맛쿠키(10068084)
+	local sherbet=Duel.GetMatchingGroupCount(Cookie2.sherbetfilter,tp,0,LOCATION_MZONE,nil,tp)
+	if sherbet>0 then
+	Duel.Hint(HINT_SELECTMSG,tp,aux.Stringid(10060000,4))
+	local hg=Duel.SelectMatchingCard(tp,nil,tp,LOCATION_HAND,0,sherbet,sherbet,nil)
+	if #hg>0 then Duel.SendtoGrave(hg,REASON_RULE) end end
 		if c:IsLocation(LOCATION_MZONE) then
 		local g=Duel.GetMatchingGroup(Card.IsFaceup,tp,LOCATION_REMOVED,0,nil)
-		local tg=aux.SelectUnselectGroup(g,e,tp,mixCount,mixCount,Cookie3.hasColorCount(attr,colorCount),1,tp,aux.Stringid(10060000,4))
+		local tg=aux.SelectUnselectGroup(g,e,tp,_mixCount,_mixCount,Cookie3.hasColorCount(attr,_colorCount),1,tp,aux.Stringid(10060000,4))
 		local ally=Duel.GetMatchingGroup(nil,tp,LOCATION_EMZONE,0,nil):GetFirst()
 		Duel.Overlay(ally,tg)
 		Duel.ChangePosition(c,POS_FACEUP_DEFENSE)
 		Duel.AttackCostPaid() end
 end)
 	c:RegisterEffect(e1) end
+end
+function Cookie2.sherbetfilter(c)
+	return c:IsCode(10068084) and c:IsDefensePos()
 end

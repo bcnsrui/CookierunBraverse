@@ -7,9 +7,28 @@ function s.initial_effect(c)
 	e0:SetCode(EFFECT_ADD_SETCODE)
 	e0:SetValue(0xc05)
 	c:RegisterEffect(e0)
+	local e1=Effect.CreateEffect(c)
+	e1:SetType(EFFECT_TYPE_SINGLE)
+	e1:SetCode(EFFECT_ADD_SETCODE)
+	e1:SetValue(0xd031)
+	c:RegisterEffect(e1)
 end
-
-
-
-
-
+function s.arenafilter(c)
+	return c:IsSetCard(0xc01)
+end
+function s.AndCookieoperation(e,tp,eg,ep,ev,re,r,rp)
+	if Duel.GetMatchingGroupCount(s.arenafilter,tp,LOCATION_GRAVE,0,nil)<7 then return end
+	local c=e:GetHandler()
+	local e1=Effect.CreateEffect(c)
+	e1:SetType(EFFECT_TYPE_SINGLE)
+	e1:SetCode(EFFECT_ADD_SETCODE)
+	e1:SetValue(0xd071)
+	e1:SetReset(RESET_EVENT+RESETS_STANDARD+RESET_PHASE+PHASE_END,2)
+	c:RegisterEffect(e1)
+	local e2=Effect.CreateEffect(c)
+	e2:SetDescription(aux.Stringid(id,0))
+	e2:SetType(EFFECT_TYPE_SINGLE)
+	e2:SetProperty(EFFECT_FLAG_CLIENT_HINT+EFFECT_FLAG_CANNOT_DISABLE)
+	e2:SetReset(RESET_EVENT+RESETS_STANDARD+RESET_PHASE+PHASE_END,2)
+	c:RegisterEffect(e2)
+end

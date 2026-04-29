@@ -5,7 +5,7 @@ function s.initial_effect(c)
 	Cookie6.IGCoookieEffect(c,1,ATTRIBUTE_LIGHT,1,1)
 end
 function s.ArenaFilter(c)
-	return c:IsRace(RACE_WARRIOR) and c:IsSetCard(0xc01)
+	return c:IsFaceup() and c:IsRace(RACE_WARRIOR) and c:IsSetCard(0xc01)
 end
 function s.IGCookieeffcondition(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()

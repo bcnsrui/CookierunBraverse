@@ -235,11 +235,12 @@ end
 
 --모든 쿠키 대미지 주기
 function Cookie7.Alldamageeff(e,tp,eg,ep,ev,re,r,rp,g,dam)
-	while #g>0 do
+	while #g>1 do
 	Duel.Hint(HINT_SELECTMSG,tp,aux.Stringid(10060001,3))
 	local ag=g:FilterSelect(tp,aux.TRUE,1,1,nil)
 	Cookie7.damageeff(e,tp,eg,ep,ev,re,r,rp,ag,dam)
 	g:RemoveCard(ag) end
+	Cookie7.damageeff(e,tp,eg,ep,ev,re,r,rp,g,dam)
 end
 
 --쿠키 hp 트래시로 보내기
@@ -268,11 +269,12 @@ end
 
 --모든 쿠키 hp 트래시로 보내기
 function Cookie7.Allhptrasheff(e,tp,eg,ep,ev,re,r,rp,g,dam)
-	while #g>0 do
+	while #g>1 do
 	Duel.Hint(HINT_SELECTMSG,tp,aux.Stringid(10060001,3))
 	local ag=g:FilterSelect(tp,aux.TRUE,1,1,nil)
 	Cookie7.hptrasheff(e,tp,eg,ep,ev,re,r,rp,ag,dam)
 	g:RemoveCard(ag) end
+	Cookie7.hptrasheff(e,tp,eg,ep,ev,re,r,rp,g,dam)
 end
 
 --쿠키 hp 덱 맨위로 보내기

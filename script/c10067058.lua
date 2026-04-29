@@ -9,7 +9,10 @@ function s.initial_effect(c)
 	e1:SetValue(2)
 	c:RegisterEffect(e1)
 end
+function s.arenafilter(c)
+	return c:IsSetCard(0xc01)
+end
 function s.atkcon(e)
 	local tp=e:GetHandlerPlayer()
-	return Cookie3.SupportAreaCount(e,tp,nil,nil,nil,nil,nil,nil,1,1,0,0)>=5
+	return Cookie3.SupportAreafilter(e,tp,eg,ep,ev,re,r,rp,1,1,0,0):Filter(s.arenafilter,nil):GetCount()>=5
 end

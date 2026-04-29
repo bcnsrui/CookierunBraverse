@@ -10,7 +10,7 @@ function s.initial_effect(c)
 	c:RegisterEffect(e1)
 end
 function s.lv2filter(c)
-	return c:IsLevelAbove(2)
+	return c:IsFaceup() and c:IsLevelAbove(2)
 end
 function s.QECookieoperation(e,tp,eg,ep,ev,re,r,rp)
 	local ct=Duel.GetMatchingGroup(s.lv2filter,tp,LOCATION_EXTRA,0,nil):GetCount()

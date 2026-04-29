@@ -1,52 +1,19 @@
 if not Cookie2 then Duel.LoadScript("deprecated_function.lua") end
 local s,id=GetID()
 function s.initial_effect(c)
-	local e1=Effect.CreateEffect(c)
-	e1:SetDescription(aux.Stringid(10061004,0))
-	e1:SetType(EFFECT_TYPE_QUICK_O)
-	e1:SetCode(EVENT_FREE_CHAIN)
-	e1:SetRange(LOCATION_MZONE)
-	e1:SetHintTiming(TIMING_BATTLE_PHASE,TIMING_BATTLE_PHASE)
-	e1:SetCondition(s.ExtraAwakencon)
-	e1:SetTarget(Cookie3.notg)
-	e1:SetOperation(s.ExtraAwakenop)
-	c:RegisterEffect(e1)
 	Cookie2.CookieCharacter(c,ATTRIBUTE_LIGHT,3,3)
 	local e0=Effect.CreateEffect(c)
 	e0:SetType(EFFECT_TYPE_SINGLE)
 	e0:SetCode(EFFECT_ADD_SETCODE)
 	e0:SetValue(0xc05)
 	c:RegisterEffect(e0)
-end
-function s.ExtraAwakenfilter(c)
-	return c:IsFacedown() and c:IsCode(10068027)
-end
-function s.ExtraAwakencon(e,tp,eg,ep,ev,re,r,rp)
-	return Duel.IsExistingMatchingCard(s.ExtraAwakenfilter,tp,LOCATION_EXTRA,0,1,nil)
-	and Cookie2.BattlePositioncon(e)
-end
-function s.ExtraAwakenop(e,tp,eg,ep,ev,re,r,rp)
-	local c=e:GetHandler()
-	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_SPSUMMON)
-	local sc=Duel.SelectMatchingCard(tp,s.ExtraAwakenfilter,tp,LOCATION_EXTRA,0,1,1,nil):GetFirst()
-	Duel.Overlay(sc,c)
-	Duel.SpecialSummon(sc,0,tp,tp,false,false,POS_FACEUP_ATTACK)
-	Duel.Equip(tp,c,sc)
 	local e1=Effect.CreateEffect(c)
 	e1:SetType(EFFECT_TYPE_SINGLE)
-	e1:SetCode(EFFECT_EQUIP_LIMIT)
-	e1:SetReset(RESET_EVENT|RESETS_STANDARD)
-	e1:SetValue(function(e,c)return c==e:GetLabelObject()end)
-	e1:SetLabelObject(sc)
+	e1:SetCode(EFFECT_ADD_SETCODE)
+	e1:SetValue(0xd031)
 	c:RegisterEffect(e1)
-	local e2=Effect.CreateEffect(c)
-	e2:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_CONTINUOUS)
-	e2:SetCode(EVENT_DESTROYED)
-	e2:SetOperation(function(e,tp,eg,ep,ev,re,r,rp) Duel.SendtoGrave(e:GetHandler(),REASON_EFFECT) end)
-	c:RegisterEffect(e2)
 end
-
-
-
-
-
+function s.AndCookieoperation(e,tp,eg,ep,ev,re,r,rp)
+	local c=e:GetHandler()
+	if c:GetOverlayCount()<=4 then Cookie7.hpaddop(e,tp,eg,ep,ev,re,r,rp,c,1) end
+end

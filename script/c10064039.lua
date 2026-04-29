@@ -17,13 +17,8 @@ function s.opplv1(c,tp)
 	return Cookie3.NoEmFzonefilter(c,tp) and c:IsRace(RACE_WARRIOR) and c:IsLevel(1)
 end
 function s.AndCookieoperation(e,tp,eg,ep,ev,re,r,rp)
-	if hc:GetOverlayCount()>=2 then
-	Duel.Hint(HINT_SELECTMSG,tp,aux.Stringid(10060001,1))
-	local g=Duel.SelectMatchingCard(tp,s.opplv1,tp,0,LOCATION_MZONE,0,1,nil,tp)
-	if #g>0 then Cookie7.damageeff(e,tp,eg,ep,ev,re,r,rp,g,2) end end
+	local c=e:GetHandler()
+	if c:GetOverlayCount()>=2 then
+	local bc=c:GetBattleTarget()
+	if bc and bc:IsLevel(1) then Cookie7.damageeff(e,tp,eg,ep,ev,re,r,rp,bc,2) end end
 end
-
-
-
-
-

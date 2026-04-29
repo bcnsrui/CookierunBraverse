@@ -269,7 +269,7 @@ function Cookie4.BNCookieEffect(c,attr,colorCount,mixCount)
 	c:RegisterEffect(e2)
 end
 function Cookie4.Raindeityfilter(c)
-	return c:IsLevel(1) and c:IsRace(RACE_WARRIOR)
+	return c:IsFaceup() and c:IsLevel(1) and c:IsRace(RACE_WARRIOR)
 end
 function Cookie4.Raindeitytriggerop(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()

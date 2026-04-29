@@ -4,7 +4,7 @@ function s.initial_effect(c)
 	Cookie6.ItemEffect(c,ATTRIBUTE_LIGHT,2,2)
 end
 function s.lv2cookiefilter(c)
-	return c:IsLevelAbove(2) and c:IsAttribute(ATTRIBUTE_LIGHT)
+	return c:IsFaceup() and c:IsLevelAbove(2) and c:IsAttribute(ATTRIBUTE_LIGHT)
 end
 function s.Itemoperation(e,tp,eg,ep,ev,re,r,rp)
 	Duel.Hint(HINT_SELECTMSG,tp,aux.Stringid(10060001,1))

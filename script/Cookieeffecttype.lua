@@ -1,6 +1,54 @@
 --쿠키의 효과처리 타입
 Cookie6={}
 
+--블로커 쿠키1
+function Cookie6.BlockerCookieEffect(c,attr,colorCount,mixCount)
+	local e1=Effect.CreateEffect(c)
+	e1:SetDescription(aux.Stringid(10061009,0))
+	e1:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_QUICK_O)
+	e1:SetCode(EVENT_ATTACK_ANNOUNCE)
+	e1:SetRange(LOCATION_MZONE)
+	e1:SetCondition(Cookie6.blockercookiecon)
+	e1:SetTarget(Cookie3.notg)
+	e1:SetOperation(Cookie6.blockercookieop)
+	c:RegisterEffect(e1)
+end
+function Cookie6.blockercookiecon(e,tp,eg,ep,ev,re,r,rp,rest)
+	local c=e:GetHandler()
+	local bt=Duel.GetAttackTarget()
+	return c~=bt and bt:GetControler()==c:GetControler()
+	and Cookie3.manacon(e,tp,eg,ep,ev,re,r,rp,chk,attr,colorCount,mixCount)
+	and Duel.GetMatchingGroupCount(Card.IsSetCard,tp,0,LOCATION_MZONE,nil,0xa01)==0
+end
+function Cookie6.blockercookieop(e,tp,eg,ep,ev,re,r,rp,rest)
+	Cookie3.manacost(e,tp,eg,ep,ev,re,r,rp,attr,colorCount,mixCount)
+	Duel.ChangeAttackTarget(e:GetHandler())
+end
+--블로커 쿠키2
+function Cookie6.RestBlockerCookieEffect(c,attr,colorCount,mixCount)
+	local e1=Effect.CreateEffect(c)
+	e1:SetDescription(aux.Stringid(10061009,0))
+	e1:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_QUICK_O)
+	e1:SetCode(EVENT_ATTACK_ANNOUNCE)
+	e1:SetRange(LOCATION_MZONE)
+	e1:SetCondition(Cookie6.blockercookiecon2)
+	e1:SetTarget(Cookie3.notg)
+	e1:SetOperation(Cookie6.blockercookieop2)
+	c:RegisterEffect(e1)
+end
+function Cookie6.blockercookiecon2(e,tp,eg,ep,ev,re,r,rp,rest)
+	local c=e:GetHandler()
+	local bt=Duel.GetAttackTarget()
+	return c~=bt and bt:GetControler()==c:GetControler() and c:IsAttackPos()
+	and Cookie3.manacon(e,tp,eg,ep,ev,re,r,rp,chk,attr,colorCount,mixCount)
+	and Duel.GetMatchingGroupCount(Card.IsSetCard,tp,0,LOCATION_MZONE,nil,0xa01)==0
+end
+function Cookie6.blockercookieop2(e,tp,eg,ep,ev,re,r,rp,rest)
+	Duel.ChangePosition(e:GetHandler(),POS_FACEUP_DEFENSE)
+	Cookie3.manacost(e,tp,eg,ep,ev,re,r,rp,attr,colorCount,mixCount)
+	Duel.ChangeAttackTarget(e:GetHandler())
+end
+
 --그리고 효과
 function Cookie6.AndCoookieEffect(e,tp,eg,ep,ev,re,r,rp,attr,colorCount,mixCount)
 	local c=e:GetHandler()
@@ -359,7 +407,8 @@ function Cookie6.TrapEffect(c,attr,colorCount,mixCount)
 end
 function Cookie6.Trapcon(e)
 	local tp=e:GetHandlerPlayer()
-	return Duel.GetTurnPlayer()==1-tp and Duel.GetAttacker()
+	local em=Duel.GetMatchingGroup(Card.IsFaceup,tp,0,LOCATION_EMZONE,nil):GetFirst()
+	return Duel.GetTurnPlayer()==1-tp and Duel.GetAttacker() and not em:IsSetCard(0xa06)
 	and Duel.GetAttacker():IsControler(1-tp) and Duel.GetCurrentPhase()<=PHASE_BATTLE
 end
 

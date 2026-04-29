@@ -7,7 +7,7 @@ function s.cookiefilter(c,tp)
 	return c:IsRace(RACE_WARRIOR) and Cookie3.NoEmFzonefilter(c,tp)
 end
 function s.lv1cookiefilter(c)
-	return c:IsLevel(1) and c:IsRace(RACE_WARRIOR)
+	return c:IsFaceup() and c:IsLevel(1) and c:IsRace(RACE_WARRIOR)
 end
 function s.Itemeffcondition(e,tp,eg,ep,ev,re,r,rp)
 	return Duel.GetMatchingGroupCount(s.cookiefilter,tp,LOCATION_MZONE,0,nil,tp)>=1

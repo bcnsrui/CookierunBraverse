@@ -10,5 +10,5 @@ function s.initial_effect(c)
 	c:RegisterEffect(e1)
 end
 function s.atkcon(e)
-	return Duel.IsExistingMatchingCard(Card.IsSetCard,e:GetHandlerPlayer(),LOCATION_MZONE,LOCATION_MZONE,1,nil,0xc04)
+	return Duel.IsExistingMatchingCard(Card.IsSetCard,e:GetHandlerPlayer(),LOCATION_MZONE,LOCATION_MZONE,1,nil,0xc02)
 end

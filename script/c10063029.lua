@@ -20,6 +20,6 @@ function s.QECookieoperation(e,tp,eg,ep,ev,re,r,rp)
 	local g=Duel.SelectMatchingCard(tp,s.yellowhand,tp,LOCATION_HAND,0,0,1,nil)
 	if #g==0 then return end
 	local tc=g:GetFirst()
-	Cookie3.Cookiesummonop(e,tp,eg,ep,ev,re,r,rp,tc)
+	Cookie3.Cookiesummonop(e,tp,eg,ep,ev,re,r,rp,g)
 	Cookie7.hpaddop(e,tp,eg,ep,ev,re,r,rp,tc,1)
 end

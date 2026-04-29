@@ -15,7 +15,7 @@ function s.initial_effect(c)
 	c:RegisterEffect(e2)
 end
 function s.brfilter(c)
-	return c:IsRace(RACE_WARRIOR) and c:IsLevelBelow(2)
+	return c:IsFaceup() and c:IsRace(RACE_WARRIOR) and c:IsLevelBelow(2)
 end
 function s.QECookiecost(e,tp,eg,ep,ev,re,r,rp,chk)
 	return Cookie3.handcon(e,tp,eg,ep,ev,re,r,rp,chk,ALL_COLOR,1,1)

@@ -14,7 +14,7 @@ function s.initial_effect(c)
 	c:RegisterEffect(e1)
 end
 function s.yellowlv1filter(c)
-	return c:IsAttribute(ATTRIBUTE_LIGHT) and c:IsRace(RACE_WARRIOR) and c:IsLevel(1)
+	return c:IsFaceup() and c:IsAttribute(ATTRIBUTE_LIGHT) and c:IsRace(RACE_WARRIOR) and c:IsLevel(1)
 end
 function s.AndCookiecostoperation(e,tp,eg,ep,ev,re,r,rp)
 	Duel.SendtoExtraP(e:GetHandler(),nil,REASON_COST)

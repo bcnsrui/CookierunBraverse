@@ -2,7 +2,7 @@ if not Cookie2 then Duel.LoadScript("deprecated_function.lua") end
 local s,id=GetID()
 function s.initial_effect(c)
 	Cookie2.CookieCharacter(c,ATTRIBUTE_WIND,2,3)
-	Cookie6.IGCoookieEffect(c,1,ATTRIBUTE_WIND,1,0)
+	Cookie6.IGCoookieEffect(c,1,ATTRIBUTE_WIND,1,1)
 end
 function s.arenafilter(c)
 	return c:IsSetCard(0xc01)

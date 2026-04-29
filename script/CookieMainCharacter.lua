@@ -1,5 +1,6 @@
---쿠키런 브레이버스는 갓겜이다
+﻿--쿠키런 브레이버스는 갓겜이다
 Cookie={}
+Cookie.blockedMana={[0]=nil,[1]=nil}
 
 --메인 캐릭터 유틸
 function Cookie.MainCharacter(c)
@@ -87,6 +88,9 @@ end
 function Cookie.ResetPositionfilter(c)
 	return c:IsFaceup() and c:IsDefensePos() and not c:IsSetCard(0xa10)
 end
+function Cookie.ResetPositionfilter2(c)
+	return c:IsFaceup() and c:GetCounter(0x1003)>0
+end
 function Cookie.Resetop(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
 	local e1=Effect.CreateEffect(c)
@@ -111,8 +115,17 @@ function Cookie.Resetop(e,tp,eg,ep,ev,re,r,rp)
 	local sg=Duel.GetMatchingGroup(Cookie.ResetPositionfilter,tp,LOCATION_MZONE,0,nil)
 	if #sg>0 then
 	Duel.ChangePosition(sg,POS_FACEUP_ATTACK) end
-	local resetmana=c:GetOverlayGroup()
+	local resetall=c:GetOverlayGroup()
+	local resetmana=Group.CreateGroup()
+	local blocked=Cookie.blockedMana[tp]
+	Cookie.blockedMana[tp]=nil
+	for tc in aux.Next(resetall) do
+		if tc~=blocked then resetmana:AddCard(tc) end
+	end
 	if #resetmana>0 then Duel.Remove(resetmana,POS_FACEUP,REASON_RULE) end
+	local sg2=Duel.GetMatchingGroup(Cookie.ResetPositionfilter2,tp,LOCATION_MZONE,LOCATION_MZONE,nil)
+	if #sg2>0 then
+	for tc2 in aux.Next(sg2) do tc2:RemoveCounter(tp,0x1003,tc2:GetCounter(0x1003),REASON_RULE) end	end
 end
 function Cookie.drawop(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
@@ -139,6 +152,7 @@ function Cookie.endcon(e)
 	return Duel.GetTurnPlayer()==e:GetHandlerPlayer()
 end
 function Cookie.endop(e,tp,eg,ep,ev,re,r,rp)
+	Cookie.blockedMana[tp]=nil
 	local stage=Duel.GetMatchingGroup(nil,tp,LOCATION_FZONE,0,nil):GetFirst()
 	if stage then stage:RemoveCounter(tp,0x1000,1,REASON_RULE) end
 	local g=Duel.GetMatchingGroup(Cookie.Counterfilter,tp,LOCATION_MZONE,LOCATION_MZONE,nil)
@@ -313,7 +327,7 @@ end
 
 
 --메인 캐릭터 기동효과
---1패정렬,2등장카운터,3쿠키등장
+--1패정렬,2등장카운터,3쿠키등장,7헛체인
 function Cookie.MainCharacterSpEff(c)
 	local e1=Effect.CreateEffect(c)
 	e1:SetDescription(aux.Stringid(10060002,0))
@@ -321,7 +335,7 @@ function Cookie.MainCharacterSpEff(c)
 	e1:SetCode(EVENT_FREE_CHAIN)
 	e1:SetProperty(EFFECT_FLAG_BOTH_SIDE)
 	e1:SetRange(LOCATION_EMZONE)
-	e1:SetCondition(Cookie2.BattlePositioncon)
+	e1:SetCondition(Cookie.BattlePositioncon)
 	e1:SetTarget(Cookie3.notg)
 	e1:SetOperation(Cookie.handop)
 	c:RegisterEffect(e1)
@@ -356,6 +370,18 @@ function Cookie.MainCharacterSpEff(c)
 	e6:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_TRIGGER_F)
 	e6:SetCode(EVENT_DAMAGE_STEP_END)
 	c:RegisterEffect(e6)
+	local e7=Effect.CreateEffect(c)
+	e7:SetDescription(aux.Stringid(10060000,8))
+	e7:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_QUICK_O)
+	e7:SetCode(EVENT_ATTACK_ANNOUNCE)
+	e7:SetRange(LOCATION_EMZONE)
+	e7:SetCondition(Cookie6.Trapcon)
+	e7:SetTarget(Cookie3.notg)
+	c:RegisterEffect(e7)
+end
+function Cookie.BattlePositioncon(e)
+	local tp=e:GetHandlerPlayer()
+	return Duel.GetCurrentPhase()==PHASE_BATTLE_STEP and not (Duel.GetAttacker() and (Duel.GetAttacker():IsControler(1-tp) or Duel.GetAttacker():IsControler(tp)))
 end
 function Cookie.handop(e,tp,eg,ep,ev,re,r,rp)
 	local g=Duel.GetFieldGroup(tp,LOCATION_HAND,0)
@@ -451,27 +477,27 @@ function Cookie.TestMainCharacter(c)
 	e1:SetCode(EVENT_FREE_CHAIN)
 	e1:SetProperty(EFFECT_FLAG_BOTH_SIDE)
 	e1:SetRange(LOCATION_EMZONE)
-	e1:SetCondition(Cookie2.BattlePositioncon)
-	e1:SetTarget(function(e,tp,eg,ep,ev,re,r,rp,chk) if chk==0 then return true end Duel.SetChainLimit(aux.FALSE) end)
+	e1:SetCondition(Cookie.BattlePositioncon)
+	e1:SetTarget(Cookie3.notg)
 	e1:SetOperation(Cookie.testmaincounterop)
 	c:RegisterEffect(e1)
 	local e2=Effect.CreateEffect(c)
 	e2:SetDescription(aux.Stringid(10060003,0))
 	e2:SetType(EFFECT_TYPE_QUICK_O)
 	e2:SetCode(EVENT_FREE_CHAIN)
-	e1:SetProperty(EFFECT_FLAG_BOTH_SIDE)
+	e2:SetProperty(EFFECT_FLAG_BOTH_SIDE)
 	e2:SetRange(LOCATION_EMZONE)
-	e2:SetCondition(Cookie2.BattlePositioncon)
-	e2:SetTarget(function(e,tp,eg,ep,ev,re,r,rp,chk) if chk==0 then return true end Duel.SetChainLimit(aux.FALSE) end)
+	e2:SetCondition(Cookie.BattlePositioncon)
+	e2:SetTarget(Cookie3.notg)
 	e2:SetOperation(Cookie.testmanaop)
 	c:RegisterEffect(e2)
 	local e3=Effect.CreateEffect(c)
 	e3:SetDescription(aux.Stringid(10060003,2))
 	e3:SetType(EFFECT_TYPE_QUICK_O)
 	e3:SetCode(EVENT_FREE_CHAIN)
-	e1:SetProperty(EFFECT_FLAG_BOTH_SIDE)
+	e3:SetProperty(EFFECT_FLAG_BOTH_SIDE)
 	e3:SetRange(LOCATION_EMZONE)
-	e3:SetCondition(Cookie2.BattlePositioncon)
+	e3:SetCondition(Cookie.BattlePositioncon)
 	e3:SetTarget(Cookie3.notg)
 	e3:SetOperation(Cookie.testbrakeop)
 	c:RegisterEffect(e3)
@@ -479,9 +505,9 @@ function Cookie.TestMainCharacter(c)
 	e4:SetDescription(aux.Stringid(10060003,3))
 	e4:SetType(EFFECT_TYPE_QUICK_O)
 	e4:SetCode(EVENT_FREE_CHAIN)
-	e1:SetProperty(EFFECT_FLAG_BOTH_SIDE)
+	e4:SetProperty(EFFECT_FLAG_BOTH_SIDE)
 	e4:SetRange(LOCATION_EMZONE)
-	e4:SetCondition(Cookie2.BattlePositioncon)
+	e4:SetCondition(Cookie.BattlePositioncon)
 	e4:SetTarget(Cookie3.notg)
 	e4:SetOperation(Cookie.testmaincookieop)
 	c:RegisterEffect(e4)

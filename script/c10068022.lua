@@ -9,7 +9,7 @@ end
 function s.Itemcostoperation(e,tp,eg,ep,ev,re,r,rp)
 	Duel.Hint(HINT_SELECTMSG,tp,aux.Stringid(10060000,6))
 	local g=Duel.SelectMatchingCard(tp,Cookie3.NoEmFzonefilter,tp,LOCATION_MZONE,0,1,1,nil,tp)
-	Duel.Destroy(g,REASON_COST)
+	if #g>0 then Cookie3.Cookiedestroyop(e,tp,eg,ep,ev,re,r,rp,g) end
 end
 function s.redlv1filter(c)
 	return c:IsAttribute(ATTRIBUTE_FIRE) and c:IsLevel(1) and c:IsRace(RACE_WARRIOR)

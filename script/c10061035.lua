@@ -10,7 +10,7 @@ function s.initial_effect(c)
 	c:RegisterEffect(e1)
 end
 function s.lv1filter(c)
-	return c:IsRace(RACE_WARRIOR) and c:IsLevel(1)
+	return c:IsFaceup() and c:IsRace(RACE_WARRIOR) and c:IsLevel(1)
 end
 function s.QECookieoperation(e,tp,eg,ep,ev,re,r,rp)
 	Duel.Hint(HINT_SELECTMSG,tp,aux.Stringid(10060001,1))

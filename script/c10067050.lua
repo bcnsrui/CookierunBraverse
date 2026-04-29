@@ -19,15 +19,13 @@ function s.QECookiecostoperation(e,tp,eg,ep,ev,re,r,rp)
 	if #sg>0 then Duel.SendtoHand(sg,nil,REASON_EFFECT) end
 end
 function s.QECookieeffcondition(e,tp,eg,ep,ev,re,r,rp)
-	return Duel.GetMatchingGroupCount(Cookie3.NoEmFzonefilter,tp,0,LOCATION_MZONE,nil,tp)>0
+	return Duel.GetMatchingGroupCount(s.restcookie,tp,0,LOCATION_MZONE,nil,tp)>0
 end
 function s.restcookie(c,tp)
 	return Cookie3.NoEmFzonefilter(c,tp) and c:IsPosition(POS_FACEUP_DEFENSE)
 end
 function s.QECookieoperation(e,tp,eg,ep,ev,re,r,rp)
-	local g=Duel.GetMatchingGroup(s.restcookie,tp,0,LOCATION_MZONE,nil,tp)
-	if #g==0 then return end
 	Duel.Hint(HINT_SELECTMSG,tp,aux.Stringid(10060001,1))
-	local tg=g:Select(tp,0,1,nil)
-	if #tg>0 then Cookie7.damageeff(e,tp,eg,ep,ev,re,r,rp,tg,1) end
+	local g=Duel.SelectMatchingCard(tp,s.restcookie,tp,0,LOCATION_MZONE,0,1,nil,tp)
+	if #g>0 then Cookie7.damageeff(e,tp,eg,ep,ev,re,r,rp,g,1) end
 end

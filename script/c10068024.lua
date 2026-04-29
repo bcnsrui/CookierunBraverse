@@ -7,9 +7,12 @@ function s.cookiefilter(c,tp)
 	return c:IsRace(RACE_WARRIOR) and Cookie3.NoEmFzonefilter(c,tp)
 end
 function s.Stagecost(e,tp,eg,ep,ev,re,r,rp,chk)
-	if chk==0 then return Duel.IsExistingMatchingCard(s.cookiefilter,tp,LOCATION_MZONE,LOCATION_MZONE,1,nil,tp) end
+	if chk==0 then return e:GetHandler():IsAttackPos() end
+end
+function s.Stagecostoperation(e,tp,eg,ep,ev,re,r,rp)
+	Duel.ChangePosition(e:GetHandler(),POS_FACEUP_DEFENSE)
 end
 function s.Stageoperation(e,tp,eg,ep,ev,re,r,rp)
 	local g=Duel.GetMatchingGroup(s.cookiefilter,tp,LOCATION_MZONE,LOCATION_MZONE,nil,tp)
-	if #g>0 then Cookie7.Alldamageeff(e,tp,eg,ep,ev,re,r,rp,g,1) end
+	Cookie7.Alldamageeff(e,tp,eg,ep,ev,re,r,rp,g,1)
 end

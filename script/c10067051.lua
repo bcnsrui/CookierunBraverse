@@ -23,7 +23,7 @@ function s.IGCookieoperation(e,tp,eg,ep,ev,re,r,rp)
 	local sg=g:Filter(s.arenafilter,nil)
 	if #sg>0 and Duel.SelectYesNo(tp,aux.Stringid(id,0)) then
 		Duel.Hint(HINT_SELECTMSG,tp,aux.Stringid(10060001,1))
-		local tc=sg:Select(tp,1,1,nil)
+		local tc=sg:Select(tp,0,1,nil)
 		local ally=Duel.GetMatchingGroup(Card.IsFaceup,tp,LOCATION_EMZONE,0,nil):GetFirst()
 		if ally and #tc>0 then Duel.Overlay(ally,tc) end
 		g:RemoveCard(tc:GetFirst())

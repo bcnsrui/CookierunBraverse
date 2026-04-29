@@ -5,7 +5,7 @@ function s.initial_effect(c)
 	Cookie6.IGCoookieEffect(c,0,ATTRIBUTE_LIGHT,2,2)
 end
 function s.lightbrakefilter(c)
-	return c:IsAttribute(ATTRIBUTE_LIGHT) and c:IsRace(RACE_WARRIOR)
+	return c:IsFaceup() and c:IsAttribute(ATTRIBUTE_LIGHT) and c:IsRace(RACE_WARRIOR)
 end
 function s.sum3check(sg,e,tp,mg)
 	return sg:GetSum(Card.GetLevel)==3

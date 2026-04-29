@@ -6,17 +6,16 @@ end
 function s.bluefilter(c)
 	return c:IsAttribute(ATTRIBUTE_WATER)
 end
-function s.Stageeffcondition(e,tp,eg,ep,ev,re,r,rp)
-	return Duel.GetMatchingGroupCount(s.bluefilter,tp,LOCATION_HAND,0,nil)>=1
-end
 function s.Stageoperation(e,tp,eg,ep,ev,re,r,rp)
-	local g=Duel.GetMatchingGroup(s.bluefilter,tp,LOCATION_HAND,0,nil)
-	if #g==0 then return end
+	local c=e:GetHandler()
+	Duel.SendtoGrave(c,REASON_COST)
+	local handcount=Duel.GetFieldGroupCount(tp,LOCATION_HAND,0)
+	if handcount==0 then return end
 	Duel.Hint(HINT_SELECTMSG,tp,aux.Stringid(10060000,6))
-	local hg=g:Select(tp,0,#g,nil)
-	if #hg>0 then
-		Duel.SendtoGrave(hg,REASON_EFFECT)
-		Cookie3.CookieDrawop(e,tp,eg,ep,ev,re,r,rp,#hg)
+	local hg=Duel.SelectMatchingCard(tp,s.bluefilter,tp,LOCATION_HAND,0,0,handcount,nil)
+	local discarded=#hg
+	if discarded>0 then
+		Duel.SendtoGrave(hg,REASON_COST)
+		Cookie3.CookieDrawop(e,tp,eg,ep,ev,re,r,rp,discarded)
 	end
-	Duel.SendtoGrave(e:GetHandler(),REASON_EFFECT)
 end

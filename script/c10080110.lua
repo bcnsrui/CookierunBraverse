@@ -19,8 +19,11 @@ function s.checkop(e,tp,eg,ep,ev,re,r,rp)
 		end
 	end
 end
+function s.arenavailfilter(c)
+	return c:IsFaceup() and c:IsRace(RACE_WARRIOR) and c:IsSetCard(0xc01)
+end
 function s.IGCookieeffcondition(e,tp,eg,ep,ev,re,r,rp)
-	return Duel.GetMatchingGroupCount(function(c) return c:IsRace(RACE_WARRIOR) and c:IsSetCard(0xc01) end,tp,LOCATION_EXTRA,0,nil)>=4
+	return Duel.GetMatchingGroupCount(s.arenavailfilter,tp,LOCATION_EXTRA,0,nil)>=4
 		or Duel.GetFlagEffect(tp,id)>0
 end
 function s.IGCookieoperation(e,tp,eg,ep,ev,re,r,rp)

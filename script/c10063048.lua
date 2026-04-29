@@ -9,7 +9,7 @@ function s.filter(c,tp)
 	return c:GetLevel()>=2 and c:IsRace(RACE_WARRIOR) and Cookie3.NoEmFzonefilter(c,tp)
 end
 function s.lv3lightfilter(c)
-	return c:IsLevel(3) and c:IsAttribute(ATTRIBUTE_LIGHT) and c:IsRace(RACE_WARRIOR)
+	return c:IsFaceup() and c:IsLevel(3) and c:IsAttribute(ATTRIBUTE_LIGHT) and c:IsRace(RACE_WARRIOR)
 end
 function s.Stageoperation(e,tp,eg,ep,ev,re,r,rp)
 	Duel.Hint(HINT_SELECTMSG,tp,aux.Stringid(10060001,1))
