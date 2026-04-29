@@ -1,4 +1,4 @@
-﻿--쿠키런 브레이버스는 갓겜이다
+﻿-- Cookie Run Bravers main character logic
 Cookie={}
 Cookie.blockedMana={[0]=nil,[1]=nil}
 
