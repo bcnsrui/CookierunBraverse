@@ -24,17 +24,12 @@ function s.QECookieoperation(e,tp,eg,ep,ev,re,r,rp)
 	local dg=Duel.SelectMatchingCard(tp,Cookie3.NoEmFzonefilter,tp,0,LOCATION_MZONE,0,1,nil,tp)
 	if #dg==0 then return end
 	Cookie7.damageeff(e,tp,eg,ep,ev,re,r,rp,dg,1)
-	if c:GetOverlayCount()==0 then return end
-	local og=c:GetOverlayGroup()
-	local last=og:GetFirst()
-	for tc in aux.Next(og) do
-		if tc:GetSequence()>last:GetSequence() then last=tc end
-	end
-	Duel.DisableShuffleCheck()
-	Duel.SendtoDeck(last,nil,SEQ_DECKTOP,REASON_EFFECT)
-	Duel.Hint(HINT_SELECTMSG,tp,aux.Stringid(10060001,1))
-	local hg=Duel.SelectMatchingCard(tp,function(sc) return s.othercookie(sc,c,tp) end,tp,LOCATION_MZONE,0,1,1,nil,tp)
-	if #hg==0 then return end
-	local oc=hg:GetFirst()
-	Cookie7.hpaddop(e,tp,eg,ep,ev,re,r,rp,oc,1)
+	local ally=Duel.GetMatchingGroup(nil,tp,LOCATION_EMZONE,0,nil):GetFirst()
+	if ally:IsSetCard(0xa15) then return end
+	if Duel.IsExistingMatchingCard(Cookie3.NoEmFzonefilter,tp,LOCATION_MZONE,0,2,nil,tp) then
+	local g=Duel.GetMatchingGroup(Cookie3.NoEmFzonefilter,tp,LOCATION_MZONE,0,nil,tp)
+	local cg=Group.FromCards(c)
+	g:Sub(cg)
+	Cookie7.hpdecktop(e,tp,eg,ep,ev,re,r,rp,cg,1)
+	Cookie7.hpaddop(e,tp,eg,ep,ev,re,r,rp,g,1) end
 end

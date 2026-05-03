@@ -4,7 +4,7 @@ function s.initial_effect(c)
 	Cookie6.ItemEffect(c,ATTRIBUTE_LIGHT,1,1)
 end
 function s.goldcheesecookiefilter(c,tp)
-	return c:IsCode(10063025,10068026,10068027) and Cookie3.NoEmFzonefilter(c,tp)
+	return c:IsCode(table.unpack(CARD_GOLD_CHEESE)) and Cookie3.NoEmFzonefilter(c,tp)
 	and not c:GetEquipGroup():IsExists(Card.IsSetCard,1,nil,0xc03)
 end
 function s.Itemoperation(e,tp,eg,ep,ev,re,r,rp)

@@ -12,7 +12,7 @@ end
 function s.QECookieoperation(e,tp,eg,ep,ev,re,r,rp)
 	local ct=Duel.AnnounceNumber(tp,3,2,1,0)
 	if ct==0 then return end
-	if Duel.SelectYesNo(tp,aux.Stringid(id,1)) then
-	Cookie3.CookieTrashop(e,1-tp,eg,ep,ev,re,r,rp,ct)
-	else Cookie3.CookieTrashop(e,tp,eg,ep,ev,re,r,rp,ct) end
+	if Duel.SelectYesNo(tp,aux.Stringid(10060002,6)) then
+	Cookie3.CookieTrashop(e,tp,eg,ep,ev,re,r,rp,ct)
+	else Cookie3.CookieTrashop(e,1-tp,eg,ep,ev,re,r,rp,ct) end
 end

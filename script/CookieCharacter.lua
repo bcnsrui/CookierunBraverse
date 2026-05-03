@@ -1,12 +1,30 @@
 --쿠키런 브레이버스의 쿠키들
 Cookie2={}
 
---카드명 지정
+--카드명 지정(아레나)
 CARD_CAPSAICIN={10063015,10064012,10067014,10070609}
 CARD_PRUNE_JUICE={10063112,10067104}
 CARD_KOUIGN_AMANN={10063086,10067035}
-CARD_GOLD_CHEESE={10063025,10068026,10068027}
-CARD_DARK_CACAO={10063100,10068103,10068104}
+--카드명 지정(에인션트)
+CARD_HOLLYBERRY={10063017,10069017,10090021,10090024}
+CARD_GOLD_CHEESE={10063025,10068026,10068027,10069024}
+CARD_WHITE_LILY={10063055,10069078,10090069,10090073}
+CARD_PURE_VANILLA={10063088,10069065,10069088,10069089}
+CARD_DARK_CACAO={10063100,10068103,10068104,10069097}
+--카드명 지정(비스트)
+CARD_BURNING_SPICE={10068009}
+CARD_ETERNAL_SUGAR={10090049,10080077}
+CARD_MYSTIC_FLOUR={10068059}
+CARD_SHADOW_MILK={10069010,10069030,10069055,10069079,10069102,10080063}
+CARD_SILENT_SALT={10090122}
+--카드명 지정(드래곤)
+CARD_PITAYA_DRAGON={10063010,10065013,10070604}
+CARD_ANANAS_DRAGON={10065040}
+CARD_LONGAN_DRAGON={10065056}
+CARD_LOTUS_DRAGON={10065071}
+CARD_LYCHEE_DRAGON={10065092}
+--카드명 지정(기타)
+CARD_MARZIPAN_COOKIES={10063027,10080025,10080026,10080027}
 
 --쿠키 유틸
 function Cookie2.CookieCharacter(c,attr,colorCount,mixCount)
@@ -145,7 +163,8 @@ function Cookie2.damagecheck(e,tp,eg,ep,ev,re,r,rp,attr,colorCount,mixCount)
 	elseif dam>1 and bc:IsSetCard(0xd051) then dam=1
 	elseif dam>2 and bc:IsSetCard(0xd052) then dam=2 end
 	if bc:IsSetCard(0xd071) then dam=math.max(0,dam-1)
-	elseif bc:IsSetCard(0xd072) then dam=math.max(0,dam-2) end
+	elseif bc:IsSetCard(0xd072) then dam=math.max(0,dam-2)
+	elseif bc:IsSetCard(0xd073) then dam=math.max(0,dam-3) end
 	Duel.Damage(1-c:GetControler(),dam,REASON_EFFECT)
 	local damage=0
 	while damage<dam and ((bc:GetOverlayCount()>0 and not bc:IsSetCard(0xa03)) or bc:GetOverlayCount()>1) do
@@ -180,6 +199,11 @@ function Cookie2.battlemanacost(attr,colorCount,mixCount)
 	--백면사(10068075)
 	if Duel.IsExistingMatchingCard(Card.IsCode,tp,LOCATION_SZONE,LOCATION_SZONE,1,nil,10068075)
 	and Cookie3.SupportAreaCount(e,tp,eg,ep,ev,re,r,rp,1,1,0,0)>=6 then _mixCount=_mixCount+1 end
+	--이터널슈가 쿠키(10090049)
+	local brk=Duel.GetMatchingGroup(Card.IsFaceup,tp,0,LOCATION_EXTRA,nil):GetSum(Card.GetLevel)
+	local esn=Duel.GetMatchingGroupCount(Card.IsCode,tp,0,LOCATION_MZONE,nil,table.unpack(CARD_ETERNAL_SUGAR))
+	local ls=Duel.GetMatchingGroupCount(Card.IsCode,tp,0,LOCATION_MZONE,nil,10090049)
+	if brk>=5 and esn==1 and ls==1 then _mixCount=_mixCount+1 end
 	--결의와 품위가 살아 숨쉬는 시대(10068125)
 	if Duel.IsExistingMatchingCard(Card.IsCode,tp,LOCATION_SZONE,LOCATION_SZONE,1,nil,10068125)
 	and Duel.GetFieldGroupCount(tp,LOCATION_GRAVE,0)>=15
@@ -208,6 +232,11 @@ function Cookie2.battlemanacost(attr,colorCount,mixCount)
 	--백면사(10068075)
 	if Duel.IsExistingMatchingCard(Card.IsCode,tp,LOCATION_SZONE,LOCATION_SZONE,1,nil,10068075)
 	and Cookie3.SupportAreaCount(e,tp,eg,ep,ev,re,r,rp,1,1,0,0)>=6 then _mixCount=_mixCount+1 end
+	--이터널슈가 쿠키(10090049)
+	local brk=Duel.GetMatchingGroup(Card.IsFaceup,tp,0,LOCATION_EXTRA,nil):GetSum(Card.GetLevel)
+	local esn=Duel.GetMatchingGroupCount(Card.IsCode,tp,0,LOCATION_MZONE,nil,table.unpack(CARD_ETERNAL_SUGAR))
+	local ls=Duel.GetMatchingGroupCount(Card.IsCode,tp,0,LOCATION_MZONE,nil,10090049)
+	if brk>=5 and esn==1 and ls==1 then _mixCount=_mixCount+1 end
 	--결의와 품위가 살아 숨쉬는 시대(10068125)
 	if Duel.IsExistingMatchingCard(Card.IsCode,tp,LOCATION_SZONE,LOCATION_SZONE,1,nil,10068125)
 	and Duel.GetFieldGroupCount(tp,LOCATION_GRAVE,0)>=15

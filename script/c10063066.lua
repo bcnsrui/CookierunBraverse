@@ -4,7 +4,7 @@ function s.initial_effect(c)
 	Cookie6.ItemEffect(c,ATTRIBUTE_WIND,3,3)
 end
 function s.saintlilycookiefilter(c,tp)
-	return c:IsCode(10063055) and Cookie3.NoEmFzonefilter(c,tp)
+	return c:IsCode(table.unpack(CARD_WHITE_LILY)) and Cookie3.NoEmFzonefilter(c,tp)
 	and not c:GetEquipGroup():IsExists(Card.IsSetCard,1,nil,0xc03)
 end
 function s.Itemoperation(e,tp,eg,ep,ev,re,r,rp)

@@ -14,7 +14,6 @@ function s.initial_effect(c)
 	e2:SetValue(0xd03)
 	c:RegisterEffect(e2)
 end
-s.listed_names={CARD_PITAYA_DRAGON}
 function s.lv1filter(c,tp)
 	return c:IsRace(RACE_WARRIOR) and c:IsLevel(1) and Cookie3.NoEmFzonefilter(c,tp)
 end

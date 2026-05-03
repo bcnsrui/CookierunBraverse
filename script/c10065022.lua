@@ -14,10 +14,13 @@ function s.Stagecostoperation(e,tp,eg,ep,ev,re,r,rp)
 	local ag=Duel.SelectMatchingCard(tp,s.lv2filter,tp,LOCATION_MZONE,0,1,1,nil,tp)
 	Cookie7.hptrasheff(e,tp,eg,ep,ev,re,r,rp,ag,1)
 end
+function s.dragonfilter(c,tp)
+	return c:IsCode(table.unpack(CARD_PITAYA_DRAGON)) and Cookie3.NoEmFzonefilter(c,tp)
+end
 function s.Stageoperation(e,tp,eg,ep,ev,re,r,rp)
 	local ag=Duel.GetMatchingGroup(s.lv2filter,tp,LOCATION_MZONE,0,nil,tp)
 	Cookie7.cookieatkchange(e,tp,eg,ep,ev,re,r,rp,PHASE_END,1,ag,1)
-	if Duel.IsExistingMatchingCard(Card.ListsCode,tp,LOCATION_MZONE,0,1,nil,CARD_PITAYA_DRAGON) 
+	if Duel.IsExistingMatchingCard(s.dragonfilter,tp,LOCATION_MZONE,0,1,nil,tp) 
 	and Duel.SelectYesNo(tp,aux.Stringid(10060001,8)) then
 		Cookie3.CookieDrawop(e,tp,eg,ep,ev,re,r,rp,1)
 	end

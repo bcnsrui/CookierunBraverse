@@ -4,7 +4,7 @@ function s.initial_effect(c)
 	Cookie6.ItemEffect(c,ATTRIBUTE_WIND,2,2)
 end
 function s.mysticflowerfilter(c,tp)
-	return c:IsCode(10068059) and Cookie3.NoEmFzonefilter(c,tp)
+	return c:IsCode(table.unpack(CARD_MYSTIC_FLOUR)) and Cookie3.NoEmFzonefilter(c,tp)
 	and not c:GetEquipGroup():IsExists(Card.IsSetCard,1,nil,0xc03)
 end
 function s.Itemeffcondition(e,tp,eg,ep,ev,re,r,rp)

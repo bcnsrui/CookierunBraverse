@@ -21,7 +21,7 @@ function s.QECookieoperation(e,tp,eg,ep,ev,re,r,rp)
 	Cookie3.CookieDrawop(e,tp,eg,ep,ev,re,r,rp,count)
 end
 function s.AndCookiecost(e,tp,eg,ep,ev,re,r,rp)
-	return Cookie3.manacon(e,tp,eg,ep,ev,re,r,rp,chk,ATTRIBUTE_WATER,1,1)
+	return Cookie3.manacon(e,tp,eg,ep,ev,re,r,rp,0,ATTRIBUTE_WATER,1,1)
 end
 function s.AndCookiecostoperation(e,tp,eg,ep,ev,re,r,rp)
 	Cookie3.manacost(e,tp,eg,ep,ev,re,r,rp,ATTRIBUTE_WATER,1,1)

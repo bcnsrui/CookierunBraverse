@@ -7,7 +7,7 @@ function s.cookiefilter(c,tp)
 	return c:IsRace(RACE_WARRIOR) and not c:IsCode(10068009) and Cookie3.NoEmFzonefilter(c,tp)
 end
 function s.burningspicecookiefilter(c,tp)
-	return c:IsCode(10068009) and Cookie3.NoEmFzonefilter(c,tp)
+	return c:IsCode(table.unpack(CARD_BURNING_SPICE)) and Cookie3.NoEmFzonefilter(c,tp)
 	and not c:GetEquipGroup():IsExists(Card.IsSetCard,1,nil,0xc03)
 end
 function s.Itemoperation(e,tp,eg,ep,ev,re,r,rp)

@@ -13,7 +13,6 @@ function s.initial_effect(c)
 	e1:SetValue(0xd03)
 	c:RegisterEffect(e1)
 end
-s.listed_names={CARD_KOUIGN_AMANN}
 function s.lv3own(c,tp)
 	return c:IsRace(RACE_WARRIOR) and c:IsLevel(3) and Cookie3.NoEmFzonefilter(c,tp)
 end

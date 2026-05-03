@@ -14,7 +14,6 @@ function s.initial_effect(c)
 	e2:SetValue(0xd03)
 	c:RegisterEffect(e2)
 end
-s.listed_names={CARD_PITAYA_DRAGON}
 function s.redcookiefilter(c)
 	return c:IsAttribute(ATTRIBUTE_FIRE) and c:IsRace(RACE_WARRIOR)
 end

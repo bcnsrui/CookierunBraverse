@@ -238,6 +238,7 @@ function Cookie6.QECoookieEffect2(c)
 	c:RegisterEffect(e1)
 	local e2=e1:Clone()
 	e2:SetCode(EVENT_SPSUMMON_SUCCESS)
+	e2:SetCondition(Cookie8.eventcon2)
 	c:RegisterEffect(e2)
 end
 

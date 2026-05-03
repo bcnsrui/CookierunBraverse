@@ -1,5 +1,22 @@
 if not Cookie2 then Duel.LoadScript("deprecated_function.lua") end
 local s,id=GetID()
 function s.initial_effect(c)
-	Cookie4.RTCookieEffect(c,ATTRIBUTE_FIRE,3,3)
+	Cookie2.CookieCharacter(c,ATTRIBUTE_FIRE,3,3)
+	local e1=Effect.CreateEffect(c)
+	e1:SetType(EFFECT_TYPE_SINGLE)
+	e1:SetCode(EFFECT_ADD_SETCODE)
+	e1:SetValue(0xb00)
+	c:RegisterEffect(e1)
+end
+function s.FlipCookieoperation(e,tp,eg,ep,ev,re,r,rp)
+	local g=Duel.GetMatchingGroup(Card.IsCode,tp,LOCATION_SZONE,0,nil,id)
+	local tc=g:GetFirst()
+	local e1=Effect.CreateEffect(tc)
+	e1:SetType(EFFECT_TYPE_SINGLE)
+	e1:SetCode(EFFECT_ADD_SETCODE)
+	e1:SetValue(0xa16)
+	e1:SetReset(RESET_PHASE+PHASE_END)
+	tc:RegisterEffect(e1)
+	Duel.SendtoHand(tc,nil,REASON_EFFECT)
+	Duel.ConfirmCards(1-tp,tc)
 end

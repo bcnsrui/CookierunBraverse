@@ -20,8 +20,5 @@ function s.hp4filter(c,tp)
 end
 function s.IGCookieoperation(e,tp,eg,ep,ev,re,r,rp)
 	local g=Duel.GetMatchingGroup(s.hp4filter,tp,LOCATION_MZONE,0,nil,tp)
-	if #g==0 then return end
-	for tc in aux.Next(g) do
-		Cookie7.hpaddop(e,tp,eg,ep,ev,re,r,rp,tc,1)
-	end
+	Cookie7.Allhpaddop(e,tp,eg,ep,ev,re,r,rp,g,1)
 end

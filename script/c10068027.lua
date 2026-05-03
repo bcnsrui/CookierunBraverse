@@ -21,10 +21,7 @@ function s.goldcheesefilter(c)
 end
 function s.Summoncon(e)
 	local tp=e:GetHandlerPlayer()
-	local ally=Duel.GetMatchingGroup(Card.IsFaceup,tp,LOCATION_EMZONE,0,nil):GetFirst()
-	return Duel.GetTurnPlayer()==tp and Duel.GetCurrentPhase()==PHASE_BATTLE_STEP
-	and not (Duel.GetAttacker() and Duel.GetAttacker():IsControler(tp)) and Duel.GetCurrentChain()==0
-	and Duel.IsExistingMatchingCard(s.goldcheesefilter,tp,LOCATION_MZONE,0,1,nil)
+	return Cookie8.ExtraSummoncon2(e) and Duel.IsExistingMatchingCard(s.goldcheesefilter,tp,LOCATION_MZONE,0,1,nil)
 end
 function s.Summonop(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
@@ -36,6 +33,14 @@ function s.Summonop(e,tp,eg,ep,ev,re,r,rp)
 	equipgroup:Merge(sc)
 	Duel.Overlay(c,sc)
 	Duel.SpecialSummon(c,0,tp,tp,false,false,POS_FACEUP_ATTACK)
+	Cookie8.eventop(e,tp,eg,ep,ev,re,r,rp,c)
+	local ally=Duel.GetMatchingGroup(Card.IsFaceup,tp,LOCATION_EMZONE,0,nil):GetFirst()
+	local e1=Effect.CreateEffect(e:GetHandler())
+	e1:SetType(EFFECT_TYPE_SINGLE)
+	e1:SetCode(EFFECT_ADD_SETCODE)
+	e1:SetValue(0xa12)
+	e1:SetReset(RESET_EVENT+RESETS_STANDARD+RESET_PHASE+PHASE_END)
+	ally:RegisterEffect(e1)
 	for tc in aux.Next(equipgroup) do
 		Duel.Equip(tp,tc,c)
 		local e1=Effect.CreateEffect(tc)
@@ -45,7 +50,13 @@ function s.Summonop(e,tp,eg,ep,ev,re,r,rp)
 		e1:SetValue(function(e,x) return x==e:GetLabelObject() end)
 		e1:SetLabelObject(c)
 		tc:RegisterEffect(e1)
-	end
+		local e2=Effect.CreateEffect(tc)
+		e2:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_CONTINUOUS)
+		e2:SetProperty(EFFECT_FLAG_CANNOT_DISABLE)
+		e2:SetCode(EVENT_LEAVE_FIELD)
+		e2:SetOperation(function(e,tp,eg,ep,ev,re,r,rp) Cookie3.bttrashop(e,tp,eg,ep,ev,re,r,rp,tc)	end)
+		e2:SetReset(RESET_TOGRAVE|RESET_REMOVE)
+		tc:RegisterEffect(e2) end
 end
 function s.AndCookieoperation(e,tp,eg,ep,ev,re,r,rp)
 	local g=Duel.GetMatchingGroup(Cookie3.NoEmFzonefilter,tp,0,LOCATION_MZONE,nil,tp)

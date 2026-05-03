@@ -9,9 +9,12 @@ function s.initial_effect(c)
 	e1:SetValue(s.atkval)
 	c:RegisterEffect(e1)
 end
-s.listed_names={MARZIPAN_COOKIES}
-function s.marzipanfilter(c)
-	return c:IsRace(RACE_WARRIOR) and c:IsCode(table.unpack(s.listed_names))
+function s.marzipancookiefilter(c,tp)
+	return c:IsRace(RACE_WARRIOR) and c:IsCode(table.unpack(CARD_MARZIPAN_COOKIES))
+	and Cookie3.NoEmFzonefilter(c,tp)
+end
+function s.marzipancookiefilter2(c)
+	return c:IsRace(RACE_WARRIOR) and c:IsCode(table.unpack(CARD_MARZIPAN_COOKIES))
 end
 function s.uniquecount(g)
 	local codes={}
@@ -27,9 +30,9 @@ function s.uniquecount(g)
 end
 function s.atkcon(e)
 	local tp=e:GetHandlerPlayer()
-	local battleg=Duel.GetMatchingGroup(function(c) return Cookie3.NoEmFzonefilter(c,tp) and s.marzipanfilter(c) end,tp,LOCATION_MZONE,0,nil)
+	local battleg=Duel.GetMatchingGroup(s.marzipancookiefilter,tp,LOCATION_MZONE,0,nil,tp)
 	if s.uniquecount(battleg)<2 then return false end
-	local supportg=Cookie3.SupportAreafilter(e,tp,nil,nil,nil,nil,nil,nil,1,1,0,0):Filter(s.marzipanfilter,nil)
+	local supportg=Cookie3.SupportAreafilter(e,tp,nil,nil,nil,nil,nil,nil,1,1,0,0):Filter(s.marzipancookiefilter2,nil)
 	return s.uniquecount(supportg)>=4
 end
 function s.atkval(e,c)

@@ -9,7 +9,6 @@ function s.initial_effect(c)
 	e1:SetValue(0xd03)
 	c:RegisterEffect(e1)
 end
-s.listed_names={CARD_ANANAS_DRAGON}
 function s.IGCookiecost(e,tp,eg,ep,ev,re,r,rp,chk)
 	return e:GetHandler():GetOverlayCount()>0
 end

@@ -8,9 +8,9 @@ function s.initial_effect(c)
 	e0:SetType(EFFECT_TYPE_QUICK_O)
 	e0:SetCode(EVENT_FREE_CHAIN)
 	e0:SetRange(LOCATION_EXTRA)
-	e0:SetCondition(s.Extracon)
+	e0:SetCondition(s.Summoncon)
 	e0:SetTarget(Cookie3.notg)
-	e0:SetOperation(s.Extraop)
+	e0:SetOperation(Cookie8.ExtraSummonop)
 	c:RegisterEffect(e0)
 	local e1=Effect.CreateEffect(c)
 	e1:SetType(EFFECT_TYPE_SINGLE)
@@ -18,16 +18,10 @@ function s.initial_effect(c)
 	e1:SetValue(0xd014)
 	c:RegisterEffect(e1)
 end
-function s.Extracon(e)
+function s.Summoncon(e)
 	local tp=e:GetHandlerPlayer()
-	return Duel.GetTurnPlayer()==tp and Duel.GetCurrentPhase()==PHASE_BATTLE_STEP
-	and not (Duel.GetAttacker() and Duel.GetAttacker():IsControler(tp)) and Duel.GetCurrentChain()==0
-	and Duel.GetLocationCount(tp,LOCATION_MZONE)>0
-	and Cookie3.SupportAreaCount(e,tp,nil,nil,nil,nil,nil,nil,1,1,0,0)+2
-		<=Cookie3.SupportAreaCount(e,tp,nil,nil,nil,nil,nil,nil,0,0,1,1)
-end
-function s.Extraop(e,tp,eg,ep,ev,re,r,rp)
-	Cookie3.Cookiesummonop(e,tp,eg,ep,ev,re,r,rp,e:GetHandler())
+	return Cookie8.ExtraSummoncon(e) and Cookie3.SupportAreaCount(e,tp,nil,nil,nil,nil,nil,nil,1,1,0,0)+2
+	<=Cookie3.SupportAreaCount(e,tp,nil,nil,nil,nil,nil,nil,0,0,1,1)
 end
 function s.greenfilter(c)
 	return c:IsAttribute(ATTRIBUTE_WIND)

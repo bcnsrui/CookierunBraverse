@@ -9,7 +9,7 @@ function s.initial_effect(c)
 	e0:SetRange(LOCATION_EXTRA)
 	e0:SetCondition(s.Summoncon)
 	e0:SetTarget(Cookie3.notg)
-	e0:SetOperation(s.Summonop)
+	e0:SetOperation(Cookie8.ExtraSummonop)
 	c:RegisterEffect(e0)
 	local e1=Effect.CreateEffect(c)
 	e1:SetType(EFFECT_TYPE_SINGLE)
@@ -32,20 +32,7 @@ function s.initial_effect(c)
 end
 function s.Summoncon(e)
 	local tp=e:GetHandlerPlayer()
-	local ally=Duel.GetMatchingGroup(Card.IsFaceup,tp,LOCATION_EMZONE,0,nil):GetFirst()
-	return Duel.GetLocationCount(tp,LOCATION_MZONE)>0 and Duel.GetTurnPlayer()==tp and Duel.GetCurrentPhase()==PHASE_BATTLE_STEP
-	and not (Duel.GetAttacker() and Duel.GetAttacker():IsControler(tp)) and Duel.GetCurrentChain()==0
-	and Duel.GetFlagEffect(tp,id)>=2 and not ally:IsSetCard(0xa12)
-end
-function s.Summonop(e,tp,eg,ep,ev,re,r,rp)
-	Cookie3.Cookiesummonop(e,tp,eg,ep,ev,re,r,rp,e:GetHandler())
-	local ally=Duel.GetMatchingGroup(Card.IsFaceup,tp,LOCATION_EMZONE,0,nil):GetFirst()
-	local e1=Effect.CreateEffect(e:GetHandler())
-	e1:SetType(EFFECT_TYPE_SINGLE)
-	e1:SetCode(EFFECT_ADD_SETCODE)
-	e1:SetValue(0xa12)
-	e1:SetReset(RESET_EVENT+RESETS_STANDARD+RESET_PHASE+PHASE_END)
-	ally:RegisterEffect(e1)
+	return Cookie8.ExtraSummoncon(e) and Duel.GetFlagEffect(tp,id)>=2
 end
 function s.checkop(e,tp,eg,ep,ev,re,r,rp)
 	for tc in aux.Next(eg) do

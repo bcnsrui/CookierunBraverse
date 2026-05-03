@@ -4,12 +4,14 @@ function s.initial_effect(c)
 	Cookie6.StageEffect(c,ATTRIBUTE_LIGHT,2,2,2,2)
 end
 function s.Stagecost(e,tp,eg,ep,ev,re,r,rp,chk)
-	if chk==0 then return Cookie3.handcon(e,tp,eg,ep,ev,re,r,rp,chk,ALL_COLOR,1,1) end
+	return Cookie3.handcon(e,tp,eg,ep,ev,re,r,rp,chk,ALL_COLOR,1,1)
 end
 function s.Stagecostoperation(e,tp,eg,ep,ev,re,r,rp)
 	Cookie3.handcost(e,tp,eg,ep,ev,re,r,rp,ALL_COLOR,1,1)
 end
 function s.Stageoperation(e,tp,eg,ep,ev,re,r,rp)
+	local ally=Duel.GetMatchingGroup(nil,tp,LOCATION_EMZONE,0,nil):GetFirst()
+	if ally:IsSetCard(0xa15) then return end
 	Duel.Hint(HINT_SELECTMSG,tp,aux.Stringid(10060001,1))
 	local ag=Duel.SelectMatchingCard(tp,Cookie3.NoEmFzonefilter,tp,LOCATION_MZONE,0,0,1,nil,tp)
 	if #ag==0 then return end

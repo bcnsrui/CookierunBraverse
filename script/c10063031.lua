@@ -13,6 +13,8 @@ function s.otherfilter(c,exc,tp)
 	return Cookie3.NoEmFzonefilter(c,tp) and c~=exc and c:GetOverlayCount()>0
 end
 function s.QECookieoperation(e,tp,eg,ep,ev,re,r,rp)
+	local ally=Duel.GetMatchingGroup(nil,tp,LOCATION_EMZONE,0,nil):GetFirst()
+	if ally:IsSetCard(0xa15) then return end
 	local c=e:GetHandler()
 	if Duel.IsExistingMatchingCard(s.otherfilter,tp,LOCATION_MZONE,0,1,nil,c,tp) then
 	Duel.Hint(HINT_SELECTMSG,tp,aux.Stringid(10060001,1))

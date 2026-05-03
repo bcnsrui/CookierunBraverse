@@ -1,0 +1,37 @@
+if not Cookie2 then Duel.LoadScript("deprecated_function.lua") end
+local s,id=GetID()
+function s.initial_effect(c)
+	Cookie2.CookieCharacter(c,ATTRIBUTE_WIND,1,2)
+	Cookie6.IGCoookieEffect(c,1,ATTRIBUTE_WIND,0,0)
+	if not s.global_check then
+		s.global_check=true
+		local ge1=Effect.CreateEffect(c)
+		ge1:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
+		ge1:SetCode(EVENT_MOVE)
+		ge1:SetOperation(s.checkop)
+		Duel.RegisterEffect(ge1,0)
+	end
+end
+function s.checkop(e,tp,eg,ep,ev,re,r,rp)
+	local ct0,ct1=0,0
+	for tc in aux.Next(eg) do
+		if tc:IsLocation(LOCATION_GRAVE)
+			and (tc:IsPreviousLocation(LOCATION_REMOVED) or tc:IsPreviousLocation(LOCATION_OVERLAY)) then
+			local p=tc:GetPreviousControler()
+			if p==nil or p>1 then p=tc:GetOwner() end
+			if p==0 then ct0=ct0+1
+			elseif p==1 then ct1=ct1+1 end
+		end
+	end
+	for _=1,ct0 do Duel.RegisterFlagEffect(0,id,RESET_PHASE+PHASE_END,0,1) end
+	for _=1,ct1 do Duel.RegisterFlagEffect(1,id,RESET_PHASE+PHASE_END,0,1) end
+end
+function s.IGCookieeffcondition(e,tp,eg,ep,ev,re,r,rp)
+	return Duel.GetFlagEffect(tp,id)>=2
+end
+function s.IGCookieoperation(e,tp,eg,ep,ev,re,r,rp)
+	Duel.DisableShuffleCheck()
+	local dt=Duel.GetDecktopGroup(tp,1)
+	local ally=Duel.GetMatchingGroup(nil,tp,LOCATION_EMZONE,0,nil):GetFirst()
+	if #dt>0 and ally then Duel.Overlay(ally,dt) end
+end

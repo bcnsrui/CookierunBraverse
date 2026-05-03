@@ -6,7 +6,7 @@ end
 function s.Trapcost(e,tp,eg,ep,ev,re,r,rp,chk)
 	local allymana=Cookie3.SupportAreafilter(e,tp,eg,ep,ev,re,r,rp,1,1,0,0)
 	local enemymana=Cookie3.SupportAreafilter(e,tp,eg,ep,ev,re,r,rp,0,0,1,1)
-	return Cookie3.manacon(e,tp,eg,ep,ev,re,r,rp,chk,ATTRIBUTE_WIND,1,1) or #allymana+2<=#enemymana
+	return Cookie3.manacon(e,tp,eg,ep,ev,re,r,rp,0,ATTRIBUTE_WIND,1,1) or #allymana+2<=#enemymana
 end
 function s.Trapcostoperation(e,tp,eg,ep,ev,re,r,rp)
 	local cost1=Cookie3.manacon(e,tp,eg,ep,ev,re,r,rp,0,ATTRIBUTE_WIND,1,1)

@@ -21,8 +21,3 @@ function s.AndCookieoperation(e,tp,eg,ep,ev,re,r,rp)
 	local ct=Duel.GetFieldGroupCount(tp,LOCATION_HAND,0)
 	Cookie3.handcost(e,tp,eg,ep,ev,re,r,rp,ALL_COLOR,math.min(ct,2),math.min(ct,2)) end end
 end
-
-
-
-
-

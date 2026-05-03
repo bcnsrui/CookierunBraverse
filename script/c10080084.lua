@@ -24,8 +24,8 @@ function s.cookiefilter(c,tp)
 end
 function s.Itemcost(e,tp,eg,ep,ev,re,r,rp,chk)
 	if Duel.GetFlagEffect(tp,id)>0 then
-	decopencon=Cookie3.manacon(e,tp,eg,ep,ev,re,r,rp,chk,ATTRIBUTE_WIND,0,1)
-	else decopencon=Cookie3.manacon(e,tp,eg,ep,ev,re,r,rp,chk,ATTRIBUTE_WIND,1,1) end
+	decopencon=Cookie3.manacon(e,tp,eg,ep,ev,re,r,rp,0,ATTRIBUTE_WIND,0,1)
+	else decopencon=Cookie3.manacon(e,tp,eg,ep,ev,re,r,rp,0,ATTRIBUTE_WIND,1,1) end
 	return decopencon and Duel.GetMatchingGroupCount(s.attackposcookiefilter,tp,LOCATION_MZONE,0,nil,tp)>=1
 end
 function s.Itemcostoperation(e,tp,eg,ep,ev,re,r,rp)

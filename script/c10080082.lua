@@ -7,7 +7,7 @@ function s.hp1cookiefilter(c)
 	return c:GetDefense()==1 and c:IsRace(RACE_WARRIOR) and not c:IsSetCard(0xb00)
 end
 function s.Trapcost(e,tp,eg,ep,ev,re,r,rp,chk)
-	return Cookie3.manacon(e,tp,eg,ep,ev,re,r,rp,chk,ATTRIBUTE_LIGHT,1,2)
+	return Cookie3.manacon(e,tp,eg,ep,ev,re,r,rp,0,ATTRIBUTE_LIGHT,1,2)
 		or Duel.GetMatchingGroupCount(s.hp1cookiefilter,tp,LOCATION_GRAVE,0,nil)>=1
 end
 function s.Trapcostoperation(e,tp,eg,ep,ev,re,r,rp)

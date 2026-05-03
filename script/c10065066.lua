@@ -15,12 +15,15 @@ end
 function s.QECookiecostoperation(e,tp,eg,ep,ev,re,r,rp)
 	Cookie3.handcost(e,tp,eg,ep,ev,re,r,rp,ALL_COLOR,1,1)
 end
+function s.longandragonfilter(c,tp)
+	return c:IsCode(table.unpack(CARD_LONGAN_DRAGON)) and Cookie3.NoEmFzonefilter(c,tp)
+end
 function s.QECookieoperation(e,tp,eg,ep,ev,re,r,rp)
 	local mana=Cookie3.SupportAreafilter(e,tp,eg,ep,ev,re,r,rp,0,1,0,0)
 	if #mana>0 then
 		Duel.Hint(HINT_SELECTMSG,tp,aux.Stringid(10060001,1))
 		local tc=mana:Select(tp,0,1,nil)
 		Duel.Remove(tc,POS_FACEUP,REASON_EFFECT) end
-	if Duel.IsExistingMatchingCard(Card.ListsCode,tp,LOCATION_MZONE,0,1,nil,CARD_LONGAN_DRAGON)
+	if Duel.IsExistingMatchingCard(s.longandragonfilter,tp,LOCATION_MZONE,0,1,nil,tp)
 	and Duel.SelectYesNo(tp,aux.Stringid(10060001,8)) then Cookie3.CookieDrawop(e,tp,eg,ep,ev,re,r,rp,1) end
 end

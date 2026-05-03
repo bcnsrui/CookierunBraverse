@@ -7,7 +7,7 @@ function s.lv2cookiefilter(c,tp)
 	return c:IsLevelBelow(2) and c:IsRace(RACE_WARRIOR) and Cookie3.NoEmFzonefilter(c,tp)
 end
 function s.darkcacaocookiefilter(c,tp)
-	return c:IsCode(10063100,10068103,10068104) and Cookie3.NoEmFzonefilter(c,tp)
+	return c:IsCode(table.unpack(CARD_DARK_CACAO)) and Cookie3.NoEmFzonefilter(c,tp)
 	and not c:GetEquipGroup():IsExists(Card.IsSetCard,1,nil,0xc03)
 end
 function s.Itemoperation(e,tp,eg,ep,ev,re,r,rp)
@@ -32,12 +32,12 @@ function s.Itemoperation(e,tp,eg,ep,ev,re,r,rp)
 		e2:SetCode(EFFECT_ADD_SETCODE)
 		e2:SetValue(0xa05)
 		e2:SetReset(RESET_EVENT+RESETS_STANDARD)
-		hg:RegisterEffect(e2)
+		c:RegisterEffect(e2)
 		local e3=Effect.CreateEffect(c)
 		e3:SetDescription(aux.Stringid(id,0))
 		e3:SetType(EFFECT_TYPE_SINGLE)
 		e3:SetProperty(EFFECT_FLAG_CLIENT_HINT+EFFECT_FLAG_CANNOT_DISABLE)
 		e3:SetReset(RESET_EVENT+RESETS_STANDARD)
-		hg:RegisterEffect(e3)
+		c:RegisterEffect(e3)
 	end
 end

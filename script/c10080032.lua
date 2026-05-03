@@ -7,7 +7,7 @@ function s.ancientfilter(c,tp)
 	return c:IsRace(RACE_WARRIOR) and Cookie3.NoEmFzonefilter(c,tp) and c:IsSetCard(0xa04)
 end
 function s.Stagecost(e,tp,eg,ep,ev,re,r,rp,chk)
-	if chk==0 then return Cookie3.manacon(e,tp,eg,ep,ev,re,r,rp,chk,ALL_COLOR,0,2) end
+	if chk==0 then return Cookie3.manacon(e,tp,eg,ep,ev,re,r,rp,0,ALL_COLOR,0,2) end
 end
 function s.Stagecostoperation(e,tp,eg,ep,ev,re,r,rp)
 	Cookie3.manacost(e,tp,eg,ep,ev,re,r,rp,ALL_COLOR,0,2)

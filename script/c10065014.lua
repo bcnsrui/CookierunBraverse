@@ -5,7 +5,7 @@ function s.initial_effect(c)
 	Cookie6.IGCoookieEffect(c,1,ATTRIBUTE_FIRE,0,0)
 end
 function s.dragonfilter(c,tp)
-	return c:IsCode(CARD_PITAYA_DRAGON) and Cookie3.NoEmFzonefilter(c,tp)
+	return c:IsCode(table.unpack(CARD_PITAYA_DRAGON)) and Cookie3.NoEmFzonefilter(c,tp)
 end
 function s.IGCookieoperation(e,tp,eg,ep,ev,re,r,rp)
 	Duel.Hint(HINT_SELECTMSG,tp,aux.Stringid(10060001,1))

@@ -153,8 +153,8 @@ function Cookie.endcon(e)
 end
 function Cookie.endop(e,tp,eg,ep,ev,re,r,rp)
 	Cookie.blockedMana[tp]=nil
-	local stage=Duel.GetMatchingGroup(nil,tp,LOCATION_FZONE,0,nil):GetFirst()
-	if stage then stage:RemoveCounter(tp,0x1000,1,REASON_RULE) end
+	local stage=Duel.GetMatchingGroup(nil,tp,LOCATION_FZONE,LOCATION_FZONE,nil)
+	for stage2 in aux.Next(stage) do stage2:RemoveCounter(tp,0x1000,1,REASON_RULE) end
 	local g=Duel.GetMatchingGroup(Cookie.Counterfilter,tp,LOCATION_MZONE,LOCATION_MZONE,nil)
 	local tc=g:GetFirst()
 	for tc in aux.Next(g) do tc:RemoveCounter(tp,0x1001,1,REASON_RULE) end

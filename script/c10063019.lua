@@ -4,7 +4,7 @@ function s.initial_effect(c)
 	Cookie6.ItemEffect(c,ATTRIBUTE_FIRE,3,3)
 end
 function s.holycookiefilter(c,tp)
-	return c:IsCode(10063017) and Cookie3.NoEmFzonefilter(c,tp)
+	return c:IsCode(table.unpack(CARD_HOLLYBERRY)) and Cookie3.NoEmFzonefilter(c,tp)
 	and not c:GetEquipGroup():IsExists(Card.IsSetCard,1,nil,0xc03)
 end
 function s.Itemoperation(e,tp,eg,ep,ev,re,r,rp)

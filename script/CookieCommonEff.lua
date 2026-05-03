@@ -92,17 +92,28 @@ end
 --리프레시
 function Cookie3.Refreshop(e,tp,eg,ep,ev,re,r,rp)
 	if Duel.GetFieldGroupCount(tp,LOCATION_DECK,0)~=0 then return end
-	Duel.Hint(HINT_SELECTMSG,tp,aux.Stringid(10060001,9))
-	local ag=Duel.SelectMatchingCard(tp,Card.IsRace,tp,LOCATION_GRAVE,0,1,1,nil,RACE_WARRIOR)
-	Duel.SendtoExtraP(ag,nil,REASON_EFFECT)
+	local brk=1
+	if Duel.IsExistingMatchingCard(Card.IsCode,tp,LOCATION_MZONE,0,1,nil,10069096) then	brk=0
+	elseif Duel.IsExistingMatchingCard(Card.IsCode,tp,0,LOCATION_MZONE,1,nil,10069111) then brk=2
+	else brk=1 end
+	local ag=Duel.SelectMatchingCard(tp,Card.IsRace,tp,LOCATION_GRAVE,0,brk,brk,nil,RACE_WARRIOR)
+	if #ag>0 then Duel.SendtoExtraP(ag,nil,REASON_EFFECT) end
 	local refill=Duel.GetFieldGroup(tp,LOCATION_GRAVE,0)
 	Duel.SendtoDeck(refill,nil,SEQ_DECKSHUFFLE,REASON_RULE)
 	Duel.ShuffleDeck(tp)
+	local ally=Duel.GetMatchingGroup(nil,tp,LOCATION_EMZONE,0,nil):GetFirst()
+	if ally then
+	local e1=Effect.CreateEffect(ally)
+	e1:SetType(EFFECT_TYPE_SINGLE)
+	e1:SetCode(EFFECT_ADD_SETCODE)
+	e1:SetValue(0xa17)
+	e1:SetReset(RESET_EVENT+RESETS_STANDARD)
+	ally:RegisterEffect(e1) end
 end
 
 --상대 배틀에리어 쿠키 트래시로 보내기
 function Cookie3.bttrashop(e,tp,eg,ep,ev,re,r,rp,g)
-	if g==e:GetHandler() then local sg=Group.CreateGroup() sg:AddCard(g) g=sg end
+	if type(g)=="Card" then	local sg=Group.CreateGroup() sg:AddCard(g) g=sg	end
 	if Duel.IsExistingMatchingCard(Card.IsSetCard,tp,0,LOCATION_MZONE,1,nil,0xd10) then return end
 	local stage=Duel.GetMatchingGroup(Card.IsCode,tp,LOCATION_FZONE,0,nil,10070522)
 	Duel.Remove(g,POS_FACEUP,REASON_EFFECT)

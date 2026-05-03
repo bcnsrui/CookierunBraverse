@@ -22,6 +22,8 @@ function s.QECookieeffcondition(e,tp,eg,ep,ev,re,r,rp)
 	return supportarea:IsExists(s.greenmana,1,nil)
 end
 function s.QECookieoperation(e,tp,eg,ep,ev,re,r,rp)
+	local ally=Duel.GetMatchingGroup(nil,tp,LOCATION_EMZONE,0,nil):GetFirst()
+	if ally:IsSetCard(0xa15) then return end
 	local c=e:GetHandler()
 	local supportarea=Cookie3.SupportAreafilter(e,tp,eg,ep,ev,re,r,rp,1,1,0,0)
 	Duel.Hint(HINT_SELECTMSG,tp,aux.Stringid(10060001,1))

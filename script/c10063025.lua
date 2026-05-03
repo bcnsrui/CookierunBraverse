@@ -23,7 +23,7 @@ function s.skillcon(e,tp,eg,ep,ev,re,r,rp)
 		and Duel.GetLocationCount(tp,LOCATION_MZONE)>0
 end
 function s.skilltg(e,tp,eg,ep,ev,re,r,rp,chk)
-	if chk==0 then return Cookie3.manacon(e,tp,eg,ep,ev,re,r,rp,chk,ATTRIBUTE_LIGHT,1,1) end
+	if chk==0 then return Cookie3.manacon(e,tp,eg,ep,ev,re,r,rp,0,ATTRIBUTE_LIGHT,1,1) end
 	Duel.SetChainLimit(aux.FALSE)
 end
 function s.skillop(e,tp,eg,ep,ev,re,r,rp)
