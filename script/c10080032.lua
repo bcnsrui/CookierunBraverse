@@ -1,7 +1,7 @@
 if not Cookie2 then Duel.LoadScript("deprecated_function.lua") end
 local s,id=GetID()
 function s.initial_effect(c)
-	Cookie6.StageEffect(c,ALL_COLOR,5,5,1,1)
+	Cookie6.StageEffect(c,ALL_COLOR,5,5,0,2)
 end
 function s.ancientfilter(c,tp)
 	return c:IsRace(RACE_WARRIOR) and Cookie3.NoEmFzonefilter(c,tp) and c:IsSetCard(0xa04)
