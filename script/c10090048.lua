@@ -36,5 +36,5 @@ function s.AndCookieoperation(e,tp,eg,ep,ev,re,r,rp)
 	e1:SetCode(EFFECT_ADD_SETCODE)
 	e1:SetValue(0xd081)
 	e1:SetReset(RESET_PHASE+PHASE_END,2)
-	tc:RegisterEffect(e1)
+	tc:RegisterEffect(e1) end
 end

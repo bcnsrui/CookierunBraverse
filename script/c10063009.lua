@@ -31,7 +31,7 @@ function s.QECookieoperation(e,tp,eg,ep,ev,re,r,rp)
 	if #g>0 then Cookie7.damageeff(e,tp,eg,ep,ev,re,r,rp,g,1) end
 end
 function s.AndCookieoperation(e,tp,eg,ep,ev,re,r,rp)
+	local support=Cookie3.SupportAreafilter(e,tp,eg,ep,ev,re,r,rp,1,1,0,0)
 	local bc=e:GetHandler():GetBattleTarget()
-	if bc and bc:IsRace(RACE_WARRIOR) and Duel.IsExistingMatchingCard(Card.IsSetCard,tp,LOCATION_ONFIELD,0,1,nil,0xc03) then
-		Cookie7.damageeff(e,tp,eg,ep,ev,re,r,rp,bc,1) end
+	if support:IsExists(Card.IsSetCard,1,nil,0xc03) and bc then Cookie7.damageeff(e,tp,eg,ep,ev,re,r,rp,bc,1) end
 end
