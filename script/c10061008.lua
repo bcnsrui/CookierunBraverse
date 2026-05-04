@@ -1,7 +1,7 @@
 if not Cookie2 then Duel.LoadScript("deprecated_function.lua") end
 local s,id=GetID()
 function s.initial_effect(c)
-	Cookie2.CookieCharacter(c,ATTRIBUTE_FIRE,2,3)
+	Cookie2.CookieCharacter(c,ATTRIBUTE_FIRE,3,3)
 	Cookie6.IGCoookieEffect(c,1,ATTRIBUTE_FIRE,1,1)
 end
 function s.otherfilter(c,exc,tp)
