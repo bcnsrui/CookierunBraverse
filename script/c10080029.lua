@@ -1,7 +1,7 @@
 if not Cookie2 then Duel.LoadScript("deprecated_function.lua") end
 local s,id=GetID()
 function s.initial_effect(c)
-	Cookie6.TrapEffect(c,ATTRIBUTE_WIND,1,1)
+	Cookie6.TrapEffect(c,ATTRIBUTE_WIND,2,2)
 	Cookie6.QECoookieEffect2(c)
 end
 function s.Trapoperation(e,tp,eg,ep,ev,re,r,rp)

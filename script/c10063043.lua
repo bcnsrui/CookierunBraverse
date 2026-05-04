@@ -1,7 +1,7 @@
 if not Cookie2 then Duel.LoadScript("deprecated_function.lua") end
 local s,id=GetID()
 function s.initial_effect(c)
-	Cookie6.ItemEffect(c,ATTRIBUTE_LIGHT,1,1)
+	Cookie6.ItemEffect(c,ATTRIBUTE_LIGHT,3,3)
 end
 function s.goldcheesecookiefilter(c,tp)
 	return c:IsCode(table.unpack(CARD_GOLD_CHEESE)) and Cookie3.NoEmFzonefilter(c,tp)

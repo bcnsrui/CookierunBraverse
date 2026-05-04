@@ -1,7 +1,7 @@
 if not Cookie2 then Duel.LoadScript("deprecated_function.lua") end
 local s,id=GetID()
 function s.initial_effect(c)
-	Cookie6.ItemEffect(c,ATTRIBUTE_LIGHT,1,1)
+	Cookie6.ItemEffect(c,ATTRIBUTE_LIGHT,2,2)
 end
 function s.lv2cookiefilter(c)
 	return c:IsRace(RACE_WARRIOR) and c:IsLevelAbove(2)
