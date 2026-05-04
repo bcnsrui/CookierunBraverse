@@ -6,6 +6,13 @@ function Cookie7.szonecon(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
 	return c:IsLocation(LOCATION_SZONE) and not c:IsLocation(LOCATION_FZONE)
 end
+--HP 회복/오버레이 대상: 장착(각성)으로 SZONE에 붙어 있으면 장착 받는 쿠키로 보냄
+function Cookie7.hp_heal_redirect(hg)
+	if not hg then return nil end
+	if hg:IsLocation(LOCATION_SZONE) and hg:GetEquipTarget() then
+	return hg:GetEquipTarget() end
+	return hg
+end
 --쿠키 체력 채우기
 function Cookie7.hpaddop(e,tp,eg,ep,ev,re,r,rp,g,hp)
 	local c=e:GetHandler()
@@ -23,6 +30,8 @@ function Cookie7.hpaddop(e,tp,eg,ep,ev,re,r,rp,g,hp)
 	local hg
 	if typ=="Card" then hg=g
 	elseif typ=="Group" then hg=g:GetFirst() end
+	hg=Cookie7.hp_heal_redirect(hg)
+	if not hg then return end
 	local heal=0
 	while heal<hp do
 	local decktop=Duel.GetDecktopGroup(tp,1)
@@ -124,6 +133,8 @@ function Cookie7.hpaddop2(e,tp,eg,ep,ev,re,r,rp,g,hp)
 	local hg
 	if typ=="Card" then hg=g
 	elseif typ=="Group" then hg=g:GetFirst() end
+	hg=Cookie7.hp_heal_redirect(hg)
+	if not hg then return end
 	local heal=0
 	while heal<hp do
 	local c=e:GetHandler()
@@ -170,6 +181,7 @@ function Cookie7.faceuphpaddop(e,tp,eg,ep,ev,re,r,rp,player,g,hp)
 	if not g then return end
 	local hg
 	if g.GetFirst then hg=g:GetFirst() else hg=g end
+	hg=Cookie7.hp_heal_redirect(hg)
 	if not hg then return end
 
 	local allhpcard=hg:GetOverlayGroup()
