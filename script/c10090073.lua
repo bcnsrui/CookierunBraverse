@@ -17,7 +17,7 @@ function s.initial_effect(c)
 	c:RegisterEffect(e1)
 end
 function s.matfilter(c,tp)
-	return c:IsCode(table.unpack(CARD_WHITE_LILY))
+	return c:IsCode(table.unpack(CARD_WHITE_LILY)) and not c:IsCode(id)
 end
 function s.Summoncon(e)
 	local tp=e:GetHandlerPlayer()

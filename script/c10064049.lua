@@ -19,7 +19,10 @@ function s.QECookieoperation(e,tp,eg,ep,ev,re,r,rp)
 	local g=Duel.SelectMatchingCard(tp,Cookie3.NoEmFzonefilter,tp,0,LOCATION_MZONE,0,1,nil,tp)
 	if #g>0 then
 	local em=Duel.GetMatchingGroup(nil,1-tp,LOCATION_EMZONE,0,nil):GetFirst()
-	if em then Duel.Overlay(em,g) end end
+	if em then
+		local mg=g:GetFirst():GetOverlayGroup()
+		if #mg>0 then Duel.SendtoGrave(mg,REASON_EFFECT) end
+		Duel.Overlay(em,g) end end
 end
 function s.AndCookiecost(e,tp,eg,ep,ev,re,r,rp)
 	return Cookie3.manacon(e,tp,eg,ep,ev,re,r,rp,0,ATTRIBUTE_WIND,1,1)

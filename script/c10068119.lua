@@ -13,10 +13,7 @@ function s.darkcookiefilter(c)
 	return c:IsCode(table.unpack(CARD_DARK_CACAO)) and c:IsRace(RACE_WARRIOR)
 end
 function s.IGCookiecostoperation(e,tp,eg,ep,ev,re,r,rp)
-	local c=e:GetHandler()
-	if c:IsLocation(LOCATION_MZONE) then
-		Duel.SendtoGrave(c,REASON_COST)
-	end
+	Cookie3.bttrashop(e,tp,eg,ep,ev,re,r,rp,e:GetHandler())
 end
 function s.IGCookieeffcondition(e,tp,eg,ep,ev,re,r,rp)
 	return Duel.GetLocationCount(tp,LOCATION_MZONE)>0

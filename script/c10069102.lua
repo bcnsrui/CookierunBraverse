@@ -19,7 +19,7 @@ function s.initial_effect(c)
 end
 function s.Summoncon(e)
 	local tp=e:GetHandlerPlayer()
-	return Cookie8.ExtraSummoncon2(e) and Duel.GetFieldGroupCount(tp,LOCATION_GRAVE,0)>=20
+	return Cookie8.ExtraSummoncon(e) and Duel.GetFieldGroupCount(tp,LOCATION_GRAVE,0)>=20
 	and Duel.GetFieldGroupCount(1-tp,LOCATION_GRAVE,0)>=20
 end
 function s.Summonop(e,tp,eg,ep,ev,re,r,rp)

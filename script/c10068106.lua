@@ -22,6 +22,5 @@ function s.AndCookiecostoperation(e,tp,eg,ep,ev,re,r,rp)
 	Duel.SendtoGrave(hg,REASON_COST)
 end
 function s.AndCookieoperation(e,tp,eg,ep,ev,re,r,rp)
-	local c=e:GetHandler()
-	Cookie3.bttrashop(e,tp,eg,ep,ev,re,r,rp,c)
+	Cookie3.bttrashop(e,tp,eg,ep,ev,re,r,rp,e:GetHandler())
 end

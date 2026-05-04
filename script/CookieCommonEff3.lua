@@ -71,15 +71,16 @@ function Cookie8.ExtraSummoncon(e)
 	local tp=e:GetHandlerPlayer()
 	local ally=Duel.GetMatchingGroup(Card.IsFaceup,tp,LOCATION_EMZONE,0,nil):GetFirst()
 	return Duel.GetLocationCount(tp,LOCATION_MZONE)>0 and Duel.GetTurnPlayer()==tp
-	and Duel.GetCurrentPhase()==PHASE_BATTLE_STEP and Duel.GetCurrentChain()==0
-	and not (Duel.GetAttacker() and Duel.GetAttacker():IsControler(tp) and ally:IsSetCard(0xa12))
+	and Duel.GetCurrentPhase()==PHASE_BATTLE_STEP and Duel.GetCurrentChain()==0 and e:GetHandler():IsFacedown()
+	and not ally:IsSetCard(0xa12) and not (Duel.GetAttacker() and Duel.GetAttacker():IsControler(tp))
 end
 
 function Cookie8.ExtraSummoncon2(e)
 	local tp=e:GetHandlerPlayer()
 	local ally=Duel.GetMatchingGroup(Card.IsFaceup,tp,LOCATION_EMZONE,0,nil):GetFirst()
-	return Duel.GetTurnPlayer()==tp and Duel.GetCurrentPhase()==PHASE_BATTLE_STEP and Duel.GetCurrentChain()==0
-	and not (Duel.GetAttacker() and Duel.GetAttacker():IsControler(tp) and ally:IsSetCard(0xa12))
+	return Duel.GetTurnPlayer()==tp and Duel.GetCurrentPhase()==PHASE_BATTLE_STEP
+	and Duel.GetCurrentChain()==0 and e:GetHandler():IsFacedown() and not ally:IsSetCard(0xa12)
+	and not (Duel.GetAttacker() and Duel.GetAttacker():IsControler(tp))
 end
 
 function Cookie8.ExtraSummonop(e,tp,eg,ep,ev,re,r,rp)

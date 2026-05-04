@@ -6,7 +6,6 @@ function Cookie7.szonecon(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
 	return c:IsLocation(LOCATION_SZONE) and not c:IsLocation(LOCATION_FZONE)
 end
-
 --쿠키 체력 채우기
 function Cookie7.hpaddop(e,tp,eg,ep,ev,re,r,rp,g,hp)
 	local c=e:GetHandler()

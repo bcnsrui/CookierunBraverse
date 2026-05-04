@@ -102,7 +102,7 @@ function Cookie3.Refreshop(e,tp,eg,ep,ev,re,r,rp)
 	Duel.SendtoDeck(refill,nil,SEQ_DECKSHUFFLE,REASON_RULE)
 	Duel.ShuffleDeck(tp)
 	local ally=Duel.GetMatchingGroup(nil,tp,LOCATION_EMZONE,0,nil):GetFirst()
-	if ally then
+	if ally and not ally:IsSetCard(0xa17) then
 	local e1=Effect.CreateEffect(ally)
 	e1:SetType(EFFECT_TYPE_SINGLE)
 	e1:SetCode(EFFECT_ADD_SETCODE)

@@ -44,7 +44,7 @@ function s.Summoncon(e)
 	and Duel.IsExistingMatchingCard(s.pure_vanilla_filter,tp,LOCATION_MZONE,0,1,nil)
 end
 function s.pure_vanilla_filter(c)
-	return c:IsCode(table.unpack(CARD_PURE_VANILLA))
+	return c:IsCode(table.unpack(CARD_PURE_VANILLA)) and not c:IsCode(id)
 end
 function s.Summonop(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
