@@ -7,7 +7,7 @@ function s.flipygrave(c)
 	return c:IsRace(RACE_WARRIOR) and c:IsSetCard(0xb00)
 end
 function s.Stagecost(e,tp,eg,ep,ev,re,r,rp,chk)
-	return Cookie3.handcon(e,tp,eg,ep,ev,re,r,rp,0,ALL_COLOR,1,1)
+	return Cookie3.handcon(e,tp,eg,ep,ev,re,r,rp,chk,ALL_COLOR,1,1)
 end
 function s.Stagecostoperation(e,tp,eg,ep,ev,re,r,rp)
 	Cookie3.handcost(e,tp,eg,ep,ev,re,r,rp,ALL_COLOR,1,1)

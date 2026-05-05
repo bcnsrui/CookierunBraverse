@@ -28,7 +28,7 @@ function s.holyberryfilter(c,tp)
 end
 function s.Summoncon(e)
 	local tp=e:GetHandlerPlayer()
-	return Cookie8.ExtraSummoncon2(e) and Cookie3.handcon(e,tp,eg,ep,ev,re,r,rp,0,ALL_COLOR,1,1)
+	return Cookie8.ExtraSummoncon2(e) and Cookie3.handcon(e,tp,eg,ep,ev,re,r,rp,chk,ALL_COLOR,1,1)
 	and Duel.IsExistingMatchingCard(s.holyberryfilter,tp,LOCATION_MZONE,0,1,nil,tp)
 end
 function s.Summonop(e,tp,eg,ep,ev,re,r,rp)

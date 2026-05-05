@@ -18,7 +18,7 @@ function s.IGCookieoperation(e,tp,eg,ep,ev,re,r,rp)
 	if #g>0 then Duel.SendtoGrave(g,REASON_EFFECT) end
 end
 function s.AndCookiecost(e,tp,eg,ep,ev,re,r,rp)
-	return Cookie3.handcon(e,tp,eg,ep,ev,re,r,rp,0,ALL_COLOR,1,1)
+	return Cookie3.handcon(e,tp,eg,ep,ev,re,r,rp,chk,ALL_COLOR,1,1)
 end
 function s.AndCookiecostoperation(e,tp,eg,ep,ev,re,r,rp)
 	Cookie3.handcost(e,tp,eg,ep,ev,re,r,rp,ALL_COLOR,1,1)

@@ -10,7 +10,7 @@ function s.initial_effect(c)
 end
 function s.FlipCookiecost(e,tp,eg,ep,ev,re,r,rp)
 	return Duel.GetFieldGroupCount(tp,LOCATION_GRAVE,0)>=15
-	and Cookie3.handcon(e,tp,eg,ep,ev,re,r,rp,0,ALL_COLOR,1,1)
+	and Cookie3.handcon(e,tp,eg,ep,ev,re,r,rp,chk,ALL_COLOR,1,1)
 end
 function s.FlipCookiecostoperation(e,tp,eg,ep,ev,re,r,rp)
 	Cookie3.handcost(e,tp,eg,ep,ev,re,r,rp,ALL_COLOR,1,1)

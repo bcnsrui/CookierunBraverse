@@ -25,7 +25,7 @@ function s.IGCookieoperation(e,tp,eg,ep,ev,re,r,rp)
 	Cookie7.cookieatkchange(e,tp,eg,ep,ev,re,r,rp,PHASE_END,1,e:GetHandler(),1)
 end
 function s.AndCookiecost(e,tp,eg,ep,ev,re,r,rp)
-	return Cookie3.handcon(e,tp,eg,ep,ev,re,r,rp,0,ALL_COLOR,2,2)
+	return Cookie3.handcon(e,tp,eg,ep,ev,re,r,rp,chk,ALL_COLOR,2,2)
 end
 function s.AndCookiecostoperation(e,tp,eg,ep,ev,re,r,rp)
 	Cookie3.handcost(e,tp,eg,ep,ev,re,r,rp,ALL_COLOR,2,2)

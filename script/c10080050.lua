@@ -17,7 +17,7 @@ function s.IGCookieoperation(e,tp,eg,ep,ev,re,r,rp)
 end
 function s.AndCookiecost(e,tp,eg,ep,ev,re,r,rp)
 	local cost2=Cookie3.manacon(e,tp,eg,ep,ev,re,r,rp,0,ATTRIBUTE_FIRE,1,1)
-	local cost3=Cookie3.handcon(e,tp,eg,ep,ev,re,r,rp,0,ALL_COLOR,1,1)
+	local cost3=Cookie3.handcon(e,tp,eg,ep,ev,re,r,rp,chk,ALL_COLOR,1,1)
 	return cost2 and cost3
 end
 function s.AndCookiecostoperation(e,tp,eg,ep,ev,re,r,rp)

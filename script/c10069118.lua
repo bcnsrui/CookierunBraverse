@@ -37,7 +37,7 @@ function s.Stagecon(e)
 	and not (Duel.GetAttacker() and Duel.GetAttacker():IsControler(tp))
 end
 function s.Stagecost(e,tp,eg,ep,ev,re,r,rp,chk)
-	if chk==0 then return Cookie3.handcon(e,tp,eg,ep,ev,re,r,rp,0,ALL_COLOR,1,1) end
+	if chk==0 then return Cookie3.handcon(e,tp,eg,ep,ev,re,r,rp,chk,ALL_COLOR,1,1) end
 	Duel.SetChainLimit(aux.FALSE)
 end
 function s.Stageoperation(e,tp,eg,ep,ev,re,r,rp)

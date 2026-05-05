@@ -7,12 +7,6 @@ function s.refreshchk(tp)
 	local ally=Duel.GetMatchingGroup(nil,tp,LOCATION_EMZONE,0,nil):GetFirst()
 	return ally and ally:IsSetCard(0xa17)
 end
-function s.Stagecost(e,tp,eg,ep,ev,re,r,rp,chk)
-	return Cookie3.restcon(e,tp,eg,ep,ev,re,r,rp,chk)
-end
-function s.Stagecostoperation(e,tp,eg,ep,ev,re,r,rp)
-	Duel.ChangePosition(e:GetHandler(),POS_FACEUP_DEFENSE)
-end
 function s.Stageoperation(e,tp,eg,ep,ev,re,r,rp)
 	Cookie3.CookieTrashop(e,tp,eg,ep,ev,re,r,rp,3)
 	local ally=Duel.GetMatchingGroup(nil,tp,LOCATION_EMZONE,0,nil):GetFirst()

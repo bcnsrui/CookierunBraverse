@@ -99,7 +99,28 @@ function Cookie3.Refreshop(e,tp,eg,ep,ev,re,r,rp)
 	local ag=Duel.SelectMatchingCard(tp,Card.IsRace,tp,LOCATION_GRAVE,0,brk,brk,nil,RACE_WARRIOR)
 	if #ag>0 then Duel.SendtoExtraP(ag,nil,REASON_EFFECT) end
 	local refill=Duel.GetFieldGroup(tp,LOCATION_GRAVE,0)
-	Duel.SendtoDeck(refill,nil,SEQ_DECKSHUFFLE,REASON_RULE)
+	local function refresh_deck_tier(c)
+		if c:IsRace(RACE_WARRIOR) then
+			if c:IsSetCard(0xb00) then return 1 end
+			return 2
+		end
+		if c:IsRace(RACE_SPELLCASTER) then return 3 end
+		if c:IsRace(RACE_FAIRY) then return 4 end
+		if c:IsRace(RACE_FIEND) then return 5 end
+		return 6
+	end
+	local sorted={}
+	for tc in aux.Next(refill) do sorted[#sorted+1]=tc end
+	table.sort(sorted,function(a,b)
+		local ta,tb=refresh_deck_tier(a),refresh_deck_tier(b)
+		if ta~=tb then return ta>tb end
+		return a:GetCode()<b:GetCode()
+	end)
+	Duel.DisableShuffleCheck()
+	for _,tc in ipairs(sorted) do
+		Duel.SendtoDeck(tc,nil,SEQ_DECKTOP,REASON_RULE)
+	end
+	Duel.ConfirmCards(1-tp,refill)
 	Duel.ShuffleDeck(tp)
 	local ally=Duel.GetMatchingGroup(nil,tp,LOCATION_EMZONE,0,nil):GetFirst()
 	if ally and not ally:IsSetCard(0xa17) then
