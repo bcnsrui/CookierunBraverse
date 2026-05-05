@@ -11,7 +11,7 @@ function s.initial_effect(c)
 end
 function s.QECookiecost(e,tp,eg,ep,ev,re,r,rp,chk)
 	local c=e:GetHandler()
-	return c:IsLocation(LOCATION_EXTRA) and c:IsAbleToGraveAsCost()
+	return c:IsLocation(LOCATION_EXTRA)
 end
 function s.QECookiecostoperation(e,tp,eg,ep,ev,re,r,rp)
 	Duel.SendtoGrave(e:GetHandler(),REASON_COST)

@@ -66,6 +66,8 @@ function s.AndCookieoperation(e,tp,eg,ep,ev,re,r,rp)
 	local ally=Duel.GetMatchingGroup(nil,tp,LOCATION_EMZONE,0,nil):GetFirst()
 	if ally:IsSetCard(0xa15) then return end
 	local g=Duel.SelectMatchingCard(tp,Cookie3.NoEmFzonefilter,tp,0,LOCATION_MZONE,0,1,nil,tp)
+	local tc=g:GetFirst()
+	if tc:GetOverlayCount()==1 and tc:IsSetCard(0xa03) then return end
 	if #g>0 then Cookie7.hpdecktop(e,tp,eg,ep,ev,re,r,rp,g,1)
 	Cookie7.faceuphpaddop(e,tp,eg,ep,ev,re,r,rp,1-tp,e:GetHandler(),1) end
 end

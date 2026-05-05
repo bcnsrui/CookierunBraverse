@@ -4,9 +4,6 @@ function s.initial_effect(c)
 	Cookie2.CookieCharacter(c,ATTRIBUTE_WIND,2,2)
 	Cookie6.IGCoookieEffect(c,0,ATTRIBUTE_WIND,1,1)
 end
-function s.IGCookiecost(e,tp,eg,ep,ev,re,r,rp,chk)
-	return e:GetHandler():IsAbleToGraveAsCost()
-end
 function s.IGCookiecostoperation(e,tp,eg,ep,ev,re,r,rp)
 	Cookie3.bttrashop(e,tp,eg,ep,ev,re,r,rp,e:GetHandler())
 end

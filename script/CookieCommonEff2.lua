@@ -409,6 +409,7 @@ function Cookie7.hpdecktop(e,tp,eg,ep,ev,re,r,rp,ag,dam)
 	local tg
 	if typ=="Card" then tg=ag
 	elseif typ=="Group" then tg=ag:GetFirst() end
+	if tg:GetOverlayCount()==1 and tg:IsSetCard(0xa03) then return end
 	Duel.Damage(1-c:GetControler(),dam,REASON_EFFECT)
 	local damage=0
 	while damage<dam and tg:GetOverlayCount()>0 do

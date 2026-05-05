@@ -17,7 +17,7 @@ function s.Stageoperation(e,tp,eg,ep,ev,re,r,rp)
 	if #ag==0 then return end
 	local tc=ag:GetFirst()
 	Duel.Hint(HINT_SELECTMSG,tp,aux.Stringid(10060001,1))
-	local hg=Duel.SelectMatchingCard(tp,Card.IsAbleToDeck,tp,LOCATION_HAND,0,0,1,nil)
+	local hg=Duel.SelectMatchingCard(tp,nil,tp,LOCATION_HAND,0,0,1,nil)
 	if #hg>0 then
 		Duel.SendtoDeck(hg,nil,SEQ_DECKTOP,REASON_EFFECT)
 		Cookie7.hpaddop(e,tp,eg,ep,ev,re,r,rp,tc,1)

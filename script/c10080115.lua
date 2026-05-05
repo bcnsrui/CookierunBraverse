@@ -9,7 +9,7 @@ function s.arenasupportfilter(c)
 end
 function s.IGCookieeffcondition(e,tp,eg,ep,ev,re,r,rp)
 	local g=Cookie3.SupportAreafilter(e,tp,eg,ep,ev,re,r,rp,1,1,0,0)
-	return g:FilterCount(Card.IsAttribute,nil,ATTRIBUTE_WIND)>=3 and e:GetHandler():IsAbleToGraveAsCost()
+	return g:FilterCount(Card.IsAttribute,nil,ATTRIBUTE_WIND)>=3
 end
 function s.IGCookiecostoperation(e,tp,eg,ep,ev,re,r,rp)
 	Cookie3.bttrashop(e,tp,eg,ep,ev,re,r,rp,e:GetHandler())

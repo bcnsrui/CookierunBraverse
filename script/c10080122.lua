@@ -3,9 +3,6 @@ local s,id=GetID()
 function s.initial_effect(c)
 	Cookie6.StageEffect(c,ALL_COLOR,5,5,0,0)
 end
-function s.Stagecost(e,tp,eg,ep,ev,re,r,rp,chk)
-	return e:GetHandler():IsAbleToGraveAsCost()
-end
 function s.Stagecostoperation(e,tp,eg,ep,ev,re,r,rp)
 	Duel.SendtoGrave(e:GetHandler(),REASON_COST)
 end
