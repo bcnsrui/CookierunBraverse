@@ -327,7 +327,7 @@ end
 
 
 --메인 캐릭터 기동효과
---1패정렬,2등장카운터,3쿠키등장,7헛체인
+--1패정렬,2등장카운터,3쿠키등장,7헛체인,8서포트 실수 허용,9드로우 실수 허용
 function Cookie.MainCharacterSpEff(c)
 	local e1=Effect.CreateEffect(c)
 	e1:SetDescription(aux.Stringid(10060002,0))
@@ -378,6 +378,39 @@ function Cookie.MainCharacterSpEff(c)
 	e7:SetCondition(Cookie6.Trapcon)
 	e7:SetTarget(Cookie3.notg)
 	c:RegisterEffect(e7)
+	local e8=Effect.CreateEffect(c)
+	e8:SetDescription(aux.Stringid(10060002,7))
+	e8:SetType(EFFECT_TYPE_QUICK_O)
+	e8:SetCode(EVENT_FREE_CHAIN)
+	e8:SetRange(LOCATION_EMZONE)
+	e8:SetCondition(Cookie.missPositioncon)
+	e8:SetTarget(Cookie3.notg)
+	e8:SetOperation(Cookie.missSupportop)
+	c:RegisterEffect(e8)
+	local e9=Effect.CreateEffect(c)
+	e9:SetDescription(aux.Stringid(10060002,8))
+	e9:SetType(EFFECT_TYPE_QUICK_O)
+	e9:SetCode(EVENT_FREE_CHAIN)
+	e9:SetRange(LOCATION_EMZONE)
+	e9:SetCondition(Cookie.missPositioncon)
+	e9:SetTarget(Cookie3.notg)
+	e9:SetOperation(Cookie.missDrawop)
+	c:RegisterEffect(e9)
+end
+function Cookie.missSupportop(e,tp,eg,ep,ev,re,r,rp)
+	local turnp=Duel.GetTurnPlayer()
+	local opp=1-turnp
+	if not Duel.SelectYesNo(opp,aux.Stringid(10060002,9)) then return end
+	if Duel.GetFieldGroupCount(turnp,LOCATION_HAND,0)==0 then return end
+	Duel.Hint(HINT_SELECTMSG,turnp,aux.Stringid(10060000,0))
+	local sg=Duel.SelectMatchingCard(turnp,nil,turnp,LOCATION_HAND,0,1,1,nil)
+	if #sg>0 then Duel.Remove(sg,POS_FACEUP,REASON_RULE) end
+end
+function Cookie.missDrawop(e,tp,eg,ep,ev,re,r,rp)
+	local turnp=Duel.GetTurnPlayer()
+	local opp=1-turnp
+	if not Duel.SelectYesNo(opp,aux.Stringid(10060002,10)) then return end
+	Cookie3.CookieDrawop(e,turnp,eg,ep,ev,re,r,rp,1)
 end
 function Cookie.BattlePositioncon(e)
 	local tp=e:GetHandlerPlayer()
@@ -467,6 +500,10 @@ function Cookie.leavecookieop3(e,tp,eg,ep,ev,re,r,rp)
 			enemymain:RemoveCounter(tp,0xa01,1,REASON_RULE) end
 		enemymain:RemoveCounter(tp,0xa01,enemymain:GetCounter(0xa01),REASON_RULE)
 		else enemymain:RemoveCounter(tp,0xa01,enemymain:GetCounter(0xa01),REASON_RULE) end
+end
+function Cookie.missPositioncon(e)
+	local tp=e:GetHandlerPlayer()
+	return Cookie.BattlePositioncon(e) and not e:GetHandler():IsSetCard(0x001)
 end
 
 --메인 캐릭터 기동효과
