@@ -30,15 +30,6 @@ function s.QECookieoperation(e,tp,eg,ep,ev,re,r,rp)
 	if ally:IsSetCard(0xa15) then return end
 	Duel.Hint(HINT_SELECTMSG,tp,aux.Stringid(10060001,1))
 	local g=Duel.SelectMatchingCard(tp,Cookie3.NoEmFzonefilter,tp,0,LOCATION_MZONE,0,1,nil,tp)
-	if #g==0 then return end
-	local tc=g:GetFirst()
-	if tc:GetOverlayCount()==0 then return end
-	local og=tc:GetOverlayGroup()
-	local top=og:GetFirst()
-	for oc in aux.Next(og) do
-		if oc:GetSequence()>top:GetSequence() then top=oc end
-	end
-	Duel.DisableShuffleCheck()
-	Duel.SendtoDeck(top,nil,SEQ_DECKTOP,REASON_RULE)
-	Cookie7.faceuphpaddop(e,tp,eg,ep,ev,re,r,rp,1-tp,e:GetHandler(),1)
+	if #g>0 then Cookie7.hpdecktop(e,tp,eg,ep,ev,re,r,rp,g,1)
+	Cookie7.faceuphpaddop(e,tp,eg,ep,ev,re,r,rp,1-tp,e:GetHandler(),1) end
 end
