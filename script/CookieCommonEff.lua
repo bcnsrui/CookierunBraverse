@@ -136,7 +136,7 @@ end
 function Cookie3.bttrashop(e,tp,eg,ep,ev,re,r,rp,g)
 	if type(g)=="Card" then	local sg=Group.CreateGroup() sg:AddCard(g) g=sg	end
 	if Duel.IsExistingMatchingCard(Card.IsSetCard,tp,0,LOCATION_MZONE,1,nil,0xd10) then return end
-	if g:IsSetCard(0xd18) then return end
+	if g:GetFirst():IsSetCard(0xd18) then return end
 	local stage=Duel.GetMatchingGroup(Card.IsCode,tp,LOCATION_FZONE,0,nil,10070522)
 	Duel.Remove(g,POS_FACEUP,REASON_EFFECT)
 	Duel.SendtoGrave(g,REASON_EFFECT)
