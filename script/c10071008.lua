@@ -34,7 +34,6 @@ function s.AndCookieeffcondition(e,tp,eg,ep,ev,re,r,rp)
 	return Duel.IsExistingMatchingCard(Cookie3.NoEmFzonefilter,tp,0,LOCATION_MZONE,1,nil,tp)
 end
 function s.AndCookieoperation(e,tp,eg,ep,ev,re,r,rp)
-	Duel.Hint(HINT_SELECTMSG,tp,aux.Stringid(10060001,1))
-	local g=Duel.SelectMatchingCard(tp,Cookie3.NoEmFzonefilter,tp,0,LOCATION_MZONE,0,1,nil,tp)
-	if #g>0 then Cookie7.damageeff(e,tp,eg,ep,ev,re,r,rp,g,1) end
+	local bc=e:GetHandler():GetBattleTarget()
+	if bc then Cookie7.damageeff(e,tp,eg,ep,ev,re,r,rp,bc,1) end
 end
