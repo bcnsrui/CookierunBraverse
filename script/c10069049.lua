@@ -9,13 +9,17 @@ function s.initial_effect(c)
 	e1:SetValue(0xd024)
 	c:RegisterEffect(e1)
 end
-function s.lv1cookie(c,tp)
-	return c:IsLevel(1) and c:IsRace(RACE_WARRIOR) and Cookie3.NoEmFzonefilter(c,tp)
+function s.lv1filter(c,tp)
+	return c:IsRace(RACE_WARRIOR) and c:IsLevel(1) and Cookie3.NoEmFzonefilter(c,tp)
 end
 function s.QECookieoperation(e,tp,eg,ep,ev,re,r,rp)
 	if Duel.IsExistingMatchingCard(Card.IsSetCard,tp,0,LOCATION_MZONE,1,nil,0xd10) then return end
-	local em=Duel.GetMatchingGroup(Card.IsFaceup,1-tp,LOCATION_EMZONE,0,nil):GetFirst()
+	local em=Duel.GetMatchingGroup(nil,tp,0,LOCATION_EMZONE,nil):GetFirst()
+	if not em then return end
 	Duel.Hint(HINT_SELECTMSG,tp,aux.Stringid(10060001,1))
-	local g=Duel.SelectMatchingCard(tp,s.lv1cookie,tp,0,LOCATION_MZONE,0,1,nil,tp)
-	if #g>0 then Duel.Overlay(em,g) end
+	local g=Duel.SelectMatchingCard(tp,s.lv1filter,tp,0,LOCATION_MZONE,0,1,nil,tp)
+	if #g>0 then 
+		local mg=g:GetFirst():GetOverlayGroup()
+		if #mg>0 then Duel.SendtoGrave(mg,REASON_EFFECT) end
+		Duel.Overlay(em,g) end
 end

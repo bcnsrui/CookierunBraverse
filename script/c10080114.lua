@@ -15,9 +15,10 @@ function s.initial_effect(c)
 	c:RegisterEffect(e2)
 end
 function s.QECookieoperation(e,tp,eg,ep,ev,re,r,rp)
+	local count=Duel.AnnounceNumber(tp,1,0)
 	local dg=Duel.GetDecktopGroup(tp,1)
 	local ally=Duel.GetMatchingGroup(nil,tp,LOCATION_EMZONE,0,nil):GetFirst()
-	if #dg>0 and ally then Duel.Overlay(ally,dg) end
+	if #dg>0 and count>0 and ally then Duel.Overlay(ally,dg) end
 	Duel.Hint(HINT_SELECTMSG,tp,aux.Stringid(10060001,1))
 	local g=Duel.SelectMatchingCard(tp,Cookie3.NoEmFzonefilter,tp,0,LOCATION_MZONE,0,1,nil,tp)
 	if #g>0 then Cookie7.damageeff(e,tp,eg,ep,ev,re,r,rp,g,1) end

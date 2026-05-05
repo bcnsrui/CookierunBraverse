@@ -15,7 +15,7 @@ end
 function s.FlipCookieoperation(e,tp,eg,ep,ev,re,r,rp)
 	local ally=Duel.GetMatchingGroup(nil,tp,LOCATION_EMZONE,0,nil):GetFirst()
 	local g=Duel.GetMatchingGroup(Card.IsCode,tp,LOCATION_SZONE,0,nil,10064057)
-	if #g>0 then 
+	if #g>0 then
 	local e1=Effect.CreateEffect(g:GetFirst())
 	e1:SetType(EFFECT_TYPE_SINGLE)
 	e1:SetCode(EFFECT_ADD_SETCODE)

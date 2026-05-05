@@ -27,7 +27,10 @@ function s.QECookieoperation(e,tp,eg,ep,ev,re,r,rp)
 	local g=Duel.SelectMatchingCard(tp,s.lv2filter,tp,LOCATION_MZONE,0,0,1,e:GetHandler(),tp)
 	local tc=g:GetFirst()
 	local ally=Duel.GetMatchingGroup(nil,tp,LOCATION_EMZONE,0,nil):GetFirst()
-	if tc and ally then Duel.Overlay(ally,tc) end
+	if tc and ally then
+		local mg=tc:GetOverlayGroup()
+		if #mg>0 then Duel.SendtoGrave(mg,REASON_EFFECT) end
+		Duel.Overlay(ally,tc) end
 end
 function s.AndCookiecost(e,tp,eg,ep,ev,re,r,rp)
 	return Cookie3.SupportAreaCount(e,tp,eg,ep,ev,re,r,rp,1,1,0,0)>=1

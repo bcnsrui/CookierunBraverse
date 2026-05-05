@@ -7,7 +7,7 @@ end
 function s.IGCookieoperation(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
 	local ally=Duel.GetMatchingGroup(nil,tp,LOCATION_EMZONE,0,nil):GetFirst()
-	if c:IsLocation(LOCATION_MZONE) and ally then
-		Duel.Overlay(ally,c)
-	end
+	local mg=c:GetOverlayGroup()
+	if #mg>0 then Duel.SendtoGrave(mg,REASON_EFFECT) end
+	Duel.Overlay(ally,c)
 end
