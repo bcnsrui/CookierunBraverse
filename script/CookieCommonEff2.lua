@@ -335,7 +335,7 @@ function Cookie7.damageeff(e,tp,eg,ep,ev,re,r,rp,ag,dam)
 	if (tg:IsSetCard(0xa02) or ally:IsSetCard(0xa02)) then Duel.SendtoGrave(last,REASON_EFFECT) else
 	Duel.MoveToField(last,tg:GetControler(),tg:GetControler(),LOCATION_SZONE,POS_FACEUP,true) end
 	damage=damage+1 end
-	if tg:GetOverlayCount()==0 and tg:IsLocation(LOCATION_MZONE) then Cookie3.Cookiedestroyop(e,tp,eg,ep,ev,re,r,rp,tg) end
+	if tg:GetOverlayCount()==0 and tg:IsLocation(LOCATION_MZONE) then Cookie3.Cookiedestroyop2(e,tp,eg,ep,ev,re,r,rp,tg) end
 	if tg:IsSetCard(0xd04) and tg:IsLocation(LOCATION_MZONE) then Cookie8.eventop(e,tp,eg,ep,ev,re,r,rp,tg) end
 	if tg:IsSetCard(0xd15) then Cookie8.eventop(e,tp,eg,ep,ev,re,r,rp,tg) end
 	if c:IsSetCard(0xc01) and c:IsControler(tp) then Duel.RegisterFlagEffect(tp,10080106,RESET_PHASE+PHASE_END,0,1) end
@@ -386,7 +386,7 @@ function Cookie7.hptrasheff(e,tp,eg,ep,ev,re,r,rp,ag,dam)
 	end
 	Duel.SendtoGrave(last,REASON_EFFECT)
 	trash=trash+1 end
-	if tg:GetOverlayCount()==0 and tg:IsLocation(LOCATION_MZONE) then Cookie3.Cookiedestroyop(e,tp,eg,ep,ev,re,r,rp,tg) end
+	if tg:GetOverlayCount()==0 and tg:IsLocation(LOCATION_MZONE) then Cookie3.Cookiedestroyop2(e,tp,eg,ep,ev,re,r,rp,tg) end
 	if tg:IsSetCard(0xd15) then Cookie8.eventop(e,tp,eg,ep,ev,re,r,rp,tg) end
 end
 
@@ -420,7 +420,7 @@ function Cookie7.hpdecktop(e,tp,eg,ep,ev,re,r,rp,ag,dam)
 	end
 	Duel.SendtoDeck(last,nil,SEQ_DECKTOP,REASON_EFFECT)
 	damage=damage+1 end
-	if tg:GetOverlayCount()==0 and tg:IsLocation(LOCATION_MZONE) then Cookie3.Cookiedestroyop(e,tp,eg,ep,ev,re,r,rp,tg) end
+	if tg:GetOverlayCount()==0 and tg:IsLocation(LOCATION_MZONE) then Cookie3.Cookiedestroyop2(e,tp,eg,ep,ev,re,r,rp,tg) end
 	if tg:IsSetCard(0xd15) then Cookie8.eventop(e,tp,eg,ep,ev,re,r,rp,tg) end
 end
 

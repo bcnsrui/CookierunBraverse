@@ -4,6 +4,9 @@ function s.initial_effect(c)
 	Cookie2.CookieCharacter(c,ATTRIBUTE_LIGHT,1,1)
 	Cookie6.IGCoookieEffect(c,0,ATTRIBUTE_LIGHT,2,2)
 end
+function s.IGCookieeffcondition(e,tp,eg,ep,ev,re,r,rp)
+	return not Duel.IsExistingMatchingCard(Card.IsSetCard,tp,0,LOCATION_MZONE,1,nil,0xd10)
+end
 function s.IGCookiecostoperation(e,tp,eg,ep,ev,re,r,rp)
 	Duel.SendtoExtraP(e:GetHandler(),nil,REASON_COST)
 end

@@ -14,6 +14,7 @@ function s.Itemcost(e,tp,eg,ep,ev,re,r,rp,chk)
 end
 function s.Itemeffcondition(e,tp,eg,ep,ev,re,r,rp)
 	return Duel.GetMatchingGroupCount(s.lv3cookiefilter,tp,LOCATION_EXTRA,0,nil)>0
+	and not Duel.IsExistingMatchingCard(Card.IsSetCard,tp,0,LOCATION_MZONE,1,nil,0xd10)
 end
 function s.Itemcostoperation(e,tp,eg,ep,ev,re,r,rp)
 	Duel.Hint(HINT_SELECTMSG,tp,aux.Stringid(10060000,6))

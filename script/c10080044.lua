@@ -13,6 +13,7 @@ function s.lv1filter(c,tp)
 	return c:IsRace(RACE_WARRIOR) and c:IsLevel(1) and Cookie3.NoEmFzonefilter(c,tp)
 end
 function s.QECookieoperation(e,tp,eg,ep,ev,re,r,rp)
+	if Duel.IsExistingMatchingCard(Card.IsSetCard,tp,0,LOCATION_MZONE,1,nil,0xd10) then return end
 	local em=Duel.GetMatchingGroup(nil,tp,LOCATION_EMZONE,0,nil):GetFirst()
 	if not em then return end
 	Duel.Hint(HINT_SELECTMSG,tp,aux.Stringid(10060001,1))

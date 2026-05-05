@@ -136,6 +136,7 @@ end
 function Cookie3.bttrashop(e,tp,eg,ep,ev,re,r,rp,g)
 	if type(g)=="Card" then	local sg=Group.CreateGroup() sg:AddCard(g) g=sg	end
 	if Duel.IsExistingMatchingCard(Card.IsSetCard,tp,0,LOCATION_MZONE,1,nil,0xd10) then return end
+	if g:IsSetCard(0xd18) then return end
 	local stage=Duel.GetMatchingGroup(Card.IsCode,tp,LOCATION_FZONE,0,nil,10070522)
 	Duel.Remove(g,POS_FACEUP,REASON_EFFECT)
 	Duel.SendtoGrave(g,REASON_EFFECT)
@@ -252,7 +253,26 @@ function Cookie3.Cookiedestroyop(e,tp,eg,ep,ev,re,r,rp,ag)
 	local tg
 	if typ=="Card" then tg=ag
 	elseif typ=="Group" then tg=ag:GetFirst() end
+	if Duel.IsExistingMatchingCard(Card.IsSetCard,tp,0,LOCATION_MZONE,1,nil,0xd10) then return end
+	if tg:IsControler(1-tp) and tg:IsSetCard(0xd18) then return end
 	Duel.Destroy(tg,REASON_EFFECT)
+	local tcp=tg:GetControler()
+	if tg:IsSetCard(0xd021) or tg:IsSetCard(0xd024) then Cookie8.eventop(e,tp,eg,ep,ev,re,r,rp,tg)
+	elseif (tg:IsSetCard(0xd022) or tg:IsSetCard(0xd025)) and Duel.GetTurnPlayer()==tcp then Cookie8.eventop(e,tp,eg,ep,ev,re,r,rp,tg)
+	elseif (tg:IsSetCard(0xd023) or tg:IsSetCard(0xd026)) and Duel.GetTurnPlayer()~=tcp then Cookie8.eventop(e,tp,eg,ep,ev,re,r,rp,tg) end
+end
+
+--쿠키런 기절시(통상공격)
+function Cookie3.Cookiedestroyop2(e,tp,eg,ep,ev,re,r,rp,ag)
+	local typ=type(ag)
+	if typ=="Card" and ag==nil then return
+	elseif typ=="Group" and #ag==0 then return end
+	local tg
+	if typ=="Card" then tg=ag
+	elseif typ=="Group" then tg=ag:GetFirst() end
+	Duel.Destroy(tg,REASON_EFFECT)
+	if Duel.IsExistingMatchingCard(Card.IsSetCard,tp,LOCATION_MZONE,0,1,nil,0xd10) then
+	Duel.SendtoExtraP(tg,nil,REASON_EFFECT)	end
 	local tcp=tg:GetControler()
 	if tg:IsSetCard(0xd021) or tg:IsSetCard(0xd024) then Cookie8.eventop(e,tp,eg,ep,ev,re,r,rp,tg)
 	elseif (tg:IsSetCard(0xd022) or tg:IsSetCard(0xd025)) and Duel.GetTurnPlayer()==tcp then Cookie8.eventop(e,tp,eg,ep,ev,re,r,rp,tg)

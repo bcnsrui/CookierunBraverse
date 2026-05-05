@@ -16,5 +16,6 @@ end
 function s.AndCookieoperation(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
 	local breaklevel=Duel.GetMatchingGroup(Card.IsFaceup,tp,LOCATION_EXTRA,0,nil):GetSum(Card.GetLevel)
+	if Duel.IsExistingMatchingCard(Card.IsSetCard,tp,0,LOCATION_MZONE,1,nil,0xd10) then return end
 	if breaklevel<=6 and c:IsLocation(LOCATION_MZONE) then Duel.SendtoExtraP(c,nil,REASON_EFFECT) end
 end

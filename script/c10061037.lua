@@ -39,6 +39,7 @@ function s.AndCookiecostoperation(e,tp,eg,ep,ev,re,r,rp)
 end
 function s.AndCookieeffcondition(e,tp,eg,ep,ev,re,r,rp)
 	return Duel.GetMatchingGroupCount(s.oplv1filter,tp,0,LOCATION_MZONE,nil,tp)>=1
+	and not Duel.IsExistingMatchingCard(Card.IsSetCard,tp,0,LOCATION_MZONE,1,nil,0xd10)
 end
 function s.AndCookieoperation(e,tp,eg,ep,ev,re,r,rp)
 	Duel.Hint(HINT_SELECTMSG,tp,aux.Stringid(10060001,1))

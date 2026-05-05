@@ -16,6 +16,7 @@ end
 function s.IGCookiecost(e,tp,eg,ep,ev,re,r,rp,chk)
 	return Duel.IsExistingMatchingCard(s.cookiefilter2,tp,LOCATION_HAND,0,1,nil)
 	and Duel.IsExistingMatchingCard(s.cookiefilter,tp,LOCATION_EXTRA,0,1,nil)
+	and not Duel.IsExistingMatchingCard(Card.IsSetCard,tp,0,LOCATION_MZONE,1,nil,0xd10)
 end
 function s.IGCookieeffcondition(e,tp,eg,ep,ev,re,r,rp)
 	return Duel.IsExistingMatchingCard(s.goldfilter,tp,LOCATION_EXTRA,0,1,nil)

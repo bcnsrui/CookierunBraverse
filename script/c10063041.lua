@@ -14,11 +14,6 @@ function s.initial_effect(c)
 	c:RegisterEffect(e1)
 end
 function s.AndCookieoperation(e,tp,eg,ep,ev,re,r,rp)
+	if Duel.IsExistingMatchingCard(Card.IsSetCard,tp,0,LOCATION_MZONE,1,nil,0xd10) then return end
 	Duel.SendtoExtraP(e:GetHandler(),nil,REASON_EFFECT)
 end
-
-
-
-
-
-

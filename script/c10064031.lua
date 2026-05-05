@@ -14,6 +14,7 @@ end
 function s.FlipCookieeffcondition(e,tp,eg,ep,ev,re,r,rp)
 	local ally=Duel.GetMatchingGroup(Card.IsFaceup,tp,LOCATION_EXTRA,0,nil):GetSum(Card.GetLevel)
 	return ally>=5 and Duel.IsExistingMatchingCard(s.Raindeityfilter,tp,LOCATION_EXTRA,0,1,nil)
+	and not Duel.IsExistingMatchingCard(Card.IsSetCard,tp,0,LOCATION_MZONE,1,nil,0xd10)
 end
 function s.FlipCookieoperation(e,tp,eg,ep,ev,re,r,rp)
 	Duel.Hint(HINT_SELECTMSG,tp,aux.Stringid(10060001,1))

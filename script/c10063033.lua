@@ -21,6 +21,7 @@ function s.AndCookiecostoperation(e,tp,eg,ep,ev,re,r,rp)
 end
 function s.AndCookieeffcondition(e,tp,eg,ep,ev,re,r,rp)
 	return Duel.IsExistingMatchingCard(s.opp1hp,tp,0,LOCATION_MZONE,1,nil,tp)
+	and not Duel.IsExistingMatchingCard(Card.IsSetCard,tp,0,LOCATION_MZONE,1,nil,0xd10)
 end
 function s.opp1hp(c,tp)
 	return Cookie3.NoEmFzonefilter(c,tp) and c:GetOverlayCount()==1

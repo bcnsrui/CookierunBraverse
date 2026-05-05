@@ -20,6 +20,9 @@ function s.QECookiecostoperation(e,tp,eg,ep,ev,re,r,rp)
 	local g=Duel.SelectMatchingCard(tp,s.otherarena,tp,LOCATION_MZONE,0,1,1,nil,e:GetHandler(),tp)
 	if #g>0 then Duel.SendtoExtraP(g,nil,REASON_COST) end
 end
+function s.QECookieeffcondition(e,tp,eg,ep,ev,re,r,rp)
+	return not Duel.IsExistingMatchingCard(Card.IsSetCard,tp,0,LOCATION_MZONE,1,nil,0xd10)
+end
 function s.QECookieoperation(e,tp,eg,ep,ev,re,r,rp)
 	Duel.Hint(HINT_SELECTMSG,tp,aux.Stringid(10060001,1))
 	local g=Duel.SelectMatchingCard(tp,Cookie3.NoEmFzonefilter,tp,0,LOCATION_MZONE,0,1,nil,tp)

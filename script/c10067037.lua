@@ -9,6 +9,7 @@ function s.otheryellow(c,exc,tp)
 end
 function s.IGCookieeffcondition(e,tp,eg,ep,ev,re,r,rp)
 	return Duel.IsExistingMatchingCard(s.otheryellow,tp,LOCATION_MZONE,0,1,nil,e:GetHandler(),tp)
+	and not Duel.IsExistingMatchingCard(Card.IsSetCard,tp,0,LOCATION_MZONE,1,nil,0xd10)
 end
 function s.IGCookiecostoperation(e,tp,eg,ep,ev,re,r,rp)
 	Duel.SendtoExtraP(e:GetHandler(),nil,REASON_COST)

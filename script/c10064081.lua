@@ -20,6 +20,7 @@ function s.QECookiecostoperation(e,tp,eg,ep,ev,re,r,rp)
 end
 function s.QECookieoperation(e,tp,eg,ep,ev,re,r,rp)
 	local b1=Duel.IsExistingMatchingCard(s.deckbottomfilter,tp,0,LOCATION_MZONE,1,nil,tp)
+	if Duel.IsExistingMatchingCard(Card.IsSetCard,tp,0,LOCATION_MZONE,1,nil,0xd10) then b1=false end
 	if b1 then
 		Duel.Hint(HINT_SELECTMSG,tp,aux.Stringid(10061003,6))
 		local op=Duel.SelectOption(tp,aux.Stringid(id,1),aux.Stringid(id,2))

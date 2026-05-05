@@ -13,6 +13,7 @@ function s.yother(c,se,tp)
 	return c:IsAttribute(ATTRIBUTE_LIGHT) and c:IsRace(RACE_WARRIOR) and Cookie3.NoEmFzonefilter(c,tp) and c~=se
 end
 function s.QECookieoperation(e,tp,eg,ep,ev,re,r,rp)
+	if Duel.IsExistingMatchingCard(Card.IsSetCard,tp,0,LOCATION_MZONE,1,nil,0xd10) then return end
 	local c=e:GetHandler()
 	if Duel.IsExistingMatchingCard(s.yother,tp,LOCATION_MZONE,0,1,nil,c,tp) then
 	Duel.Hint(HINT_SELECTMSG,tp,aux.Stringid(10060001,1))

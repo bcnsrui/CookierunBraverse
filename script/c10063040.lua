@@ -14,6 +14,7 @@ function s.lv1war(c)
 end
 function s.QECookieeffcondition(e,tp,eg,ep,ev,re,r,rp)
 	return Duel.IsExistingMatchingCard(s.lv1war,tp,LOCATION_MZONE,LOCATION_MZONE,1,nil)
+	and not Duel.IsExistingMatchingCard(Card.IsSetCard,tp,0,LOCATION_MZONE,1,nil,0xd10)
 end
 function s.QECookieoperation(e,tp,eg,ep,ev,re,r,rp)
 	local g=Duel.GetMatchingGroup(s.lv1war,tp,LOCATION_MZONE,LOCATION_MZONE,nil)

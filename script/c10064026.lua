@@ -20,6 +20,7 @@ end
 function s.QECookieeffcondition(e,tp,eg,ep,ev,re,r,rp)
 	local br=Duel.GetMatchingGroup(Card.IsFaceup,tp,LOCATION_EXTRA,0,nil):GetSum(Card.GetLevel)
 	return br<=5 and Duel.IsExistingMatchingCard(s.opplv2,tp,0,LOCATION_MZONE,1,nil,tp)
+	and not Duel.IsExistingMatchingCard(Card.IsSetCard,tp,0,LOCATION_MZONE,1,nil,0xd10)
 end
 function s.QECookieoperation(e,tp,eg,ep,ev,re,r,rp)
 	Duel.Hint(HINT_SELECTMSG,tp,aux.Stringid(10060001,1))

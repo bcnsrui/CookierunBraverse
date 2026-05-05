@@ -177,7 +177,7 @@ function Cookie2.damagecheck(e,tp,eg,ep,ev,re,r,rp,attr,colorCount,mixCount)
 	if (bc:IsSetCard(0xa02) or ally:IsSetCard(0xa02)) then Duel.SendtoGrave(last,REASON_EFFECT) else
 	Duel.MoveToField(last,bc:GetControler(),bc:GetControler(),LOCATION_SZONE,POS_FACEUP,true) end
 	damage=damage+1 end
-	if bc:GetOverlayCount()==0 and bc:IsLocation(LOCATION_MZONE) then Cookie3.Cookiedestroyop(e,tp,eg,ep,ev,re,r,rp,bc) end
+	if bc:GetOverlayCount()==0 and bc:IsLocation(LOCATION_MZONE) then Cookie3.Cookiedestroyop2(e,tp,eg,ep,ev,re,r,rp,bc) end
 	if bc:IsSetCard(0xd15) then Cookie8.eventop(e,tp,eg,ep,ev,re,r,rp,bc) end
 	if bc:IsSetCard(0xd04) and bc:IsLocation(LOCATION_MZONE) then Cookie8.eventop(e,tp,eg,ep,ev,re,r,rp,bc) end
 	if c:IsSetCard(0xd03) then return Cookie6.AndCoookieEffect(e,tp,eg,ep,ev,re,r,rp,attr,colorCount,mixCount) end

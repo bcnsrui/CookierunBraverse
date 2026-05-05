@@ -12,6 +12,7 @@ end
 function s.QECookieeffcondition(e,tp,eg,ep,ev,re,r,rp)
 	local op=Duel.GetMatchingGroup(Card.IsFaceup,1-tp,LOCATION_EXTRA,0,nil):GetSum(Card.GetLevel)
 	return op<=6 and Duel.GetMatchingGroup(Card.IsFaceup,1-tp,LOCATION_EXTRA,0,nil):GetCount()>0
+	and not Duel.IsExistingMatchingCard(Card.IsSetCard,tp,0,LOCATION_MZONE,1,nil,0xd10)
 end
 function s.opbattlefilter(c,tp,lv)
 	return c:IsLevel(lv) and Cookie3.NoEmFzonefilter(c,tp)

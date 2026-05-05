@@ -15,6 +15,9 @@ function s.Stagecostoperation(e,tp,eg,ep,ev,re,r,rp)
 	Duel.SendtoHand(bg,nil,REASON_EFFECT)
 	Duel.ConfirmCards(1-tp,bg)
 end
+function s.Stageeffcondition(e,tp,eg,ep,ev,re,r,rp)
+	return not Duel.IsExistingMatchingCard(Card.IsSetCard,tp,0,LOCATION_MZONE,1,nil,0xd10)
+end
 function s.Stageoperation(e,tp,eg,ep,ev,re,r,rp)
 	Duel.Hint(HINT_SELECTMSG,tp,aux.Stringid(10060001,1))
 	local ag=Duel.SelectMatchingCard(tp,Cookie3.NoEmFzonefilter,tp,LOCATION_MZONE,0,1,1,nil,tp)

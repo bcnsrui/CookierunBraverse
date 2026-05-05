@@ -10,6 +10,9 @@ end
 function s.sum3check(sg,e,tp,mg)
 	return sg:GetSum(Card.GetLevel)==3
 end
+function s.IGCookieeffcondition(e,tp,eg,ep,ev,re,r,rp)
+	return not Duel.IsExistingMatchingCard(Card.IsSetCard,tp,0,LOCATION_MZONE,1,nil,0xd10)
+end
 function s.IGCookiecostoperation(e,tp,eg,ep,ev,re,r,rp)
 	Duel.SendtoExtraP(e:GetHandler(),nil,REASON_COST)
 end

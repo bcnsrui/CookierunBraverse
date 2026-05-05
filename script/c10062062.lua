@@ -19,6 +19,7 @@ end
 function s.QECookieeffcondition(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
 	return Duel.GetMatchingGroupCount(s.myfilter,tp,LOCATION_MZONE,0,c,tp)>=1
+	and not Duel.IsExistingMatchingCard(Card.IsSetCard,tp,0,LOCATION_MZONE,1,nil,0xd10)
 end
 function s.QECookieoperation(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
@@ -29,6 +30,7 @@ function s.QECookieoperation(e,tp,eg,ep,ev,re,r,rp)
 	Duel.SendtoGrave(sg,REASON_EFFECT)
 	Duel.Hint(HINT_SELECTMSG,tp,aux.Stringid(10060001,1))
 	starfruit=Duel.SelectMatchingCard(tp,s.opfilter,tp,0,LOCATION_MZONE,0,1,nil,tp)
+	if starfruit:GetFirst():IsSetCard(0xd18) then return end
 	if #starfruit>0 then Duel.Remove(starfruit,POS_FACEUP,REASON_EFFECT)
 	Duel.SendtoGrave(starfruit,REASON_EFFECT) end	end
 	if #starfruit>0 and starfruit:GetFirst():IsSetCard(0xd09) then Cookie8.eventop(e,tp,eg,ep,ev,re,r,rp,starfruit) end

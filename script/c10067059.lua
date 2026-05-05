@@ -33,6 +33,9 @@ function s.AndCookiecostoperation(e,tp,eg,ep,ev,re,r,rp)
 	local sg=g:Select(tp,1,1,nil)
 	if #sg>0 then Duel.SendtoGrave(sg,REASON_EFFECT) end
 end
+function s.AndCookieeffcondition(e,tp,eg,ep,ev,re,r,rp)
+	return not Duel.IsExistingMatchingCard(Card.IsSetCard,tp,0,LOCATION_MZONE,1,nil,0xd10)
+end
 function s.greencookiefilter(c,tp)
 	return c:IsAttribute(ATTRIBUTE_WIND) and c:IsRace(RACE_WARRIOR) and c:GetLevel()<=2 and Cookie3.NoEmFzonefilter(c,tp)
 end
