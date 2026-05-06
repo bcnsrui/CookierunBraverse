@@ -181,7 +181,10 @@ end
 function Cookie2.battleendcon(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetOwner()
 	local tc=e:GetLabelObject()
-	return c and c==Duel.GetAttacker() and tc and eg:IsContains(tc)
+	return Duel.GetCurrentPhase()==PHASE_BATTLE_STEP
+	and c and c==Duel.GetAttacker() and tc
+	and Duel.GetAttackTarget()==tc
+	and eg:IsContains(tc)
 end
 function Cookie2.battleendop(e,tp,eg,ep,ev,re,r,rp)
 	Duel.NegateAttack()
@@ -207,14 +210,16 @@ function Cookie2.attackreplayecon2(e,tp,eg,ep,ev,re,r,rp)
 	and eg:IsExists(Cookie2.attackreplayfilter,1,nil,bc)
 end
 function Cookie2.attackreplayfilter(tc,bc)
-	return tc~=bc and tc:IsRace(RACE_WARRIOR)
-	and tc:IsPreviousLocation(LOCATION_MZONE)
-	and tc:IsPreviousControler(bc:GetControler())
+	return tc~=bc and tc:IsPreviousLocation(LOCATION_MZONE)
 end
 function Cookie2.attackreplayop2(e,tp,eg,ep,ev,re,r,rp)
+	local c=e:GetOwner()
 	local bc=e:GetLabelObject()
+	if not c or c~=Duel.GetAttacker() then return end
 	if not bc or not bc:IsLocation(LOCATION_MZONE) then return end
-	Duel.ChangeAttackTarget(bc)
+	if Duel.GetAttackTarget()~=bc then
+		Duel.ChangeAttackTarget(bc)
+	end
 end
 function Cookie2.damagecheck(e,tp,eg,ep,ev,re,r,rp,attr,colorCount,mixCount)
 	local c=e:GetHandler()
