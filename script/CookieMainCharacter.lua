@@ -358,6 +358,10 @@ function Cookie.MainCharacterSpEff(c)
 	e5:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_TRIGGER_F)
 	e5:SetCode(EVENT_DAMAGE_STEP_END)
 	c:RegisterEffect(e5)
+	local e11=e3:Clone()
+	e11:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_TRIGGER_F)
+	e11:SetCode(EVENT_ATTACK_DISABLED)
+	c:RegisterEffect(e11)
 	local e4=Effect.CreateEffect(c)
 	e4:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_TRIGGER_F)
 	e4:SetCode(EVENT_CHAIN_END)
@@ -370,6 +374,10 @@ function Cookie.MainCharacterSpEff(c)
 	e6:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_TRIGGER_F)
 	e6:SetCode(EVENT_DAMAGE_STEP_END)
 	c:RegisterEffect(e6)
+	local e12=e4:Clone()
+	e12:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_TRIGGER_F)
+	e12:SetCode(EVENT_ATTACK_DISABLED)
+	c:RegisterEffect(e12)
 	local e7=Effect.CreateEffect(c)
 	e7:SetDescription(aux.Stringid(10060000,8))
 	e7:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_QUICK_O)
@@ -440,10 +448,10 @@ end
 function Cookie.cookiefilter(c)
 	return c:IsRace(RACE_WARRIOR)
 end
-function Cookie.leavecookiecon2(e)
+function Cookie.leavecookiecon2(e,tp,eg,ep,ev,re,r,rp)
 	local tp=e:GetHandlerPlayer()
 	local c=e:GetHandler()
-	if Duel.GetCurrentPhase()==PHASE_BATTLE_STEP and Duel.GetAttacker() then return false end
+	if re and re:GetHandler() and re:GetHandler():IsType(TYPE_TRAP) then return false end
 	local enemymain=Duel.GetMatchingGroup(nil,1-tp,LOCATION_EMZONE,0,nil):GetFirst()
 	if not enemymain then return false end
 	local g=Duel.GetMatchingGroup(aux.TRUE,tp,LOCATION_TRIGGERZONE,LOCATION_TRIGGERZONE,nil)
@@ -471,10 +479,10 @@ function Cookie.leavecookieop2(e,tp,eg,ep,ev,re,r,rp)
 		c:RemoveCounter(tp,0xa01,c:GetCounter(0xa01),REASON_RULE)
 		else c:RemoveCounter(tp,0xa01,c:GetCounter(0xa01),REASON_RULE) end
 end
-function Cookie.leavecookiecon3(e)
+function Cookie.leavecookiecon3(e,tp,eg,ep,ev,re,r,rp)
 	local tp=e:GetHandlerPlayer()
 	local c=e:GetHandler()
-	if Duel.GetCurrentPhase()==PHASE_BATTLE_STEP and Duel.GetAttacker() then return false end
+	if re and re:GetHandler() and re:GetHandler():IsType(TYPE_TRAP) then return false end
 	local enemymain=Duel.GetMatchingGroup(nil,1-tp,LOCATION_EMZONE,0,nil):GetFirst()
 	if not enemymain then return false end
 	local g=Duel.GetMatchingGroup(aux.TRUE,tp,LOCATION_TRIGGERZONE,LOCATION_TRIGGERZONE,nil)
