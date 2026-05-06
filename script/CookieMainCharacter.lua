@@ -443,6 +443,7 @@ end
 function Cookie.leavecookiecon2(e)
 	local tp=e:GetHandlerPlayer()
 	local c=e:GetHandler()
+	if Duel.GetCurrentPhase()==PHASE_BATTLE_STEP and Duel.GetAttacker() then return false end
 	local enemymain=Duel.GetMatchingGroup(nil,1-tp,LOCATION_EMZONE,0,nil):GetFirst()
 	if not enemymain then return false end
 	local g=Duel.GetMatchingGroup(aux.TRUE,tp,LOCATION_TRIGGERZONE,LOCATION_TRIGGERZONE,nil)
@@ -473,6 +474,7 @@ end
 function Cookie.leavecookiecon3(e)
 	local tp=e:GetHandlerPlayer()
 	local c=e:GetHandler()
+	if Duel.GetCurrentPhase()==PHASE_BATTLE_STEP and Duel.GetAttacker() then return false end
 	local enemymain=Duel.GetMatchingGroup(nil,1-tp,LOCATION_EMZONE,0,nil):GetFirst()
 	if not enemymain then return false end
 	local g=Duel.GetMatchingGroup(aux.TRUE,tp,LOCATION_TRIGGERZONE,LOCATION_TRIGGERZONE,nil)

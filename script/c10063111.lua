@@ -25,6 +25,8 @@ function s.QECookieoperation(e,tp,eg,ep,ev,re,r,rp)
 end
 function s.AndCookieoperation(e,tp,eg,ep,ev,re,r,rp)
 	local support=Cookie3.SupportAreafilter(e,tp,eg,ep,ev,re,r,rp,1,1,0,0)
-	local bc=e:GetHandler():GetBattleTarget()
-	if support:IsExists(Card.IsSetCard,1,nil,0xc03) and bc then Cookie7.damageeff(e,tp,eg,ep,ev,re,r,rp,bc,2) end
+	Duel.Hint(HINT_SELECTMSG,tp,aux.Stringid(10060001,1))
+	local g=Duel.SelectMatchingCard(tp,Cookie3.NoEmFzonefilter,tp,0,LOCATION_MZONE,0,1,nil,tp)
+	if support:IsExists(Card.IsSetCard,1,nil,0xc03) and #g>0 then
+	Cookie7.damageeff(e,tp,eg,ep,ev,re,r,rp,g,2) end
 end
