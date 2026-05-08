@@ -15,10 +15,6 @@ end
 function s.IGCookiecostoperation(e,tp,eg,ep,ev,re,r,rp)
 	Cookie3.bttrashop(e,tp,eg,ep,ev,re,r,rp,e:GetHandler())
 end
-function s.IGCookieeffcondition(e,tp,eg,ep,ev,re,r,rp)
-	return Duel.GetLocationCount(tp,LOCATION_MZONE)>0
-	and Duel.IsExistingMatchingCard(s.darkcookiefilter,tp,LOCATION_GRAVE,0,1,nil)
-end
 function s.IGCookieoperation(e,tp,eg,ep,ev,re,r,rp)
 	Duel.Hint(HINT_SELECTMSG,tp,aux.Stringid(10060001,1))
 	local sg=Duel.SelectMatchingCard(tp,s.darkcookiefilter,tp,LOCATION_GRAVE,0,0,1,nil)
