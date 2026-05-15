@@ -31,7 +31,7 @@ function s.IGCookieoperation(e,tp,eg,ep,ev,re,r,rp)
 	em:RegisterEffect(e2)
 end
 function s.flipyellow(c)
-	return c:IsRace(RACE_WARRIOR) and c:IsAttribute(ATTRIBUTE_LIGHT) and c:IsSetCard(0xb00)
+	return c:IsRace(RACE_WARRIOR) and c:IsSetCard(0xb00)
 end
 function s.AndCookiecost(e,tp,eg,ep,ev,re,r,rp)
 	return Duel.IsExistingMatchingCard(s.flipyellow,tp,LOCATION_HAND,0,1,nil)
