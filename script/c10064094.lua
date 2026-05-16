@@ -5,7 +5,7 @@ function s.initial_effect(c)
 	Cookie6.IGCoookieEffect(c,1,ATTRIBUTE_DARK,0,0)
 end
 function s.lv3filter(c,tp)
-	return c:IsLevel(3) and c:IsRace(RACE_WARRIOR) and Cookie3.NoEmFzonefilter(c,tp)
+	return c:IsAttribute(ATTRIBUTE_DARK) and c:IsLevel(3) and c:IsRace(RACE_WARRIOR) and Cookie3.NoEmFzonefilter(c,tp)
 end
 function s.IGCookieeffcondition(e,tp,eg,ep,ev,re,r,rp)
 	return Duel.IsExistingMatchingCard(s.lv3filter,tp,LOCATION_MZONE,0,1,nil,tp)

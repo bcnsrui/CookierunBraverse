@@ -10,7 +10,7 @@ function s.initial_effect(c)
 	c:RegisterEffect(e1)
 end
 function s.bluelv1filter(c,tp)
-	return c:IsAttribute(ATTRIBUTE_WATER) and c:IsRace(RACE_WARRIOR) and c:IsLevel(1) and Cookie3.NoEmFzonefilter(c,tp)
+	return c:IsRace(RACE_WARRIOR) and c:IsLevel(1) and Cookie3.NoEmFzonefilter(c,tp)
 end
 function s.QECookiecost(e,tp,eg,ep,ev,re,r,rp,chk)
 	return Duel.IsExistingMatchingCard(s.bluelv1filter,tp,LOCATION_MZONE,0,1,nil,tp)

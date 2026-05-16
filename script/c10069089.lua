@@ -21,7 +21,7 @@ function s.IGCookieoperation(e,tp,eg,ep,ev,re,r,rp)
 	end
 end
 function s.lowhp_blue(c,tp)
-	return c:IsAttribute(ATTRIBUTE_WATER) and c:IsLevel(1) and Cookie3.NoEmFzonefilter(c,tp)
+	return c:IsLevel(1) and Cookie3.NoEmFzonefilter(c,tp)
 end
 function s.AndCookiecost(e,tp,eg,ep,ev,re,r,rp)
 	return Duel.IsExistingMatchingCard(s.lowhp_blue,tp,LOCATION_MZONE,0,1,nil,tp)
