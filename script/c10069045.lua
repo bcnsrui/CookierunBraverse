@@ -1,7 +1,7 @@
 if not Cookie2 then Duel.LoadScript("deprecated_function.lua") end
 local s,id=GetID()
 function s.initial_effect(c)
-	Cookie6.TrapEffect(c,ATTRIBUTE_LIGHT,2,2)
+	Cookie6.TrapEffect(c,ATTRIBUTE_LIGHT,1,1)
 end
 function s.flipyellow(c)
 	return c:IsRace(RACE_WARRIOR) and c:IsSetCard(0xb00)
