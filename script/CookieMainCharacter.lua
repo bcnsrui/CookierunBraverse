@@ -33,7 +33,7 @@ function Cookie.DuelStartop(e,tp,eg,ep,ev,re,r,rp)
 	local enemymain=Duel.GetMatchingGroup(Cookie.DuelStartfilter,1-tp,LOCATION_EXTRA,0,nil):GetFirst()
 	Duel.SpecialSummon(enemymain,0,1-tp,1-tp,true,true,POS_FACEUP_ATTACK) end
 	
-	if c:IsSetCard(0x001) then return end
+	if c:IsSetCard(0x001) or c:IsSetCard(0x002) then return end
 	local shuffle=Duel.GetFieldGroup(tp,LOCATION_HAND,0)
 	Duel.SendtoDeck(shuffle,nil,SEQ_DECKSHUFFLE,REASON_RULE)
 	Duel.ShuffleDeck(tp)
@@ -104,7 +104,7 @@ function Cookie.Resetop(e,tp,eg,ep,ev,re,r,rp)
 		local sg2=Duel.SelectMatchingCard(tp,Cookie.cookiefilter,tp,LOCATION_HAND,0,0,2,nil,e,tp)
 		Cookie3.Cookiesummonop(e,tp,eg,ep,ev,re,r,rp,sg2) end
 
-	if Duel.GetTurnCount()==1 and not c:IsSetCard(0x001) then
+	if Duel.GetTurnCount()==1 and not c:IsSetCard(0x001) and not c:IsSetCard(0x002) then
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_SPSUMMON)
 	local sc1=Duel.SelectMatchingCard(tp,Cookie.cookiefilter,tp,LOCATION_HAND,0,1,1,nil,e,tp):GetFirst()
 	Duel.SpecialSummon(sc1,0,tp,tp,false,false,POS_FACEDOWN_DEFENSE)
@@ -129,7 +129,7 @@ function Cookie.Resetop(e,tp,eg,ep,ev,re,r,rp)
 end
 function Cookie.drawop(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
-	if Duel.GetTurnCount()==1 and not c:IsSetCard(0x001) then
+	if Duel.GetTurnCount()==1 and not c:IsSetCard(0x001) and not c:IsSetCard(0x002) then
 	local sc=Duel.GetMatchingGroup(Card.IsDefensePos,tp,LOCATION_MZONE,0,nil):GetFirst()	
 	Duel.SendtoHand(sc,nil,REASON_RULE)
 	Duel.SpecialSummon(sc,0,tp,tp,false,false,POS_FACEUP_ATTACK)

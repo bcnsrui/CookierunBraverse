@@ -1,16 +1,30 @@
 if not Cookie2 then Duel.LoadScript("deprecated_function.lua") end
 local s,id=GetID()
 function s.initial_effect(c)
-	Cookie2.CookieCharacter(c,ATTRIBUTE_LIGHT,2,3)
-	Cookie6.IGCoookieEffect(c,1,ATTRIBUTE_LIGHT,1,1)
+	Cookie2.CookieCharacter(c,ATTRIBUTE_LIGHT,2,2)
+	Cookie6.IGCoookieEffect(c,1,ATTRIBUTE_LIGHT,0,0)
+	if not s.global_check then
+		s.global_check=true
+		local ge1=Effect.CreateEffect(c)
+		ge1:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
+		ge1:SetCode(EVENT_TO_DECK)
+		ge1:SetOperation(s.checkop)
+		Duel.RegisterEffect(ge1,0)
+	end
 end
-function s.ArenaFilter(c)
+function s.checkop(e,tp,eg,ep,ev,re,r,rp)
+	for tc in aux.Next(eg) do
+		if tc:IsRace(RACE_WARRIOR) and tc:IsSetCard(0xc01) and tc:IsLocation(LOCATION_EXTRA) then
+			Duel.RegisterFlagEffect(tc:GetControler(),id,RESET_PHASE+PHASE_END,0,1)
+		end
+	end
+end
+function s.arenavailfilter(c)
 	return c:IsFaceup() and c:IsRace(RACE_WARRIOR) and c:IsSetCard(0xc01)
 end
 function s.IGCookieeffcondition(e,tp,eg,ep,ev,re,r,rp)
-	local c=e:GetHandler()
-	local ally=Duel.GetMatchingGroup(nil,tp,LOCATION_EMZONE,0,nil):GetFirst()
-	return Duel.GetMatchingGroupCount(s.ArenaFilter,tp,LOCATION_EXTRA,0,nil)>=4	or ally:IsSetCard(0xa09)
+	return Duel.GetMatchingGroupCount(s.arenavailfilter,tp,LOCATION_EXTRA,0,nil)>=4
+		or Duel.GetFlagEffect(tp,id)>0
 end
 function s.IGCookieoperation(e,tp,eg,ep,ev,re,r,rp)
 	local g=Duel.GetMatchingGroup(Cookie3.NoEmFzonefilter,tp,0,LOCATION_MZONE,nil,tp)
