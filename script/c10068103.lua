@@ -16,5 +16,5 @@ function s.initial_effect(c)
 end
 function s.QECookieoperation(e,tp,eg,ep,ev,re,r,rp)
 	local g=Duel.SelectMatchingCard(tp,Cookie3.NoEmFzonefilter,tp,0,LOCATION_MZONE,0,2,nil,tp)
-	if #g>0 then Cookie7.hptrasheff(e,tp,eg,ep,ev,re,r,rp,g,1) end
+	if #g>0 then Cookie7.Allhptrasheff(e,tp,eg,ep,ev,re,r,rp,g,1) end
 end

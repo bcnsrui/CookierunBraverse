@@ -7,6 +7,6 @@ function s.Trapoperation(e,tp,eg,ep,ev,re,r,rp)
 	Duel.Hint(HINT_SELECTMSG,tp,aux.Stringid(10060001,1))
 	local g=Duel.SelectMatchingCard(tp,Cookie3.NoEmFzonefilter,tp,0,LOCATION_MZONE,0,1,nil,tp)
 	if #g>0 then Cookie7.cookieatkchange(e,tp,eg,ep,ev,re,r,rp,PHASE_END,1,g,-2) end
-	if Duel.GetFieldGroupCount(tp,LOCATION_GRAVE,0)>=20 then
+	if Duel.GetFieldGroupCount(tp,0,LOCATION_GRAVE)>=20 then
 	Cookie7.cookieatkchange(e,tp,eg,ep,ev,re,r,rp,PHASE_END,1,g,-1) end
 end
