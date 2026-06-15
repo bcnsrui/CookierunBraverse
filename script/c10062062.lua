@@ -30,9 +30,8 @@ function s.QECookieoperation(e,tp,eg,ep,ev,re,r,rp)
 	Duel.SendtoGrave(sg,REASON_EFFECT)
 	Duel.Hint(HINT_SELECTMSG,tp,aux.Stringid(10060001,1))
 	starfruit=Duel.SelectMatchingCard(tp,s.opfilter,tp,0,LOCATION_MZONE,0,1,nil,tp)
-	if starfruit:GetFirst():IsSetCard(0xd18) then return end
-	if #starfruit>0 then Duel.Remove(starfruit,POS_FACEUP,REASON_EFFECT)
-	Duel.SendtoGrave(starfruit,REASON_EFFECT) end	end
+	if #starfruit>0 and not starfruit:GetFirst():IsSetCard(0xd18) then Duel.Remove(starfruit,POS_FACEUP,REASON_EFFECT)
+	Duel.SendtoGrave(starfruit,REASON_EFFECT) end end
 	if #starfruit>0 and starfruit:GetFirst():IsSetCard(0xd09) then Cookie8.eventop(e,tp,eg,ep,ev,re,r,rp,starfruit) end
 	if #sg>0 and sg:GetFirst():IsSetCard(0xd09) then Cookie8.eventop(e,tp,eg,ep,ev,re,r,rp,sg) end
 	if #stage>0 and #starfruit>0 and stage:GetFirst():GetCounter(0x1000)==0 then Cookie8.eventop(e,tp,eg,ep,ev,re,r,rp,stage) end
