@@ -9,7 +9,7 @@ function s.initial_effect(c)
 	e1:SetValue(0xd09)
 	c:RegisterEffect(e1)
 end
-function s.tgop(e,tp,eg,ep,ev,re,r,rp)
+function s.QECookieoperation(e,tp,eg,ep,ev,re,r,rp)
 	if Duel.GetTurnPlayer()==tp then
 	Duel.Hint(HINT_SELECTMSG,tp,aux.Stringid(10060001,1))
 	local g=Duel.SelectMatchingCard(tp,Cookie3.NoEmFzonefilter,tp,0,LOCATION_MZONE,0,1,nil,tp)
