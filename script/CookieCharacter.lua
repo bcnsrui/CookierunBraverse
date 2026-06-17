@@ -282,7 +282,7 @@ function Cookie2.battlemanacost(attr,colorCount,mixCount)
 	local sherbet=Duel.GetMatchingGroupCount(Cookie2.sherbetfilter,tp,0,LOCATION_MZONE,nil,tp)
 	local g=Duel.GetMatchingGroup(Card.IsFaceup,tp,LOCATION_REMOVED,0,nil)
 	return #g>=_mixCount
-	and aux.SelectUnselectGroup(g,e,tp,_mixCount,_mixCount,Cookie3.hasColorCount(attr,_colorCount),0)
+	and (_mixCount==0 or aux.SelectUnselectGroup(g,e,tp,_mixCount,_mixCount,Cookie3.hasColorCount(attr,_colorCount),0))
 	and Duel.GetFieldGroupCount(tp,LOCATION_HAND,0)>=sherbet
 	end)
 
