@@ -17,5 +17,5 @@ function s.Trapoperation(e,tp,eg,ep,ev,re,r,rp)
 	if arenact>=3 then
 	Duel.Hint(HINT_SELECTMSG,tp,aux.Stringid(10060001,1))
 	local dg=Duel.SelectMatchingCard(tp,Cookie3.NoEmFzonefilter,tp,0,LOCATION_MZONE,0,1,nil,tp)
-	if #dg>0 then Cookie7.cookieatkchange(e,tp,eg,ep,ev,re,r,rp,PHASE_END,1,dg,-1) end
+	if #dg>0 then Cookie7.cookieatkchange(e,tp,eg,ep,ev,re,r,rp,PHASE_END,1,dg,-1) end end
 end

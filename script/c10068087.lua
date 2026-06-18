@@ -14,7 +14,7 @@ function s.allybluelv1filter(c,tp,exc)
 	and Cookie3.NoEmFzonefilter(c,tp) and c~=exc
 end
 function s.enemylv1filter(c,tp)
-	return c:IsLevel(1) and c:IsRace(RACE_WARRIOR) and not Cookie3.NoEmFzonefilter(c,tp)
+	return c:IsLevel(1) and c:IsRace(RACE_WARRIOR) and Cookie3.NoEmFzonefilter(c,tp)
 end
 function s.QECookiecost(e,tp,eg,ep,ev,re,r,rp,chk)
 	return Duel.IsExistingMatchingCard(s.allybluelv1filter,tp,LOCATION_MZONE,0,1,nil,tp,e:GetHandler())

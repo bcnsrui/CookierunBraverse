@@ -23,7 +23,7 @@ function s.IGCookieoperation(e,tp,eg,ep,ev,re,r,rp)
 	local g=Duel.SelectMatchingCard(tp,s.lv1opp,tp,0,LOCATION_MZONE,0,1,nil,tp)
 	if #g>0 then Duel.SendtoDeck(g,nil,SEQ_DECKBOTTOM,REASON_EFFECT) end
 end
-function s.AndCookieoperation(e,tp,eg,ep,ev,re,r,rp)\
+function s.AndCookieoperation(e,tp,eg,ep,ev,re,r,rp)
 	if Duel.GetFieldGroupCount(tp,LOCATION_HAND,0)<=5 then
 	local draw=Duel.AnnounceNumber(tp,2,1,0)
 	if draw>0 then Cookie3.CookieDrawop(e,tp,eg,ep,ev,re,r,rp,draw) end end
