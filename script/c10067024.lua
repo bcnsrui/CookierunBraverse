@@ -21,11 +21,6 @@ function s.AndCookiecostoperation(e,tp,eg,ep,ev,re,r,rp)
 	Cookie3.CookieDrawop(e,tp,eg,ep,ev,re,r,rp,1)
 end
 function s.AndCookieoperation(e,tp,eg,ep,ev,re,r,rp)
-	local bc=e:GetBattleTarget()
+	local bc=e:GetHandler():GetBattleTarget()
 	if bc then Cookie7.damageeff(e,tp,eg,ep,ev,re,r,rp,bc,1) end
 end
-
-
-
-
-

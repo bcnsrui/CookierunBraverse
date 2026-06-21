@@ -26,11 +26,6 @@ function s.AndCookiecostoperation(e,tp,eg,ep,ev,re,r,rp)
 	Cookie3.manacost(e,tp,eg,ep,ev,re,r,rp,ATTRIBUTE_FIRE,1,1)
 end
 function s.AndCookieoperation(e,tp,eg,ep,ev,re,r,rp)
-	local bc=e:GetBattleTarget()
+	local bc=e:GetHandler():GetBattleTarget()
 	if bc then Cookie7.damageeff(e,tp,eg,ep,ev,re,r,rp,bc,1) end
 end
-
-
-
-
-
