@@ -33,9 +33,9 @@ function s.QECookieoperation(e,tp,eg,ep,ev,re,r,rp)
 	Duel.Hint(HINT_SELECTMSG,tp,aux.Stringid(10060001,1))
 	local g=Duel.SelectMatchingCard(tp,s.purplelv2gravefilter,tp,LOCATION_GRAVE,0,0,1,nil)
 	if #g>0 then Duel.SendtoHand(g,nil,REASON_EFFECT)
-	Duel.ConfirmCards(1-tp,g) end end
+	Duel.ConfirmCards(1-tp,g) end
 end
-function s.AndCookieoperation(e,tp,eg,ep,ev,re,r,rp)\
+function s.AndCookieoperation(e,tp,eg,ep,ev,re,r,rp)
 	if Duel.GetFieldGroupCount(1-tp,LOCATION_GRAVE,0)>=15 then
 	Duel.Hint(HINT_SELECTMSG,tp,aux.Stringid(10060001,1))
 	local g=Duel.SelectMatchingCard(tp,Cookie3.NoEmFzonefilter,tp,0,LOCATION_MZONE,0,1,nil,tp)

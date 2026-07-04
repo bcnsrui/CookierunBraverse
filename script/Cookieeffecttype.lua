@@ -166,6 +166,41 @@ function Cookie6.IGCookiecon(e)
 end
 
 --자동효과
+Cookie6.APPCHANGE_FLAG=0xd190
+function Cookie6.RegisterAppChange(tp,cardid)
+	if not Cookie6.appchange_label then Cookie6.appchange_label={} end
+	Cookie6.appchange_label[tp]=cardid
+	Duel.RegisterFlagEffect(tp,Cookie6.APPCHANGE_FLAG,RESET_PHASE+PHASE_END,0,1)
+end
+function Cookie6.GetAppChange(tp)
+	if Duel.GetFlagEffect(tp,Cookie6.APPCHANGE_FLAG)==0 then return nil end
+	if not Cookie6.appchange_label then return nil end
+	return Cookie6.appchange_label[tp]
+end
+function Cookie6.QEappearblocked(hc,tp)
+	if not hc:IsSetCard(0xc10) then return false end
+	local ally=Duel.GetMatchingGroup(Card.IsFaceup,tp,LOCATION_EMZONE,0,nil):GetFirst()
+	if ally and ally:IsSetCard(0xa18) then return true end
+	if ally and ally:IsSetCard(0xa181) and hc:IsLevelAbove(2) then return true end
+	return false
+end
+function Cookie6.QEappearanceresolve(hc,attr,colorCount,mixCount)
+	local code=hc:GetCode()
+	local tp=hc:GetControler()
+	if not hc:IsSetCard(0xc10) then
+		return code,attr,colorCount,mixCount end
+	local last=Cookie6.GetAppChange(tp)
+	if last==10091047 then
+		return 10091047,ALL_COLOR,0,1 end
+	if last==10091064 then
+		return 10091064,ALL_COLOR,0,1 end
+	if last==10091083 then
+		return 10091083,ALL_COLOR,0,1 end
+	return code,attr,colorCount,mixCount
+end
+function Cookie6.QEoptionalforced(hc,QEcode,mix2)
+	return mix2>0 and QEcode~=hc:GetCode()
+end
 function Cookie6.QECoookieEffect(c,attr,colorCount,mixCount)
 	local e1=Effect.CreateEffect(c)
 	e1:SetDescription(aux.Stringid(10060000,7))
@@ -174,40 +209,48 @@ function Cookie6.QECoookieEffect(c,attr,colorCount,mixCount)
 	e1:SetRange(LOCATION_TRIGGERZONE)
 	e1:SetCondition(Cookie8.eventcon)
 	e1:SetTarget(function(e,tp,eg,ep,ev,re,r,rp,chk)
-		local code=c:GetCode()
-		local gtbl=_G["c" .. code]
+		local hc=e:GetHandler()
+		local p=hc:GetControler()
+		if chk==0 and Cookie6.QEappearblocked(hc,p) then return false end
+		local QEcode,attr2,cc2,mix2=Cookie6.QEappearanceresolve(hc,attr,colorCount,mixCount)
+		local gtbl=_G["c" .. QEcode]
 		local cost1=true
 		if gtbl and type(gtbl.QECookiecost) == "function" then
-			cost1=gtbl.QECookiecost(e,tp,eg,ep,ev,re,r,rp,chk) end
-		if chk==0 then return Cookie3.manacon(e,tp,eg,ep,ev,re,r,rp,chk,attr,colorCount,mixCount) and cost1 end
+			cost1=gtbl.QECookiecost(e,p,eg,ep,ev,re,r,rp,chk) end
+		if chk==0 then return Cookie3.manacon(e,p,eg,ep,ev,re,r,rp,chk,attr2,cc2,mix2) and cost1 end
 		Duel.SetChainLimit(aux.FALSE) end)
 	e1:SetOperation(function(e,tp,eg,ep,ev,re,r,rp)
-		local c=e:GetHandler()
-		local code=c:GetCode()
-		local ally=Duel.GetMatchingGroup(Card.IsFaceup,tp,LOCATION_EMZONE,0,nil):GetFirst()
-		local gtbl=_G["c" .. code]
+		local hc=e:GetHandler()
+		local p=hc:GetControler()
+		if Cookie6.QEappearblocked(hc,p) then return hc:SetTurnCounter(0) end
+		local QEcode,attr2,cc2,mix2=Cookie6.QEappearanceresolve(hc,attr,colorCount,mixCount)
+		local gtbl=_G["c" .. QEcode]
 		local condition1=true
 		local costop1=function(e,tp,eg,ep,ev,re,r,rp) return end
 		local operation1=function(e,tp,eg,ep,ev,re,r,rp) return end
 		if gtbl and type(gtbl.QECookieeffcondition) == "function" then
-			condition1=gtbl.QECookieeffcondition(e,tp,eg,ep,ev,re,r,rp) end
-		if (ally and ally:IsSetCard(0xa18) and c:IsSetCard(0xc10))
-		or (ally and ally:IsSetCard(0xa181) and c:IsSetCard(0xc10) and c:IsLevelAbove(2))
-		or not Duel.SelectYesNo(tp,aux.Stringid(code,0)) then return c:SetTurnCounter(0) end
+			condition1=gtbl.QECookieeffcondition(e,p,eg,ep,ev,re,r,rp) end
+		if not Duel.SelectYesNo(p,aux.Stringid(QEcode,0)) then return hc:SetTurnCounter(0) end
 		if condition1 then
-			Cookie3.manacost(e,tp,eg,ep,ev,re,r,rp,attr,colorCount,mixCount)
+			if not Cookie3.manacon(e,p,eg,ep,ev,re,r,rp,0,attr2,cc2,mix2) then return hc:SetTurnCounter(0) end
+			if gtbl and type(gtbl.QECookiecost)=="function" and not gtbl.QECookiecost(e,p,eg,ep,ev,re,r,rp,0) then
+				return hc:SetTurnCounter(0) end
+			if not Cookie3.manacost(e,p,eg,ep,ev,re,r,rp,attr2,cc2,mix2) then return hc:SetTurnCounter(0) end
 		if gtbl and type(gtbl.QECookiecostoperation) == "function" then
-			costop1=gtbl.QECookiecostoperation(e,tp,eg,ep,ev,re,r,rp) end
+			costop1=gtbl.QECookiecostoperation(e,p,eg,ep,ev,re,r,rp) end
 		if gtbl and type(gtbl.QECookieoperation) == "function" then
-			operation1=gtbl.QECookieoperation(e,tp,eg,ep,ev,re,r,rp)
-			if not c:IsSetCard(0xd14) then c:SetTurnCounter(0) end
-		elseif not condition1 and Duel.SelectYesNo(tp,aux.Stringid(10060001,10)) then
-			Cookie3.manacost(e,tp,eg,ep,ev,re,r,rp,attr,colorCount,mixCount)
-			if not c:IsSetCard(0xd14) then c:SetTurnCounter(0) end
+			operation1=gtbl.QECookieoperation(e,p,eg,ep,ev,re,r,rp)
+			if not hc:IsSetCard(0xd14) then hc:SetTurnCounter(0) end
+		elseif not condition1 and Duel.SelectYesNo(p,aux.Stringid(10060001,10)) then
+			if not Cookie3.manacon(e,p,eg,ep,ev,re,r,rp,0,attr2,cc2,mix2) then return hc:SetTurnCounter(0) end
+			if gtbl and type(gtbl.QECookiecost)=="function" and not gtbl.QECookiecost(e,p,eg,ep,ev,re,r,rp,0) then
+				return hc:SetTurnCounter(0) end
+			if not Cookie3.manacost(e,p,eg,ep,ev,re,r,rp,attr2,cc2,mix2) then return hc:SetTurnCounter(0) end
+			if not hc:IsSetCard(0xd14) then hc:SetTurnCounter(0) end
 		if gtbl and type(gtbl.QECookiecostoperation) == "function" then
-			costop1=gtbl.QECookiecostoperation(e,tp,eg,ep,ev,re,r,rp) end
-		elseif c:IsSetCard(0xd14) then return end
-		else return c:SetTurnCounter(0) end
+			costop1=gtbl.QECookiecostoperation(e,p,eg,ep,ev,re,r,rp) end
+		elseif hc:IsSetCard(0xd14) then return end
+		else return hc:SetTurnCounter(0) end
 	end)
 	c:RegisterEffect(e1)
 	local e3=e1:Clone()
@@ -221,12 +264,15 @@ function Cookie6.QECoookieEffect(c,attr,colorCount,mixCount)
 	e2:SetRange(LOCATION_TRIGGERZONE)
 	e2:SetCondition(Cookie8.eventcon)
 	e2:SetTarget(function(e,tp,eg,ep,ev,re,r,rp,chk)
-		local code=c:GetCode()
-		local gtbl=_G["c" .. code]
+		local hc=e:GetHandler()
+		local p=hc:GetControler()
+		if chk==0 and Cookie6.QEappearblocked(hc,p) then return true end
+		local QEcode,attr2,cc2,mix2=Cookie6.QEappearanceresolve(hc,attr,colorCount,mixCount)
+		local gtbl=_G["c" .. QEcode]
 		local cost1=true
 		if gtbl and type(gtbl.QECookiecost) == "function" then
-			cost1=gtbl.QECookiecost(e,tp,eg,ep,ev,re,r,rp,chk)	end
-		if chk==0 then return not (Cookie3.manacon(e,tp,eg,ep,ev,re,r,rp,chk,attr,colorCount,mixCount) and cost1) end
+			cost1=gtbl.QECookiecost(e,p,eg,ep,ev,re,r,rp,chk)	end
+		if chk==0 then return not (Cookie3.manacon(e,p,eg,ep,ev,re,r,rp,chk,attr2,cc2,mix2) and cost1) end
 		Duel.SetChainLimit(aux.FALSE) end)
 	e2:SetOperation(function(e,tp,eg,ep,ev,re,r,rp)
 		e:GetHandler():SetTurnCounter(0) end)
@@ -246,19 +292,62 @@ function Cookie6.QECoookieEffect2(c)
 	e1:SetRange(LOCATION_TRIGGERZONE)
 	e1:SetCondition(Cookie8.eventcon)
 	e1:SetTarget(function(e,tp,eg,ep,ev,re,r,rp,chk)
-		if chk==0 then return true end
+		local hc=e:GetHandler()
+		local p=hc:GetControler()
+		if chk==0 and Cookie6.QEappearblocked(hc,p) then return false end
+		local QEcode,attr2,cc2,mix2=Cookie6.QEappearanceresolve(hc,0,0,0)
+		local gtbl=_G["c" .. QEcode]
+		local cost1=true
+		if gtbl and type(gtbl.QECookiecost)=="function" then
+			cost1=gtbl.QECookiecost(e,p,eg,ep,ev,re,r,rp,chk) end
+		if chk==0 then return Cookie3.manacon(e,p,eg,ep,ev,re,r,rp,chk,attr2,cc2,mix2) and cost1 end
 		Duel.SetChainLimit(aux.FALSE) end)
 	e1:SetOperation(function(e,tp,eg,ep,ev,re,r,rp)
-		local code=c:GetCode()
-		local gtbl=_G["c" .. code]
-		if gtbl and type(gtbl.QECookieoperation) == "function" then
-			gtbl.QECookieoperation(e,tp,eg,ep,ev,re,r,rp) end
-		e:GetHandler():SetTurnCounter(0) end)
+		local hc=e:GetHandler()
+		local p=hc:GetControler()
+		if Cookie6.QEappearblocked(hc,p) then return hc:SetTurnCounter(0) end
+		local QEcode,attr2,cc2,mix2=Cookie6.QEappearanceresolve(hc,0,0,0)
+		local gtbl=_G["c" .. QEcode]
+		if Cookie6.QEoptionalforced(hc,QEcode,mix2) and not Duel.SelectYesNo(p,aux.Stringid(QEcode,0)) then
+			return hc:SetTurnCounter(0) end
+		if not Cookie3.manacon(e,p,eg,ep,ev,re,r,rp,0,attr2,cc2,mix2) then return hc:SetTurnCounter(0) end
+		if gtbl and type(gtbl.QECookiecost)=="function" and not gtbl.QECookiecost(e,p,eg,ep,ev,re,r,rp,0) then
+			return hc:SetTurnCounter(0) end
+		if not Cookie3.manacost(e,p,eg,ep,ev,re,r,rp,attr2,cc2,mix2) then return hc:SetTurnCounter(0) end
+		if gtbl and type(gtbl.QECookiecostoperation)=="function" then
+			gtbl.QECookiecostoperation(e,p,eg,ep,ev,re,r,rp) end
+		if gtbl and type(gtbl.QECookieoperation)=="function" then
+			gtbl.QECookieoperation(e,p,eg,ep,ev,re,r,rp) end
+		hc:SetTurnCounter(0) end)
 	c:RegisterEffect(e1)
 	local e2=e1:Clone()
 	e2:SetCode(EVENT_SPSUMMON_SUCCESS)
 	e2:SetCondition(Cookie8.eventcon2)
 	c:RegisterEffect(e2)
+	local e3=Effect.CreateEffect(c)
+	e3:SetDescription(aux.Stringid(10060000,10))
+	e3:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_TRIGGER_F)
+	e3:SetCode(EVENT_CHAIN_END)
+	e3:SetRange(LOCATION_TRIGGERZONE)
+	e3:SetCondition(Cookie8.eventcon)
+	e3:SetTarget(function(e,tp,eg,ep,ev,re,r,rp,chk)
+		local hc=e:GetHandler()
+		local p=hc:GetControler()
+		if chk==0 and Cookie6.QEappearblocked(hc,p) then return true end
+		local QEcode,attr2,cc2,mix2=Cookie6.QEappearanceresolve(hc,0,0,0)
+		local gtbl=_G["c" .. QEcode]
+		local cost1=true
+		if gtbl and type(gtbl.QECookiecost)=="function" then
+			cost1=gtbl.QECookiecost(e,p,eg,ep,ev,re,r,rp,chk) end
+		if chk==0 then return not (Cookie3.manacon(e,p,eg,ep,ev,re,r,rp,chk,attr2,cc2,mix2) and cost1) end
+		Duel.SetChainLimit(aux.FALSE) end)
+	e3:SetOperation(function(e,tp,eg,ep,ev,re,r,rp)
+		e:GetHandler():SetTurnCounter(0) end)
+	c:RegisterEffect(e3)
+	local e4=e3:Clone()
+	e4:SetCode(EVENT_SPSUMMON_SUCCESS)
+	e4:SetCondition(Cookie8.eventcon2)
+	c:RegisterEffect(e4)
 end
 
 --상대의 공격

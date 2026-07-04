@@ -33,12 +33,14 @@ end
 function Cookie3.manacost(e,tp,eg,ep,ev,re,r,rp,attr,colorCount,mixCount)
 	local c=e:GetHandler()
 	local ally=Duel.GetMatchingGroup(nil,tp,LOCATION_EMZONE,0,nil):GetFirst()
-	if ally:IsCode(10060000) then return end
+	if ally:IsCode(10060000) then return true end
 	local g=Duel.GetMatchingGroup(Card.IsFaceup,tp,LOCATION_REMOVED,0,nil)
 	if mixCount==0 then return true end
 	local tg=aux.SelectUnselectGroup(g,e,tp,mixCount,mixCount,Cookie3.hasColorCount(attr,colorCount),1,tp,aux.Stringid(10060000,6))
+	if #tg<mixCount then return false end
 	local ally=Duel.GetMatchingGroup(nil,tp,LOCATION_EMZONE,0,nil):GetFirst()
 	Duel.Overlay(ally,tg)
+	return true
 end
 --핸드 코스트
 function Cookie3.handcon(e,tp,eg,ep,ev,re,r,rp,chk,attr,handcost1,handcost2)

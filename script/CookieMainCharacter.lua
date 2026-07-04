@@ -468,7 +468,7 @@ function Cookie.leavecookieop2(e,tp,eg,ep,ev,re,r,rp)
 	local allyzones=Duel.GetLocationCount(tp,LOCATION_MZONE)
 	local allycounter=c:GetCounter(0xa01)
 	local hand=Duel.GetFieldGroup(tp,LOCATION_HAND,0)
-	if not Duel.IsExistingMatchingCard(Cookie.cookiefilter,tp,LOCATION_MZONE,0,1,nil) then
+	if Duel.GetMatchingGroupCount(Cookie.cookiefilter,tp,LOCATION_HAND,0,nil)==0 then
 	Duel.ConfirmCards(1-tp,hand)
 	Duel.SetLP(tp,0) end
 	if allycounter==0 then return end
@@ -504,7 +504,7 @@ function Cookie.leavecookieop3(e,tp,eg,ep,ev,re,r,rp)
 	local enemyzones=Duel.GetLocationCount(1-tp,LOCATION_MZONE)
 	local enemycounter=enemymain:GetCounter(0xa01)
 	local hand=Duel.GetFieldGroup(tp,0,LOCATION_HAND)
-	if not Duel.IsExistingMatchingCard(Cookie.cookiefilter,tp,0,LOCATION_MZONE,1,nil) then
+	if Duel.GetMatchingGroupCount(Cookie.cookiefilter,tp,0,LOCATION_HAND,nil)==0 then
 	Duel.ConfirmCards(tp,hand)
 	Duel.SetLP(1-tp,0) end
 	if enemycounter==0 then return end
