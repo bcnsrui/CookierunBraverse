@@ -1,0 +1,27 @@
+if not Cookie2 then Duel.LoadScript("deprecated_function.lua") end
+local s,id=GetID()
+function s.initial_effect(c)
+	Cookie2.CookieCharacter(c,ATTRIBUTE_WIND,2,2)
+	local e0=Effect.CreateEffect(c)
+	e0:SetType(EFFECT_TYPE_SINGLE)
+	e0:SetCode(EFFECT_ADD_SETCODE)
+	e0:SetValue(0xc05)
+	c:RegisterEffect(e0)
+	local e1=Effect.CreateEffect(c)
+	e1:SetType(EFFECT_TYPE_SINGLE)
+	e1:SetCode(EFFECT_ADD_SETCODE)
+	e1:SetValue(0xd031)
+	c:RegisterEffect(e1)
+end
+function s.hp3filter(c,tp)
+	return c:IsRace(RACE_WARRIOR) and c:GetOverlayCount()<=3 and Cookie3.NoEmFzonefilter(c,tp)
+end
+function s.AndCookieoperation(e,tp,eg,ep,ev,re,r,rp)
+	local ally=Cookie3.SupportAreaCount(e,tp,eg,ep,ev,re,r,rp,1,1,0,0)
+	local enemy=Cookie3.SupportAreaCount(e,tp,eg,ep,ev,re,r,rp,0,0,1,1)
+	if ally<enemy then
+	Duel.Hint(HINT_SELECTMSG,tp,aux.Stringid(10060001,1))
+		local g=Duel.SelectMatchingCard(tp,s.hp3filter,tp,LOCATION_MZONE,0,0,1,nil,tp)
+		if #g>0 then Cookie7.hpaddop(e,tp,eg,ep,ev,re,r,rp,g,1) end
+	end
+end
