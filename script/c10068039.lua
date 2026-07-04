@@ -8,7 +8,7 @@ function s.lv2filter(c)
 	return c:IsLevel(2) and c:IsRace(RACE_WARRIOR)
 end
 function s.lv2belowfilter(c)
-	return c:IsFaceup() and c:IsLevelBelow(2) and c:IsRace(RACE_WARRIOR)
+	return c:IsFaceup() and c:IsLevelBelow(2) and c:IsRace(RACE_WARRIOR) and not c:IsSetCard(0xc08)
 end
 function s.IGCookiecost(e,tp,eg,ep,ev,re,r,rp,chk)
 	return Duel.IsExistingMatchingCard(s.lv2filter,tp,LOCATION_HAND,0,1,nil)

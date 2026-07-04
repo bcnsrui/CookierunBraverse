@@ -5,7 +5,7 @@ function s.initial_effect(c)
 	Cookie6.IGCoookieEffect(c,1,ATTRIBUTE_DARK,0,0)
 end
 function s.lv2filter(c)
-	return c:GetLevel()>=2 and c:IsRace(RACE_WARRIOR)
+	return c:GetLevel()>=2 and c:IsRace(RACE_WARRIOR) and not c:IsSetCard(0xc08)
 end
 function s.IGCookiecost(e,tp,eg,ep,ev,re,r,rp,chk)
 	return Duel.GetFieldGroupCount(tp,LOCATION_HAND,0)>=1

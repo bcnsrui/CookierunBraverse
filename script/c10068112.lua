@@ -14,7 +14,7 @@ function s.initial_effect(c)
 	c:RegisterEffect(e2)
 end
 function s.lv2filter(c)
-	return c:GetLevel()>=2 and c:IsRace(RACE_WARRIOR)
+	return c:GetLevel()>=2 and c:IsRace(RACE_WARRIOR) and not c:IsSetCard(0xc08)
 end
 function s.AndCookiecost(e,tp,eg,ep,ev,re,r,rp)
 	return Duel.GetFieldGroupCount(tp,LOCATION_HAND,0)>=1

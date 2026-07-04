@@ -10,7 +10,7 @@ function s.initial_effect(c)
 	c:RegisterEffect(e1)
 end
 function s.handcookiefilter(c)
-	return c:IsRace(RACE_WARRIOR)
+	return c:IsRace(RACE_WARRIOR) and not c:IsSetCard(0xc08)
 end
 function s.QECookieeffcondition(e,tp,eg,ep,ev,re,r,rp)
 	return Duel.IsExistingMatchingCard(s.handcookiefilter,tp,LOCATION_HAND,0,1,nil)

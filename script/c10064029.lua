@@ -14,7 +14,8 @@ function s.initial_effect(c)
 	c:RegisterEffect(e1)
 end
 function s.ylv3ex(c)
-	return c:IsFaceup() and c:IsAttribute(ATTRIBUTE_LIGHT) and c:IsRace(RACE_WARRIOR) and c:GetLevel()==3
+	return c:IsFaceup() and c:IsAttribute(ATTRIBUTE_LIGHT) and c:IsRace(RACE_WARRIOR)
+	and c:GetLevel()==3 and not c:IsSetCard(0xc08)
 end
 function s.AndCookiecost(e,tp,eg,ep,ev,re,r,rp)
 	return Cookie3.manacon(e,tp,eg,ep,ev,re,r,rp,0,ATTRIBUTE_LIGHT,1,1)

@@ -3,20 +3,20 @@ Cookie2={}
 
 --카드명 지정(아레나)
 CARD_CAPSAICIN={10063015,10064012,10067014,10070609}
-CARD_PRUNE_JUICE={10063112,10067104}
+CARD_PRUNE_JUICE={10063112,10067104,10069113}
 CARD_KOUIGN_AMANN={10063086,10067035}
 --카드명 지정(에인션트)
-CARD_HOLLYBERRY={10063017,10069017,10090021,10090024}
-CARD_GOLD_CHEESE={10063025,10068026,10068027,10069024}
-CARD_WHITE_LILY={10063055,10069078,10090069,10090073}
-CARD_PURE_VANILLA={10063088,10069065,10069088,10069089}
-CARD_DARK_CACAO={10063100,10068103,10068104,10069097}
+CARD_HOLLYBERRY={10063017,10069017,10090021,10090024,10091017}
+CARD_GOLD_CHEESE={10063025,10068026,10068027,10069024,10091034}
+CARD_WHITE_LILY={10063055,10069078,10090069,10090073,10091090}
+CARD_PURE_VANILLA={10063088,10069065,10069088,10069089,10091070}
+CARD_DARK_CACAO={10063100,10068103,10068104,10069097,10091087}
 --카드명 지정(비스트)
-CARD_BURNING_SPICE={10068009}
-CARD_ETERNAL_SUGAR={10090049,10080077}
-CARD_MYSTIC_FLOUR={10068059}
-CARD_SHADOW_MILK={10069010,10069030,10069055,10069079,10069102,10080063}
-CARD_SILENT_SALT={10090122}
+CARD_BURNING_SPICE={10068009,10091018}
+CARD_ETERNAL_SUGAR={10090049,10080077,10091036}
+CARD_MYSTIC_FLOUR={10068059,10091053}
+CARD_SHADOW_MILK={10069010,10069030,10069055,10069079,10069102,10080063,10091071}
+CARD_SILENT_SALT={10090122,10091089}
 --카드명 지정(드래곤)
 CARD_PITAYA_DRAGON={10063010,10065013,10070604}
 CARD_ANANAS_DRAGON={10065040}
@@ -24,7 +24,30 @@ CARD_LONGAN_DRAGON={10065056}
 CARD_LOTUS_DRAGON={10065071}
 CARD_LYCHEE_DRAGON={10065092}
 --카드명 지정(기타)
+--불꽃정령 쿠키
+CARD_FIRE_SPIRIT_COOKIES={10064005,10070602,10091016}
+--천년나무 쿠키
+CARD_MILLENNIAL_TREE_COOKIE={10064038,10070710,10091035}
+--바람궁수 쿠키
+CARD_WIND_ARCHER_COOKIE={10062058,10064049,10069050,10070805,10091052}
+--바다요정 쿠키
+CARD_SEA_FAIRY_COOKIE={10062029,10064073,10070906,10091069}
+--달빛술사 쿠키
+CARD_MOONLIGHT_COOKIE={10064089,10071002,10091088}
+--어둠마녀 쿠키
+CARD_DARK_ENCHANTRESS_COOKIE={10091115,10091116}
+--마지팬맛 쿠키
 CARD_MARZIPAN_COOKIES={10063027,10080025,10080026,10080027}
+--마카롱맛 쿠키
+CARD_MACARON_COOKIES={10062002,10065007,10069005,10070204,10080045,10091002}
+--마법사맛 쿠키
+CARD_WIZARD_COOKIE={10062057,10063078,10064091,10068107,10069099,10070203,10071004,10080057,10091026}
+--샤인머스캣맛 쿠키
+CARD_SHINE_MUSCAT_COOKIE={10064052,10065053,10080114,10090053,10091042}
+--크림소다맛 쿠키
+CARD_CREAM_SODA_COOKIE={10067079,10080035,10080133,10091058}
+--다크초코 쿠키
+CARD_DARK_CHOCO_COOKIE={10061003,10063099,10065001,10066002,10067067,10068007,10080136,10091072}
 
 --쿠키 유틸
 function Cookie2.CookieCharacter(c,attr,colorCount,mixCount)
@@ -32,6 +55,7 @@ function Cookie2.CookieCharacter(c,attr,colorCount,mixCount)
 	c:EnableCounterPermit(0xa03)
 	c:EnableCounterPermit(0x1001)
 	c:EnableCounterPermit(0x1003)
+	c:EnableCounterPermit(0x1004)
 	Cookie2.SummonCookie(c)
 	Cookie2.CookieEff(c)
 	Cookie2.BattleEff(c,attr,colorCount,mixCount)
@@ -44,15 +68,19 @@ function Cookie2.SummonCookie(c)
 	e1:SetType(EFFECT_TYPE_QUICK_O)
 	e1:SetCode(EVENT_FREE_CHAIN)
 	e1:SetRange(LOCATION_HAND)
-	e1:SetCondition(Cookie2.Summoncon)
+	e1:SetCondition(Cookie2.Summoncon2)
 	e1:SetTarget(Cookie3.notg)
 	e1:SetOperation(Cookie2.Summonop)
 	c:RegisterEffect(e1)
 end
 function Cookie2.Summoncon(e)
 	local tp=e:GetHandlerPlayer()
-	return Duel.GetLocationCount(tp,LOCATION_MZONE)>0 and Duel.GetTurnPlayer()==tp and Duel.GetCurrentPhase()==PHASE_BATTLE_STEP
+	return Duel.GetTurnPlayer()==tp and Duel.GetCurrentPhase()==PHASE_BATTLE_STEP
 	and not (Duel.GetAttacker() and Duel.GetAttacker():IsControler(tp)) and Duel.GetCurrentChain()==0
+end
+function Cookie2.Summoncon2(e)
+	local tp=e:GetHandlerPlayer()
+	return Cookie2.Summoncon(e) and Duel.GetLocationCount(tp,LOCATION_MZONE)>0 and not e:GetHandler():IsSetCard(0xc08)
 end
 function Cookie2.Summonop(e,tp,eg,ep,ev,re,r,rp)
 	Cookie3.Cookiesummonop(e,tp,eg,ep,ev,re,r,rp,e:GetHandler())
@@ -273,6 +301,8 @@ function Cookie2.battlemanacost(attr,colorCount,mixCount)
 	and e:GetHandler():IsCode(table.unpack(CARD_DARK_CACAO)) then
 	if _colorCount>0 then _colorCount=_colorCount-1
 	_mixCount=_mixCount-1 end end
+	--0xd17 공격 코스트(믹스) 증가
+	if e:GetHandler():IsSetCard(0xd17) then _mixCount=_mixCount+1 end
 	--0xd16 공격 코스트 감소
 	if e:GetHandler():IsSetCard(0xd16) and e:GetHandler():IsAttribute(ATTRIBUTE_FIRE) then
 	if _colorCount>0 then _colorCount=_colorCount-1 _mixCount=_mixCount-1 end end
@@ -280,10 +310,11 @@ function Cookie2.battlemanacost(attr,colorCount,mixCount)
 	if e:GetHandler():IsSetCard(0xa11) then _colorCount=0 end
 	--소르베맛쿠키(10068084)
 	local sherbet=Duel.GetMatchingGroupCount(Cookie2.sherbetfilter,tp,0,LOCATION_MZONE,nil,tp)
+	local netcost=e:GetHandler():GetCounter(0x1004)*2
 	local g=Duel.GetMatchingGroup(Card.IsFaceup,tp,LOCATION_REMOVED,0,nil)
 	return #g>=_mixCount
 	and (_mixCount==0 or aux.SelectUnselectGroup(g,e,tp,_mixCount,_mixCount,Cookie3.hasColorCount(attr,_colorCount),0))
-	and Duel.GetFieldGroupCount(tp,LOCATION_HAND,0)>=sherbet
+	and Duel.GetFieldGroupCount(tp,LOCATION_HAND,0)>=sherbet+netcost
 	end)
 
 	e1:SetOperation(function (e,tp,eg,ep,ev,re,r,rp)
@@ -305,6 +336,8 @@ function Cookie2.battlemanacost(attr,colorCount,mixCount)
 	and Duel.GetFieldGroupCount(tp,LOCATION_GRAVE,0)>=15
 	and (c:IsCode(table.unpack(CARD_DARK_CACAO))) then
 	if _colorCount>0 then _colorCount=_colorCount-1 _mixCount=_mixCount-1 end end
+	--0xd17 공격 코스트(믹스) 증가
+	if c:IsSetCard(0xd17) then _mixCount=_mixCount+1 end
 	--0xd16 공격 코스트 감소
 	if c:IsSetCard(0xd16) and c:IsAttribute(ATTRIBUTE_FIRE) then
 	if _colorCount>0 then _colorCount=_colorCount-1 _mixCount=_mixCount-1 end end
@@ -312,9 +345,10 @@ function Cookie2.battlemanacost(attr,colorCount,mixCount)
 	if c:IsSetCard(0xa11) then _colorCount=0 end
 	--소르베맛쿠키(10068084)
 	local sherbet=Duel.GetMatchingGroupCount(Cookie2.sherbetfilter,tp,0,LOCATION_MZONE,nil,tp)
-	if sherbet>0 then
+	local handcost=sherbet+c:GetCounter(0x1004)*2
+	if handcost>0 then
 	Duel.Hint(HINT_SELECTMSG,tp,aux.Stringid(10060000,4))
-	local hg=Duel.SelectMatchingCard(tp,nil,tp,LOCATION_HAND,0,sherbet,sherbet,nil)
+	local hg=Duel.SelectMatchingCard(tp,nil,tp,LOCATION_HAND,0,handcost,handcost,nil)
 	if #hg>0 then Duel.SendtoGrave(hg,REASON_RULE) end end
 		if c:IsLocation(LOCATION_MZONE) then
 		local g=Duel.GetMatchingGroup(Card.IsFaceup,tp,LOCATION_REMOVED,0,nil)

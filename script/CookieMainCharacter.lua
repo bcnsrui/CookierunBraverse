@@ -99,9 +99,9 @@ function Cookie.Resetop(e,tp,eg,ep,ev,re,r,rp)
 	e1:SetReset(RESET_PHASE+PHASE_BATTLE_START)
 	c:RegisterEffect(e1)
 	if Duel.GetTurnCount()==1 and c:IsSetCard(0x001) then
-		local sg=Duel.SelectMatchingCard(1-tp,Cookie.cookiefilter,1-tp,LOCATION_HAND,0,0,3,nil,e,tp)
+		local sg=Duel.SelectMatchingCard(1-tp,Cookie.cookiefilter2,1-tp,LOCATION_HAND,0,0,3,nil,e,tp)
 		Cookie3.Cookiesummonop(e,1-tp,eg,ep,ev,re,r,rp,sg)
-		local sg2=Duel.SelectMatchingCard(tp,Cookie.cookiefilter,tp,LOCATION_HAND,0,0,2,nil,e,tp)
+		local sg2=Duel.SelectMatchingCard(tp,Cookie.cookiefilter2,tp,LOCATION_HAND,0,0,2,nil,e,tp)
 		Cookie3.Cookiesummonop(e,tp,eg,ep,ev,re,r,rp,sg2) end
 
 	if Duel.GetTurnCount()==1 and not c:IsSetCard(0x001) and not c:IsSetCard(0x002) then
@@ -446,6 +446,9 @@ function Cookie.leavecookieop(e,tp,eg,ep,ev,re,r,rp)
 	e:GetHandler():AddCounter(0xa01,1)
 end
 function Cookie.cookiefilter(c)
+	return c:IsRace(RACE_WARRIOR) and not c:IsSetCard(0xc08)
+end
+function Cookie.cookiefilter2(c)
 	return c:IsRace(RACE_WARRIOR)
 end
 function Cookie.leavecookiecon2(e,tp,eg,ep,ev,re,r,rp)
@@ -464,6 +467,10 @@ function Cookie.leavecookieop2(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
 	local allyzones=Duel.GetLocationCount(tp,LOCATION_MZONE)
 	local allycounter=c:GetCounter(0xa01)
+	local hand=Duel.GetFieldGroup(tp,LOCATION_HAND,0)
+	if not Duel.IsExistingMatchingCard(Cookie.cookiefilter,tp,LOCATION_MZONE,0,1,nil) then
+	Duel.ConfirmCards(1-tp,hand)
+	Duel.SetLP(tp,0) end
 	if allycounter==0 then return end
 	if allyzones==2 then
 		Duel.Hint(HINT_SELECTMSG,tp,aux.Stringid(10060000,1))
@@ -496,6 +503,10 @@ function Cookie.leavecookieop3(e,tp,eg,ep,ev,re,r,rp)
 	local enemymain=Duel.GetMatchingGroup(nil,1-tp,LOCATION_EMZONE,0,nil):GetFirst()
 	local enemyzones=Duel.GetLocationCount(1-tp,LOCATION_MZONE)
 	local enemycounter=enemymain:GetCounter(0xa01)
+	local hand=Duel.GetFieldGroup(tp,0,LOCATION_HAND)
+	if not Duel.IsExistingMatchingCard(Cookie.cookiefilter,tp,0,LOCATION_MZONE,1,nil) then
+	Duel.ConfirmCards(tp,hand)
+	Duel.SetLP(1-tp,0) end
 	if enemycounter==0 then return end
 	if enemyzones==2 then
 		Duel.Hint(HINT_SELECTMSG,1-tp,aux.Stringid(10060000,1))

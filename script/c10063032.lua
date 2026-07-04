@@ -23,7 +23,8 @@ function s.AndCookieeffcondition(e,tp,eg,ep,ev,re,r,rp)
 	return Duel.IsExistingMatchingCard(s.lv1yellow,tp,LOCATION_EXTRA,0,1,nil)
 end
 function s.lv1yellow(c)
-	return c:IsFaceup() and c:IsAttribute(ATTRIBUTE_LIGHT) and c:IsRace(RACE_WARRIOR) and c:GetLevel()==1
+	return c:IsFaceup() and c:IsAttribute(ATTRIBUTE_LIGHT) and c:IsRace(RACE_WARRIOR)
+	and c:GetLevel()==1 and not c:IsSetCard(0xc08)
 end
 function s.AndCookieoperation(e,tp,eg,ep,ev,re,r,rp)
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_SPSUMMON)

@@ -4,7 +4,7 @@ function s.initial_effect(c)
 	Cookie6.ItemEffect(c,ATTRIBUTE_WIND,2,2)
 end
 function s.cookiefilter(c)
-	return c:IsRace(RACE_WARRIOR)
+	return c:IsRace(RACE_WARRIOR) and not c:IsSetCard(0xc08)
 end
 function s.Itemeffcondition(e,tp,eg,ep,ev,re,r,rp)
 	return Duel.GetMatchingGroupCount(s.cookiefilter,tp,LOCATION_GRAVE,0,nil)>=1

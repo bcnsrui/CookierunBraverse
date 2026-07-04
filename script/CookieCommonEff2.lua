@@ -83,10 +83,25 @@ function Cookie7.hpcookietoremove(e,tp,eg,ep,ev,re,r,rp)
 	Duel.Remove(hpcode,POS_FACEUP,REASON_RULE)
 end
 function Cookie7.hpcookietodeck(e,tp,eg,ep,ev,re,r,rp)
-	local hpcode=Duel.CreateToken(tp,e:GetLabel())
+	local hpcookie=e:GetHandler()
+	local p=hpcookie:GetControler()
+	local sendpos=SEQ_DECKSHUFFLE
+	if Duel.GetDecktopGroup(p,1):IsContains(hpcookie) then
+		sendpos=SEQ_DECKTOP
+	elseif hpcookie:IsLocation(LOCATION_DECK) then
+		local bottom=true
+		for tc in aux.Next(Duel.GetFieldGroup(p,LOCATION_DECK,0)) do
+			if tc~=hpcookie and tc:GetSequence()<hpcookie:GetSequence() then
+				bottom=false
+				break
+			end
+		end
+		if bottom then sendpos=SEQ_DECKBOTTOM end
+	end
+	local hpcode=Duel.CreateToken(p,e:GetLabel())
 	Duel.DisableShuffleCheck()
-	Duel.SendtoDeck(e:GetHandler(),nil,-2,REASON_RULE)
-	Duel.SendtoDeck(hpcode,nil,SEQ_DECKTOP,REASON_RULE)
+	Duel.SendtoDeck(hpcookie,nil,-2,REASON_RULE)
+	Duel.SendtoDeck(hpcode,nil,sendpos,REASON_RULE)
 end
 function Cookie7.hpcookietomove(e,tp,eg,ep,ev,re,r,rp)
 	local hg=e:GetLabelObject()
@@ -420,6 +435,31 @@ function Cookie7.hpdecktop(e,tp,eg,ep,ev,re,r,rp,ag,dam)
 		if tc:GetSequence()>last:GetSequence() then last=tc end
 	end
 	Duel.SendtoDeck(last,nil,SEQ_DECKTOP,REASON_EFFECT)
+	damage=damage+1 end
+	if tg:GetOverlayCount()==0 and tg:IsLocation(LOCATION_MZONE) then Cookie3.Cookiedestroyop2(e,tp,eg,ep,ev,re,r,rp,tg) end
+	if tg:IsSetCard(0xd15) then Cookie8.eventop(e,tp,eg,ep,ev,re,r,rp,tg) end
+end
+
+--쿠키 hp 덱 맨아래로 보내기
+function Cookie7.hpdeckbottom(e,tp,eg,ep,ev,re,r,rp,ag,dam)
+	local c=e:GetHandler()
+	local typ=type(ag)
+	if typ=="Card" and ag==nil then return
+	elseif typ=="Group" and #ag==0 then return end
+	local tg
+	if typ=="Card" then tg=ag
+	elseif typ=="Group" then tg=ag:GetFirst() end
+	if tg:GetOverlayCount()==1 and tg:IsSetCard(0xa03) then return end
+	Duel.Damage(1-c:GetControler(),dam,REASON_EFFECT)
+	local damage=0
+	while damage<dam and tg:GetOverlayCount()>0 do
+	g=tg:GetOverlayGroup()
+	last=g:GetFirst()
+	tc=g:GetNext()
+	for tc in aux.Next(g) do
+		if tc:GetSequence()>last:GetSequence() then last=tc end
+	end
+	Duel.SendtoDeck(last,nil,SEQ_DECKBOTTOM,REASON_EFFECT)
 	damage=damage+1 end
 	if tg:GetOverlayCount()==0 and tg:IsLocation(LOCATION_MZONE) then Cookie3.Cookiedestroyop2(e,tp,eg,ep,ev,re,r,rp,tg) end
 	if tg:IsSetCard(0xd15) then Cookie8.eventop(e,tp,eg,ep,ev,re,r,rp,tg) end

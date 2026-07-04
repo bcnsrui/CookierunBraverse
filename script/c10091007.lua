@@ -1,0 +1,10 @@
+if not Cookie2 then Duel.LoadScript("deprecated_function.lua") end
+local s,id=GetID()
+function s.initial_effect(c)
+	Cookie2.CookieCharacter(c,ATTRIBUTE_FIRE,2,3)
+	Cookie6.IGCoookieEffect(c,1,ATTRIBUTE_FIRE,2,2)
+end
+function s.IGCookieoperation(e,tp,eg,ep,ev,re,r,rp)
+	local g=Duel.GetMatchingGroup(Cookie3.NoEmFzonefilter,tp,0,LOCATION_MZONE,nil,tp)
+	if #g>0 then Cookie7.Alldamageeff(e,tp,eg,ep,ev,re,r,rp,g,1) end
+end

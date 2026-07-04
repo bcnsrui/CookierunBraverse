@@ -7,7 +7,7 @@ function s.Stagecostoperation(e,tp,eg,ep,ev,re,r,rp)
 	Duel.SendtoGrave(e:GetHandler(),REASON_COST)
 end
 function s.lv3filter(c)
-	return c:IsRace(RACE_WARRIOR) and c:IsLevel(3)
+	return c:IsRace(RACE_WARRIOR) and c:IsLevel(3) and not c:IsSetCard(0xc08)
 end
 function s.Stageoperation(e,tp,eg,ep,ev,re,r,rp)
 	Duel.Hint(HINT_SELECTMSG,tp,aux.Stringid(10060001,1))

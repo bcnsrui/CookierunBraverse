@@ -25,6 +25,7 @@ function s.AndCookiecostoperation(e,tp,eg,ep,ev,re,r,rp)
 end
 function s.spfilter(c)
 	return c:IsAttribute(ATTRIBUTE_DARK) and c:IsRace(RACE_WARRIOR) and c:IsLevel(1)
+	and not c:IsSetCard(0xc08)
 end
 function s.AndCookieeffcondition(e,tp,eg,ep,ev,re,r,rp)
 	return Duel.IsExistingMatchingCard(s.lv3filter,tp,LOCATION_MZONE,0,1,nil,tp)

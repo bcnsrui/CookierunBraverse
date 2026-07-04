@@ -16,8 +16,13 @@ end
 function s.AndCookiecost(e,tp,eg,ep,ev,re,r,rp)
 	return e:GetHandler():GetOverlayCount()>0
 end
+function s.arenafilter(c,tp)
+	return c:IsSetCard(0xc01) and c:IsRace(RACE_WARRIOR) and Cookie3.NoEmFzonefilter(c,tp)
+end
 function s.AndCookiecostoperation(e,tp,eg,ep,ev,re,r,rp)
-	Cookie7.hpdecktop(e,tp,eg,ep,ev,re,r,rp,ag,dam)
+	Duel.Hint(HINT_SELECTMSG,tp,aux.Stringid(10060000,6))
+	local g=Duel.SelectMatchingCard(tp,s.arenafilter,tp,LOCATION_MZONE,0,0,1,nil,tp)
+	if #g>0 then Cookie7.hpdecktop(e,tp,eg,ep,ev,re,r,rp,g,1) end
 	Cookie3.CookieDrawop(e,tp,eg,ep,ev,re,r,rp,1)
 end
 function s.AndCookieoperation(e,tp,eg,ep,ev,re,r,rp)

@@ -30,5 +30,5 @@ function s.QECookieoperation(e,tp,eg,ep,ev,re,r,rp)
 	if #sg>0 then Cookie3.Cookiesummonop(e,tp,eg,ep,ev,re,r,rp,sg) end
 end
 function s.spfilter(c)
-	return c:IsAttribute(ATTRIBUTE_WIND) and c:IsRace(RACE_WARRIOR)
+	return c:IsAttribute(ATTRIBUTE_WIND) and c:IsRace(RACE_WARRIOR) and not c:IsSetCard(0xc08)
 end

@@ -16,7 +16,8 @@ function s.QECookiecostoperation(e,tp,eg,ep,ev,re,r,rp)
 	Duel.SendtoGrave(e:GetHandler(),REASON_EFFECT)
 end
 function s.summonfilter(c)
-	return c:IsRace(RACE_WARRIOR) and c:IsAttribute(ATTRIBUTE_FIRE) and c:IsLevel(1) and not c:IsCode(id)
+	return c:IsRace(RACE_WARRIOR) and c:IsAttribute(ATTRIBUTE_FIRE) and c:IsLevel(1)
+	and not c:IsSetCard(0xc08)	and not c:IsCode(id)
 end
 function s.QECookieeffcondition(e,tp,eg,ep,ev,re,r,rp)
 	return Duel.GetLocationCount(tp,LOCATION_MZONE)>0

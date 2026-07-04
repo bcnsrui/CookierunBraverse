@@ -25,6 +25,9 @@ end
 function s.Summonop(e,tp,eg,ep,ev,re,r,rp)
 	Cookie8.ExtraSummonop(e,tp,eg,ep,ev,re,r,rp)
 end
+function s.IGCookiecost(e,tp,eg,ep,ev,re,r,rp,chk)
+	return Duel.IsExistingMatchingCard(Card.IsAttribute,tp,LOCATION_HAND,0,1,nil,ATTRIBUTE_DARK)
+end
 function s.IGCookiecostoperation(e,tp,eg,ep,ev,re,r,rp)
 	Duel.Hint(HINT_SELECTMSG,tp,aux.Stringid(10060000,6))
 	local g=Duel.SelectMatchingCard(tp,Card.IsAttribute,tp,LOCATION_HAND,0,1,1,nil,ATTRIBUTE_DARK)

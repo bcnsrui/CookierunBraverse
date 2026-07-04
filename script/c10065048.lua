@@ -16,6 +16,7 @@ function s.lv1skillfilter(c,tp)
 	and c:IsLevel(1) and Cookie3.NoEmFzonefilter(c,tp)
 end
 function s.IGCookieoperation(e,tp,eg,ep,ev,re,r,rp)
+	Duel.Hint(HINT_SELECTMSG,tp,aux.Stringid(10060001,1))
 	local g=Duel.SelectMatchingCard(tp,s.lv1skillfilter,tp,0,LOCATION_MZONE,0,1,nil,tp)
 	if #g>0 then Cookie3.Cookiedestroyop(e,tp,eg,ep,ev,re,r,rp,g) end
 end

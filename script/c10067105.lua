@@ -4,7 +4,7 @@ function s.initial_effect(c)
 	Cookie6.ItemEffect(c,ATTRIBUTE_DARK,2,2)
 end
 function s.arenafilter(c)
-	return c:IsSetCard(0xc01) and c:IsRace(RACE_WARRIOR)
+	return c:IsSetCard(0xc01) and c:IsRace(RACE_WARRIOR) and not c:IsSetCard(0xc08)
 end
 function s.Itemeffcondition(e,tp,eg,ep,ev,re,r,rp)
 	return Duel.GetLocationCount(tp,LOCATION_MZONE)>0

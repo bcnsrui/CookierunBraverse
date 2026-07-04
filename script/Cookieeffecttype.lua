@@ -104,8 +104,12 @@ function Cookie6.IGCoookieEffect(c,countlimit,attr,colorCount,mixCount)
 		local cost1=true
 		if gtbl and type(gtbl.IGCookiecost) == "function" then
 			cost1=gtbl.IGCookiecost(e,tp,eg,ep,ev,re,r,rp,chk) end
+		--10091031 푸드덕 날개 나무
+		local handok=true
+		if e:GetHandler():IsSetCard(0xa19) and e:GetHandler():IsSetCard(0xc11) then
+			handok=Cookie3.handcon(e,tp,eg,ep,ev,re,r,rp,0,ALL_COLOR,2,2) end
 		if chk==0 then return ((countlimit==0) or c:GetCounter(0x1001)==0)
-			and Cookie3.manacon(e,tp,eg,ep,ev,re,r,rp,chk,attr,colorCount,mixCount) and cost1 end
+			and Cookie3.manacon(e,tp,eg,ep,ev,re,r,rp,chk,attr,colorCount,mixCount) and cost1 and handok end
 		Duel.SetChainLimit(aux.FALSE) end)
 	e1:SetOperation(function(e,tp,eg,ep,ev,re,r,rp)
 		local code=c:GetCode()
@@ -117,6 +121,7 @@ function Cookie6.IGCoookieEffect(c,countlimit,attr,colorCount,mixCount)
 			condition1=gtbl.IGCookieeffcondition(e,tp,eg,ep,ev,re,r,rp) end
 		if condition1 then
 			if countlimit==1 then c:AddCounter(0x1001,1) end
+			Cookie6.IGA19Handcost(e,tp,eg,ep,ev,re,r,rp)
 			Cookie3.manacost(e,tp,eg,ep,ev,re,r,rp,attr,colorCount,mixCount)
 		if gtbl and type(gtbl.IGCookiecostoperation) == "function" then
 			costop1=gtbl.IGCookiecostoperation(e,tp,eg,ep,ev,re,r,rp) end
@@ -124,6 +129,7 @@ function Cookie6.IGCoookieEffect(c,countlimit,attr,colorCount,mixCount)
 			operation1=gtbl.IGCookieoperation(e,tp,eg,ep,ev,re,r,rp) end
 		elseif not condition1 and Duel.SelectYesNo(tp,aux.Stringid(10060001,10)) then
 			if countlimit==1 then c:AddCounter(0x1001,1) end
+			Cookie6.IGA19Handcost(e,tp,eg,ep,ev,re,r,rp)
 			Cookie3.manacost(e,tp,eg,ep,ev,re,r,rp,attr,colorCount,mixCount)
 		if gtbl and type(gtbl.IGCookiecostoperation) == "function" then
 			costop1=gtbl.IGCookiecostoperation(e,tp,eg,ep,ev,re,r,rp) end
@@ -147,8 +153,14 @@ function Cookie6.IGCoookieEffect(c,countlimit,attr,colorCount,mixCount)
 		Duel.SetChainLimit(aux.FALSE) end)
 	c:RegisterEffect(e2)
 end
+--10091031 푸드덕 날개 나무
+function Cookie6.IGA19Handcost(e,tp,eg,ep,ev,re,r,rp)
+	local c=e:GetHandler()
+	if c:IsSetCard(0xa19) and c:IsSetCard(0xc11) then Cookie3.handcost(e,tp,eg,ep,ev,re,r,rp,ALL_COLOR,2,2) end
+end
 function Cookie6.IGCookiecon(e)
 	local tp=e:GetHandlerPlayer()
+	local c=e:GetHandler()
 	return Duel.GetTurnPlayer()==tp and Duel.GetCurrentPhase()==PHASE_BATTLE_STEP
 	and not (Duel.GetAttacker() and Duel.GetAttacker():IsControler(tp)) and e:GetHandler():GetCounter(0x1001)==0
 end
@@ -172,13 +184,16 @@ function Cookie6.QECoookieEffect(c,attr,colorCount,mixCount)
 	e1:SetOperation(function(e,tp,eg,ep,ev,re,r,rp)
 		local c=e:GetHandler()
 		local code=c:GetCode()
+		local ally=Duel.GetMatchingGroup(Card.IsFaceup,tp,LOCATION_EMZONE,0,nil):GetFirst()
 		local gtbl=_G["c" .. code]
 		local condition1=true
 		local costop1=function(e,tp,eg,ep,ev,re,r,rp) return end
 		local operation1=function(e,tp,eg,ep,ev,re,r,rp) return end
 		if gtbl and type(gtbl.QECookieeffcondition) == "function" then
 			condition1=gtbl.QECookieeffcondition(e,tp,eg,ep,ev,re,r,rp) end
-		if not Duel.SelectYesNo(tp,aux.Stringid(code,0)) then return c:SetTurnCounter(0) end
+		if (ally and ally:IsSetCard(0xa18) and c:IsSetCard(0xc10))
+		or (ally and ally:IsSetCard(0xa181) and c:IsSetCard(0xc10) and c:IsLevelAbove(2))
+		or not Duel.SelectYesNo(tp,aux.Stringid(code,0)) then return c:SetTurnCounter(0) end
 		if condition1 then
 			Cookie3.manacost(e,tp,eg,ep,ev,re,r,rp,attr,colorCount,mixCount)
 		if gtbl and type(gtbl.QECookiecostoperation) == "function" then

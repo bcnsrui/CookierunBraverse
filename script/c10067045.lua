@@ -10,7 +10,7 @@ function s.initial_effect(c)
 	c:RegisterEffect(e1)
 end
 function s.arenacookiefilter(c)
-	return c:IsSetCard(0xc01) and c:IsRace(RACE_WARRIOR)
+	return c:IsSetCard(0xc01) and c:IsRace(RACE_WARRIOR) and not c:IsSetCard(0xc08)
 end
 function s.QECookieoperation(e,tp,eg,ep,ev,re,r,rp)
 	local g=Cookie3.SupportAreafilter(e,tp,eg,ep,ev,re,r,rp,1,1,0,0):Filter(s.arenacookiefilter,nil)

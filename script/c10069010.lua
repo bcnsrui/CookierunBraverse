@@ -44,6 +44,9 @@ function s.Summoncon(e)
 	local tp=e:GetHandlerPlayer()
 	return Cookie8.ExtraSummoncon(e) and Duel.GetFlagEffect(tp,id)>=2
 end
+function s.QECookieeffcondition(e,tp,eg,ep,ev,re,r,rp)
+	return Duel.GetFieldGroupCount(tp,0,LOCATION_HAND)>=1
+end
 function s.QECookieoperation(e,tp,eg,ep,ev,re,r,rp)
 	local ally=Duel.GetMatchingGroup(nil,tp,LOCATION_EMZONE,0,nil):GetFirst()
 	if ally:IsSetCard(0xa15) then return end

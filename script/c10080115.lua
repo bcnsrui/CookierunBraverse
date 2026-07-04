@@ -5,7 +5,7 @@ function s.initial_effect(c)
 	Cookie6.IGCoookieEffect(c,0,ATTRIBUTE_WIND,0,0)
 end
 function s.arenasupportfilter(c)
-	return c:IsRace(RACE_WARRIOR) and c:IsSetCard(0xc01)
+	return c:IsRace(RACE_WARRIOR) and c:IsSetCard(0xc01) and not c:IsSetCard(0xc08)
 end
 function s.IGCookieeffcondition(e,tp,eg,ep,ev,re,r,rp)
 	local g=Cookie3.SupportAreafilter(e,tp,eg,ep,ev,re,r,rp,1,1,0,0)

@@ -13,7 +13,8 @@ function s.handylv2(c)
 	return c:IsRace(RACE_WARRIOR) and c:IsAttribute(ATTRIBUTE_LIGHT) and c:IsLevelAbove(2)
 end
 function s.extraylv2(c)
-	return c:IsFaceup() and c:IsAttribute(ATTRIBUTE_LIGHT) and c:IsRace(RACE_WARRIOR) and c:GetLevel()==2
+	return c:IsFaceup() and c:IsAttribute(ATTRIBUTE_LIGHT) and c:IsRace(RACE_WARRIOR)
+	and c:GetLevel()==2 and not c:IsSetCard(0xc08)
 end
 function s.QECookiecost(e,tp,eg,ep,ev,re,r,rp,chk)
 	return Duel.IsExistingMatchingCard(s.handylv2,tp,LOCATION_HAND,0,1,nil)

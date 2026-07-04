@@ -30,6 +30,7 @@ function s.AndCookiecostoperation(e,tp,eg,ep,ev,re,r,rp)
 end
 function s.spfilter(c)
 	return c:IsAttribute(ATTRIBUTE_DARK) and c:IsRace(RACE_WARRIOR) and c:IsDefenseBelow(2)
+	and not c:IsSetCard(0xc08)
 end
 function s.AndCookieoperation(e,tp,eg,ep,ev,re,r,rp)
 	if Duel.GetLocationCount(tp,LOCATION_MZONE)<=0 then return end

@@ -129,6 +129,13 @@ function Cookie3.Refreshop(e,tp,eg,ep,ev,re,r,rp)
 	e1:SetCode(EFFECT_ADD_SETCODE)
 	e1:SetValue(0xa17)
 	e1:SetReset(RESET_EVENT+RESETS_STANDARD)
+	ally:RegisterEffect(e1)
+	elseif ally and ally:IsSetCard(0xa17) then
+	local e1=Effect.CreateEffect(ally)
+	e1:SetType(EFFECT_TYPE_SINGLE)
+	e1:SetCode(EFFECT_ADD_SETCODE)
+	e1:SetValue(0xa171)
+	e1:SetReset(RESET_EVENT+RESETS_STANDARD)
 	ally:RegisterEffect(e1) end
 end
 
@@ -220,7 +227,13 @@ function Cookie3.Cookiesummonop(e,tp,eg,ep,ev,re,r,rp,ag)
 	e1:SetCode(EFFECT_ADD_SETCODE)
 	e1:SetValue(0xa132)
 	e1:SetReset(RESET_PHASE+PHASE_END)
-	tc:RegisterEffect(e1) end
+	tc:RegisterEffect(e1) 
+	local e2=Effect.CreateEffect(c)
+	e2:SetType(EFFECT_TYPE_SINGLE)
+	e2:SetCode(EFFECT_ADD_SETCODE)
+	e2:SetValue(0xa132)
+	e2:SetReset(RESET_PHASE+PHASE_END)
+	ally:RegisterEffect(e2) end
 	if tc:IsLocation(LOCATION_GRAVE) and tc:IsCode(table.unpack(CARD_DARK_CACAO)) then
 	local e1=Effect.CreateEffect(c)
 	e1:SetType(EFFECT_TYPE_SINGLE)

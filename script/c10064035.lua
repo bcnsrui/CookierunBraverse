@@ -10,7 +10,8 @@ function s.initial_effect(c)
 	c:RegisterEffect(e1)
 end
 function s.ylv1ex(c)
-	return c:IsFaceup() and c:IsAttribute(ATTRIBUTE_LIGHT) and c:IsRace(RACE_WARRIOR) and c:GetLevel()==1
+	return c:IsFaceup() and c:IsAttribute(ATTRIBUTE_LIGHT) and c:IsRace(RACE_WARRIOR)
+	and c:GetLevel()==1 and not c:IsSetCard(0xc08)
 end
 function s.QECookieeffcondition(e,tp,eg,ep,ev,re,r,rp)
 	return Duel.IsExistingMatchingCard(s.ylv1ex,tp,LOCATION_EXTRA,0,1,nil)

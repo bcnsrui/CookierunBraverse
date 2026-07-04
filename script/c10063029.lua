@@ -10,7 +10,7 @@ function s.initial_effect(c)
 	c:RegisterEffect(e1)
 end
 function s.yellowhand(c)
-	return c:IsAttribute(ATTRIBUTE_LIGHT) and c:IsRace(RACE_WARRIOR)
+	return c:IsAttribute(ATTRIBUTE_LIGHT) and not c:IsSetCard(0xc08) and c:IsRace(RACE_WARRIOR)
 end
 function s.QECookieeffcondition(e,tp,eg,ep,ev,re,r,rp)
 	return Duel.IsExistingMatchingCard(s.yellowhand,tp,LOCATION_HAND,0,1,nil)

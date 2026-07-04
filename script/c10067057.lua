@@ -5,7 +5,7 @@ function s.initial_effect(c)
 	Cookie6.IGCoookieEffect(c,0,ATTRIBUTE_WIND,2,2)
 end
 function s.lv2arenafilter(c)
-	return c:IsSetCard(0xc01) and c:IsRace(RACE_WARRIOR) and c:GetLevel()>=2
+	return c:IsSetCard(0xc01) and c:IsRace(RACE_WARRIOR) and c:GetLevel()>=2 and not c:IsSetCard(0xc08)
 end
 function s.IGCookiecost(e,tp,eg,ep,ev,re,r,rp,chk)
 	local g=Cookie3.SupportAreafilter(e,tp,eg,ep,ev,re,r,rp,1,1,0,0):Filter(s.lv2arenafilter,nil)

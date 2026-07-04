@@ -39,6 +39,9 @@ end
 function s.lv1break(c)
 	return c:IsFaceup() and c:IsLevel(1) and c:IsRace(RACE_WARRIOR)
 end
+function s.QECookieeffcondition(e,tp,eg,ep,ev,re,r,rp)
+	return Duel.IsExistingMatchingCard(s.lv1break,tp,LOCATION_EXTRA,0,1,nil)
+end
 function s.QECookieoperation(e,tp,eg,ep,ev,re,r,rp)
 	Duel.Hint(HINT_SELECTMSG,tp,aux.Stringid(10060001,1))
 	local g=Duel.SelectMatchingCard(tp,s.lv1break,tp,LOCATION_EXTRA,0,0,1,nil)
