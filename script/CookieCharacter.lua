@@ -312,8 +312,8 @@ function Cookie2.battlemanacost(attr,colorCount,mixCount)
 	local sherbet=Duel.GetMatchingGroupCount(Cookie2.sherbetfilter,tp,0,LOCATION_MZONE,nil,tp)
 	local netcost=e:GetHandler():GetCounter(0x1004)*2
 	local g=Duel.GetMatchingGroup(Card.IsFaceup,tp,LOCATION_REMOVED,0,nil)
-	return #g>=_mixCount
-	and (_mixCount==0 or aux.SelectUnselectGroup(g,e,tp,_mixCount,_mixCount,Cookie3.hasColorCount(attr,_colorCount),0))
+	return (_mixCount==0 or (#g>=_mixCount
+	and aux.SelectUnselectGroup(g,e,tp,_mixCount,_mixCount,Cookie3.hasColorCount(attr,_colorCount),0)))
 	and Duel.GetFieldGroupCount(tp,LOCATION_HAND,0)>=sherbet+netcost
 	end)
 
@@ -346,15 +346,19 @@ function Cookie2.battlemanacost(attr,colorCount,mixCount)
 	--소르베맛쿠키(10068084)
 	local sherbet=Duel.GetMatchingGroupCount(Cookie2.sherbetfilter,tp,0,LOCATION_MZONE,nil,tp)
 	local handcost=sherbet+c:GetCounter(0x1004)*2
+	local tg=Group.CreateGroup()
+	if _mixCount>0 then
+	local g=Duel.GetMatchingGroup(Card.IsFaceup,tp,LOCATION_REMOVED,0,nil)
+	tg=aux.SelectUnselectGroup(g,e,tp,0,_mixCount,Cookie3.hasColorCount(attr,_colorCount),1,tp,aux.Stringid(10060000,4))
+	if #tg<_mixCount or not Cookie3.hasColorCount(attr,_colorCount)(tg,e,tp,nil) then return end end
 	if handcost>0 then
 	Duel.Hint(HINT_SELECTMSG,tp,aux.Stringid(10060000,4))
 	local hg=Duel.SelectMatchingCard(tp,nil,tp,LOCATION_HAND,0,handcost,handcost,nil)
 	if #hg>0 then Duel.SendtoGrave(hg,REASON_RULE) end end
 		if c:IsLocation(LOCATION_MZONE) then
-		local g=Duel.GetMatchingGroup(Card.IsFaceup,tp,LOCATION_REMOVED,0,nil)
-		local tg=aux.SelectUnselectGroup(g,e,tp,_mixCount,_mixCount,Cookie3.hasColorCount(attr,_colorCount),1,tp,aux.Stringid(10060000,4))
+		if _mixCount>0 then
 		local ally=Duel.GetMatchingGroup(nil,tp,LOCATION_EMZONE,0,nil):GetFirst()
-		Duel.Overlay(ally,tg)
+		Duel.Overlay(ally,tg) end
 		Duel.ChangePosition(c,POS_FACEUP_DEFENSE)
 		Duel.AttackCostPaid() end
 end)

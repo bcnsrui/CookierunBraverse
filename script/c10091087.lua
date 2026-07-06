@@ -25,14 +25,11 @@ end
 function s.QECookieoperation(e,tp,eg,ep,ev,re,r,rp)
 	Cookie7.hpaddop(e,tp,eg,ep,ev,re,r,rp,e:GetHandler(),2)
 end
-function s.AndCookieeffcondition(e,tp,eg,ep,ev,re,r,rp)
-	return Duel.IsExistingMatchingCard(s.ancientfilter,tp,LOCATION_MZONE,0,1,e:GetHandler())
-		or Duel.GetFieldGroupCount(tp,LOCATION_GRAVE,0)>=15
-end
 function s.AndCookieoperation(e,tp,eg,ep,ev,re,r,rp)
+	if Duel.IsExistingMatchingCard(s.ancientfilter,tp,LOCATION_MZONE,0,1,e:GetHandler())
+	or Duel.GetFieldGroupCount(tp,LOCATION_GRAVE,0)>=15 then
 	local g=Duel.GetFieldGroup(1-tp,LOCATION_HAND,0)
 	if #g>0 then
-		local sg=g:RandomSelect(tp,1)
-		Duel.SendtoGrave(sg,REASON_EFFECT)
-	end
+	local sg=g:RandomSelect(tp,1)
+	Duel.SendtoGrave(sg,REASON_EFFECT) end end
 end

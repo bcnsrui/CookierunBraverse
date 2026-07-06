@@ -30,11 +30,9 @@ function s.QECookieoperation(e,tp,eg,ep,ev,re,r,rp)
 		Cookie7.hpaddop(e,tp,eg,ep,ev,re,r,rp,e:GetHandler(),1)
 	end
 end
-function s.AndCookieeffcondition(e,tp,eg,ep,ev,re,r,rp)
-	local ally=Duel.GetMatchingGroup(nil,tp,LOCATION_EMZONE,0,nil):GetFirst()
-	return ally and ally:IsSetCard(0xa17)
-end
 function s.AndCookieoperation(e,tp,eg,ep,ev,re,r,rp)
+	local ally=Duel.GetMatchingGroup(nil,tp,LOCATION_EMZONE,0,nil):GetFirst()
+	if ally and ally:IsSetCard(0xa17) then
 	local g=Duel.GetMatchingGroup(Cookie3.NoEmFzonefilter,tp,0,LOCATION_MZONE,nil,tp)
-	if #g>0 then Cookie7.Alldamageeff(e,tp,eg,ep,ev,re,r,rp,g,1) end
+	if #g>0 then Cookie7.Alldamageeff(e,tp,eg,ep,ev,re,r,rp,g,1) end end
 end

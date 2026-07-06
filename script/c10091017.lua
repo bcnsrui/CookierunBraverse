@@ -17,10 +17,8 @@ end
 function s.ancientfilter(c,tp,hc)
 	return c~=hc and c:IsSetCard(0xc04) and c:IsRace(RACE_WARRIOR) and Cookie3.NoEmFzonefilter(c,tp)
 end
-function s.AndCookieeffcondition(e,tp,eg,ep,ev,re,r,rp)
-	return Duel.IsExistingMatchingCard(s.ancientfilter,tp,LOCATION_MZONE,0,1,nil,tp,e:GetHandler())
-end
 function s.AndCookieoperation(e,tp,eg,ep,ev,re,r,rp)
+	if Duel.IsExistingMatchingCard(s.ancientfilter,tp,LOCATION_MZONE,0,1,nil,tp,e:GetHandler()) then
 	local bc=e:GetHandler():GetBattleTarget()
-	if bc and bc:IsLocation(LOCATION_MZONE) then Cookie7.damageeff(e,tp,eg,ep,ev,re,r,rp,bc,2) end
+	if bc and bc:IsLocation(LOCATION_MZONE) then Cookie7.damageeff(e,tp,eg,ep,ev,re,r,rp,bc,2) end end
 end
