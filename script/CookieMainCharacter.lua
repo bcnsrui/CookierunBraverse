@@ -468,10 +468,10 @@ function Cookie.leavecookieop2(e,tp,eg,ep,ev,re,r,rp)
 	local allyzones=Duel.GetLocationCount(tp,LOCATION_MZONE)
 	local allycounter=c:GetCounter(0xa01)
 	local hand=Duel.GetFieldGroup(tp,LOCATION_HAND,0)
-	if Duel.GetMatchingGroupCount(Cookie.cookiefilter,tp,LOCATION_HAND,0,nil)==0 
-	and Duel.GetMatchingGroupCount(Cookie.cookiefilter2,tp,LOCATION_MZONE,0,nil)<2 then
-	Duel.ConfirmCards(1-tp,hand)
-	Duel.SetLP(tp,0) end
+--	if Duel.GetMatchingGroupCount(Cookie.cookiefilter,tp,LOCATION_HAND,0,nil)==0 
+--	and Duel.GetMatchingGroupCount(Cookie.cookiefilter2,tp,LOCATION_MZONE,0,nil)<2 then
+--	Duel.ConfirmCards(1-tp,hand)
+--	Duel.SetLP(tp,0) end
 	if allycounter==0 then return end
 	if allyzones==2 then
 		Duel.Hint(HINT_SELECTMSG,tp,aux.Stringid(10060000,1))
@@ -505,10 +505,10 @@ function Cookie.leavecookieop3(e,tp,eg,ep,ev,re,r,rp)
 	local enemyzones=Duel.GetLocationCount(1-tp,LOCATION_MZONE)
 	local enemycounter=enemymain:GetCounter(0xa01)
 	local hand=Duel.GetFieldGroup(tp,0,LOCATION_HAND)
-	if Duel.GetMatchingGroupCount(Cookie.cookiefilter,tp,0,LOCATION_HAND,nil)==0
-	and Duel.GetMatchingGroupCount(Cookie.cookiefilter2,tp,0,LOCATION_MZONE,nil)<2 then
-	Duel.ConfirmCards(tp,hand)
-	Duel.SetLP(1-tp,0) end
+--	if Duel.GetMatchingGroupCount(Cookie.cookiefilter,tp,0,LOCATION_HAND,nil)==0
+--	and Duel.GetMatchingGroupCount(Cookie.cookiefilter2,tp,0,LOCATION_MZONE,nil)<2 then
+--	Duel.ConfirmCards(tp,hand)
+--	Duel.SetLP(1-tp,0) end
 	if enemycounter==0 then return end
 	if enemyzones==2 then
 		Duel.Hint(HINT_SELECTMSG,1-tp,aux.Stringid(10060000,1))
