@@ -25,8 +25,6 @@ function Cookie7.hpaddop(e,tp,eg,ep,ev,re,r,rp,g,hp)
 	ally:RegisterEffect(e1)
 	if ally:IsSetCard(0xa15) then return end
 	local typ=type(g)
-
-	
 	if typ=="Card" and g==nil then return
 	elseif typ=="Group" and #g==0 then return end
 	local hg

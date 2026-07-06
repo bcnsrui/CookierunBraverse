@@ -469,7 +469,7 @@ function Cookie.leavecookieop2(e,tp,eg,ep,ev,re,r,rp)
 	local allycounter=c:GetCounter(0xa01)
 	local hand=Duel.GetFieldGroup(tp,LOCATION_HAND,0)
 	if Duel.GetMatchingGroupCount(Cookie.cookiefilter,tp,LOCATION_HAND,0,nil)==0 
-	and Duel.GetMatchingGroupCount(Cookie.cookiefilter2,tp,LOCATION_MZONE,0,nil)==0 then
+	and Duel.GetMatchingGroupCount(Cookie.cookiefilter2,tp,LOCATION_MZONE,0,nil)<2 then
 	Duel.ConfirmCards(1-tp,hand)
 	Duel.SetLP(tp,0) end
 	if allycounter==0 then return end
