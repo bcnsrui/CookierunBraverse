@@ -4,7 +4,7 @@ function s.initial_effect(c)
 	Cookie6.ItemEffect(c,ATTRIBUTE_LIGHT,2,2)
 end
 function s.treefilter(c)
-	return c:IsCode(10064038,10070710)
+	return c:IsCode(table.unpack(CARD_MILLENNIAL_TREE_COOKIE))
 end
 function s.Itemeffcondition(e,tp,eg,ep,ev,re,r,rp)
 	return Duel.IsExistingMatchingCard(s.treefilter,tp,LOCATION_MZONE+LOCATION_EXTRA,0,1,nil)

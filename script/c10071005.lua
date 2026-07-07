@@ -16,7 +16,7 @@ function s.QECookiecostoperation(e,tp,eg,ep,ev,re,r,rp)
 	Cookie3.handcost(e,tp,eg,ep,ev,re,r,rp,ALL_COLOR,1,1)
 end
 function s.moonfilter(c,tp)
-	return c:IsCode(10064089,10071002) and Cookie3.NoEmFzonefilter(c,tp)
+	return c:IsCode(table.unpack(CARD_MOONLIGHT_COOKIE)) and Cookie3.NoEmFzonefilter(c,tp)
 end
 function s.QECookieeffcondition(e,tp,eg,ep,ev,re,r,rp)
 	return Duel.IsExistingMatchingCard(s.moonfilter,tp,LOCATION_MZONE,0,1,nil,tp)

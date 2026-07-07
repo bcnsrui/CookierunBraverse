@@ -33,7 +33,7 @@ function s.IGCookieeffcondition(e,tp,eg,ep,ev,re,r,rp)
 	return Duel.GetFlagEffect(tp,id)>0 and Duel.IsExistingMatchingCard(Cookie3.NoEmFzonefilter,tp,0,LOCATION_MZONE,1,nil,tp)
 end
 function s.windarcherfilter(c,tp)
-	return c:IsCode(10062058,10064049,10070805) and Cookie3.NoEmFzonefilter(c,tp)
+	return c:IsCode(table.unpack(CARD_WIND_ARCHER_COOKIE)) and Cookie3.NoEmFzonefilter(c,tp)
 end
 function s.IGCookieoperation(e,tp,eg,ep,ev,re,r,rp)
 	Duel.Hint(HINT_SELECTMSG,tp,aux.Stringid(10060001,1))

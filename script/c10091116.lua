@@ -1,7 +1,7 @@
 if not Cookie2 then Duel.LoadScript("deprecated_function.lua") end
 local s,id=GetID()
 function s.initial_effect(c)
-	Cookie2.CookieCharacter(c,ATTRIBUTE_EARTH,4,7)
+	Cookie2.CookieCharacter(c,ATTRIBUTE_EARTH,4,4)
 	local e0=Effect.CreateEffect(c)
 	e0:SetType(EFFECT_TYPE_QUICK_O)
 	e0:SetCode(EVENT_FREE_CHAIN)

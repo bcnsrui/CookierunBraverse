@@ -32,6 +32,13 @@ function s.Summoncon(e)
 	and Duel.IsExistingMatchingCard(s.SPSummonfilter,tp,LOCATION_MZONE,0,1,nil,tp)
 end
 function s.Summonop(e,tp,eg,ep,ev,re,r,rp)
+	local ally=Duel.GetMatchingGroup(nil,tp,LOCATION_EMZONE,0,nil):GetFirst()
+	local e1=Effect.CreateEffect(ally)
+	e1:SetType(EFFECT_TYPE_SINGLE)
+	e1:SetCode(EFFECT_ADD_SETCODE)
+	e1:SetValue(0xa21)
+	e1:SetReset(RESET_EVENT+RESETS_STANDARD+RESET_PHASE+PHASE_END)
+	ally:RegisterEffect(e1)
 	Duel.Hint(HINT_SELECTMSG,tp,aux.Stringid(10060001,1))
 	local g=Duel.SelectMatchingCard(tp,s.SPSummonfilter,tp,LOCATION_MZONE,0,1,1,nil,tp)
 	if #g>0 then Cookie3.bttrashop(e,tp,eg,ep,ev,re,r,rp,g)	end

@@ -296,7 +296,7 @@ function Cookie2.battlemanacost(attr,colorCount,mixCount)
 	local ls=Duel.GetMatchingGroupCount(Card.IsCode,tp,0,LOCATION_MZONE,nil,10090049)
 	if brk>=5 and esn==1 and ls==1 then _mixCount=_mixCount+1 end
 	--결의와 품위가 살아 숨쉬는 시대(10068125)
-	if Duel.IsExistingMatchingCard(Card.IsCode,tp,LOCATION_SZONE,LOCATION_SZONE,1,nil,10068125)
+	if Duel.IsExistingMatchingCard(Card.IsCode,tp,LOCATION_SZONE,0,1,nil,10068125)
 	and Duel.GetFieldGroupCount(tp,LOCATION_GRAVE,0)>=15
 	and e:GetHandler():IsCode(table.unpack(CARD_DARK_CACAO)) then
 	if _colorCount>0 then _colorCount=_colorCount-1
@@ -332,7 +332,7 @@ function Cookie2.battlemanacost(attr,colorCount,mixCount)
 	local ls=Duel.GetMatchingGroupCount(Card.IsCode,tp,0,LOCATION_MZONE,nil,10090049)
 	if brk>=5 and esn==1 and ls==1 then _mixCount=_mixCount+1 end
 	--결의와 품위가 살아 숨쉬는 시대(10068125)
-	if Duel.IsExistingMatchingCard(Card.IsCode,tp,LOCATION_SZONE,LOCATION_SZONE,1,nil,10068125)
+	if Duel.IsExistingMatchingCard(Card.IsCode,tp,LOCATION_SZONE,0,1,nil,10068125)
 	and Duel.GetFieldGroupCount(tp,LOCATION_GRAVE,0)>=15
 	and (c:IsCode(table.unpack(CARD_DARK_CACAO))) then
 	if _colorCount>0 then _colorCount=_colorCount-1 _mixCount=_mixCount-1 end end

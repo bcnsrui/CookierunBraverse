@@ -31,7 +31,7 @@ function s.QECookieoperation(e,tp,eg,ep,ev,re,r,rp)
 	Duel.Overlay(ally,tc)
 end
 function s.windarcherfilter(c,tp)
-	return c:IsCode(10062058,10064049,10070805)
+	return c:IsCode(table.unpack(CARD_WIND_ARCHER_COOKIE))
 end
 function s.AndCookieoperation(e,tp,eg,ep,ev,re,r,rp)
 	local support=Cookie3.SupportAreafilter(e,tp,eg,ep,ev,re,r,rp,1,1,0,0)

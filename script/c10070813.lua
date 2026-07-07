@@ -4,7 +4,7 @@ function s.initial_effect(c)
 	Cookie6.ItemEffect(c,ATTRIBUTE_WIND,1,1)
 end
 function s.windarcherfilter(c,tp)
-	return c:IsCode(10062058,10064049,10070805) and Cookie3.NoEmFzonefilter(c,tp)
+	return c:IsCode(table.unpack(CARD_WIND_ARCHER_COOKIE)) and Cookie3.NoEmFzonefilter(c,tp)
 end
 function s.Itemeffcondition(e,tp,eg,ep,ev,re,r,rp)
 	return Cookie3.SupportAreaCount(e,tp,eg,ep,ev,re,r,rp,0,0,1,0)>=1

@@ -4,7 +4,7 @@ function s.initial_effect(c)
 	Cookie6.ItemEffect(c,ATTRIBUTE_DARK,2,2)
 end
 function s.moonfilter(c,tp)
-	return c:IsCode(10064089,10071002)
+	return c:IsCode(table.unpack(CARD_MOONLIGHT_COOKIE))
 end
 function s.Itemeffcondition(e,tp,eg,ep,ev,re,r,rp)
 	return Duel.IsExistingMatchingCard(s.moonfilter,tp,LOCATION_MZONE+LOCATION_GRAVE,0,1,nil,tp)

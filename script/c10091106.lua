@@ -8,7 +8,7 @@ function s.lv5orc08filter(c,tp)
 	and (c:IsLevelAbove(5) or c:IsSetCard(0xc08))
 end
 function s.Trapcost(e,tp,eg,ep,ev,re,r,rp,chk)
-	return Cookie3.manacon(e,tp,eg,ep,ev,re,r,rp,chk,ATTRIBUTE_EARTH,1,1)
+	return Cookie3.manacon(e,tp,eg,ep,ev,re,r,rp,0,ATTRIBUTE_EARTH,1,1)
 	or Duel.IsExistingMatchingCard(s.lv5orc08filter,tp,LOCATION_MZONE,0,1,nil,tp)
 end
 function s.Trapcostoperation(e,tp,eg,ep,ev,re,r,rp)

@@ -14,5 +14,5 @@ function s.Itemoperation(e,tp,eg,ep,ev,re,r,rp)
 	if #g>0 then Cookie7.hpaddop(e,tp,eg,ep,ev,re,r,rp,g,1) end
 end
 function s.seafairyfilter(c,tp)
-	return c:IsCode(10062029,10064073,10070906) and c:GetOverlayCount()<=5 and Cookie3.NoEmFzonefilter(c,tp)
+	return c:IsCode(table.unpack(CARD_SEA_FAIRY_COOKIE)) and c:GetOverlayCount()<=5 and Cookie3.NoEmFzonefilter(c,tp)
 end

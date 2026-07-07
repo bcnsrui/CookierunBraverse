@@ -15,7 +15,7 @@ function s.initial_effect(c)
 	c:RegisterEffect(e2)
 end
 function s.treefilter(c)
-	return c:IsCode(10064038,10070710)
+	return c:IsCode(table.unpack(CARD_MILLENNIAL_TREE_COOKIE))
 end
 function s.breaklv1filter(c)
 	return c:IsFaceup() and c:IsRace(RACE_WARRIOR) and c:IsAttribute(ATTRIBUTE_LIGHT) and c:IsLevel(1)

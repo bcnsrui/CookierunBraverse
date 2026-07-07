@@ -14,7 +14,7 @@ function s.initial_effect(c)
 	c:RegisterEffect(e1)
 end
 function s.treefilter(c)
-	return c:IsCode(10064038,10070710)
+	return c:IsCode(table.unpack(CARD_MILLENNIAL_TREE_COOKIE))
 end
 function s.AndCookieoperation(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()

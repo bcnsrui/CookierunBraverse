@@ -5,7 +5,7 @@ function s.initial_effect(c)
 	Cookie6.IGCoookieEffect(c,1,ATTRIBUTE_FIRE,1,1)
 end
 function s.firefilter(c,tp)
-	return c:IsCode(10070602,10064005) and Cookie3.NoEmFzonefilter(c,tp)
+	return c:IsCode(table.unpack(CARD_FIRE_SPIRIT_COOKIES)) and Cookie3.NoEmFzonefilter(c,tp)
 end
 function s.IGCookieeffcondition(e,tp,eg,ep,ev,re,r,rp)
 	return Duel.IsExistingMatchingCard(s.firefilter,tp,LOCATION_MZONE,0,1,nil,tp)

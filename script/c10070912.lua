@@ -27,7 +27,7 @@ function s.AndCookiecostoperation(e,tp,eg,ep,ev,re,r,rp)
 	Cookie3.manacost(e,tp,eg,ep,ev,re,r,rp,ATTRIBUTE_WATER,1,1)
 end
 function s.seafairyfilter(c,tp)
-	return c:IsCode(10062029,10064073,10070906) and Cookie3.NoEmFzonefilter(c,tp)
+	return c:IsCode(table.unpack(CARD_SEA_FAIRY_COOKIE)) and Cookie3.NoEmFzonefilter(c,tp)
 end
 function s.AndCookieeffcondition(e,tp,eg,ep,ev,re,r,rp)
 	return Duel.IsExistingMatchingCard(s.seafairyfilter,tp,LOCATION_MZONE,0,1,nil,tp)

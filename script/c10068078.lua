@@ -9,7 +9,6 @@ function s.bluelv2filter(c,tp)
 end
 function s.IGCookiecost(e,tp,eg,ep,ev,re,r,rp,chk)
 	return Duel.GetFieldGroupCount(tp,LOCATION_HAND,0)<=3
-	and Duel.IsExistingMatchingCard(s.bluelv2filter,tp,LOCATION_HAND,0,1,nil)
 end
 function s.IGCookiecostoperation(e,tp,eg,ep,ev,re,r,rp)
 	Duel.SendtoDeck(e:GetHandler(),nil,SEQ_DECKBOTTOM,REASON_COST)
