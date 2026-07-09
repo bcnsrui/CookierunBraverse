@@ -19,8 +19,8 @@ function s.initial_effect(c)
 	e3:SetValue(0xd03)
 	c:RegisterEffect(e3)
 end
-function s.ancientfilter(c,e)
-	return c:IsSetCard(0xc04) and c:IsRace(RACE_WARRIOR) and c~=e:GetHandler()
+function s.ancientfilter(c)
+	return c:IsSetCard(0xc04) and c:IsRace(RACE_WARRIOR)
 end
 function s.QECookieoperation(e,tp,eg,ep,ev,re,r,rp)
 	Cookie7.hpaddop(e,tp,eg,ep,ev,re,r,rp,e:GetHandler(),2)
