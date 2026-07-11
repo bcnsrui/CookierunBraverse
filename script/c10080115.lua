@@ -19,7 +19,7 @@ function s.IGCookieoperation(e,tp,eg,ep,ev,re,r,rp)
 	local g=Cookie3.SupportAreafilter(e,tp,eg,ep,ev,re,r,rp,1,1,0,0):Filter(s.arenasupportfilter,nil)
 	if #g>0 and Duel.GetLocationCount(tp,LOCATION_MZONE)>0 then
 		Duel.Hint(HINT_SELECTMSG,tp,aux.Stringid(10060001,1))
-		local sg=g:Select(tp,1,1,nil)
+		local sg=g:Select(tp,0,1,nil)
 		if #sg>0 then Cookie3.Cookiesummonop(e,tp,eg,ep,ev,re,r,rp,sg:GetFirst()) end
 	end
 end

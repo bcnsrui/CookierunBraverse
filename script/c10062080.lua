@@ -4,7 +4,7 @@ function s.initial_effect(c)
 	Cookie6.TrapEffect(c,ATTRIBUTE_DARK,2,2)
 end
 function s.Trapeffcondition(e,tp,eg,ep,ev,re,r,rp)
-	return Duel.GetFieldGroupCount(tp,LOCATION_GRAVE,0)>=15
+	return Duel.GetFieldGroupCount(tp,LOCATION_GRAVE,0)>=14
 	and Duel.GetMatchingGroupCount(Cookie3.NoEmFzonefilter,tp,0,LOCATION_MZONE,nil,tp)>=1
 end
 function s.Trapoperation(e,tp,eg,ep,ev,re,r,rp)
