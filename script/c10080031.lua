@@ -7,7 +7,7 @@ function s.lv3filter(c,tp)
 	return c:GetLevel()==3 and Cookie3.NoEmFzonefilter(c,tp)
 end
 function s.Trapeffcondition(e,tp,eg,ep,ev,re,r,rp)
-	return Duel.GetFieldGroupCount(tp,LOCATION_GRAVE,0)>=15
+	return Duel.GetFieldGroupCount(tp,LOCATION_GRAVE,0)>=14
 	and Duel.GetMatchingGroupCount(s.lv3filter,tp,0,LOCATION_MZONE,nil,tp)>=1
 end
 function s.Trapoperation(e,tp,eg,ep,ev,re,r,rp)

@@ -4,7 +4,7 @@ function s.initial_effect(c)
 	Cookie6.StageEffect(c,ATTRIBUTE_DARK,1,1,1,1)
 end
 function s.Stageeffcondition(e,tp,eg,ep,ev,re,r,rp)
-	return Duel.GetFieldGroupCount(tp,LOCATION_GRAVE,0)<=15
+	return Duel.GetFieldGroupCount(tp,LOCATION_GRAVE,0)<=13
 end
 function s.Stagecost(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Cookie3.handcon(e,tp,eg,ep,ev,re,r,rp,chk,ALL_COLOR,2,2) end
