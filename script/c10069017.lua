@@ -9,21 +9,18 @@ function s.initial_effect(c)
 	e1:SetValue(0xd031)
 	c:RegisterEffect(e1)
 end
-function s.ancientfilter(c,exc)
-	return c~=exc and c:IsSetCard(0xc04) and c:IsRace(RACE_WARRIOR)
-end
-function s.ancientfilter2(c)
+function s.ancientfilter(c)
 	return c:IsSetCard(0xc04) and c:IsRace(RACE_WARRIOR)
 end
 function s.IGCookieeffcondition(e,tp,eg,ep,ev,re,r,rp)
-	return Duel.IsExistingMatchingCard(s.ancientfilter,tp,LOCATION_MZONE,0,1,nil,e:GetHandler())
+	return Duel.IsExistingMatchingCard(s.ancientfilter,tp,LOCATION_MZONE,0,1,e:GetHandler())
 end
 function s.IGCookieoperation(e,tp,eg,ep,ev,re,r,rp)
 	Cookie7.cookieatkchange(e,tp,eg,ep,ev,re,r,rp,PHASE_END,1,e:GetHandler(),2)
 end
 function s.AndCookieoperation(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
-	local g=Duel.GetMatchingGroup(s.ancientfilter2,tp,LOCATION_ALL,0,nil)
+	local g=Duel.GetMatchingGroup(s.ancientfilter,tp,LOCATION_MZONE,0,nil)
 	for tc in aux.Next(g) do
 	local e1=Effect.CreateEffect(c)
 	e1:SetType(EFFECT_TYPE_SINGLE)
