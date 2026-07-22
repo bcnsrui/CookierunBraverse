@@ -306,8 +306,10 @@ function Cookie.gameoverop(e,tp,eg,ep,ev,re,r,rp)
 	Duel.SetLP(tp,10)
 end
 function Cookie.Refreshcon(e)
-	return Duel.GetFieldGroupCount(e:GetHandlerPlayer(),LOCATION_DECK,0)==0
-	and Duel.GetFieldGroupCount(e:GetHandlerPlayer(),LOCATION_GRAVE,0)>0
+	local tp=e:GetHandlerPlayer()
+	return Duel.GetFieldGroupCount(tp,LOCATION_DECK,0)==0
+	and (Duel.GetFieldGroupCount(tp,LOCATION_GRAVE,0)>0
+	or Duel.IsExistingMatchingCard(Cookie3.Refreshszonefilter,tp,LOCATION_SZONE,0,nil))
 end
 function Cookie.BreakAreafilter(c,tp)
 	return c:IsRace(RACE_WARRIOR) and c:IsLocation(LOCATION_EXTRA) and c:IsSetCard(0xc01) and c:GetControler()==tp

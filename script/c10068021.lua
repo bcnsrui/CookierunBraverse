@@ -4,7 +4,7 @@ function s.initial_effect(c)
 	Cookie6.ItemEffect(c,ATTRIBUTE_FIRE,2,2)
 end
 function s.cookiefilter(c,tp)
-	return c:IsRace(RACE_WARRIOR) and not c:IsCode(10068009) and Cookie3.NoEmFzonefilter(c,tp)
+	return c:IsRace(RACE_WARRIOR) and not c:IsCode(table.unpack(CARD_BURNING_SPICE)) and Cookie3.NoEmFzonefilter(c,tp)
 end
 function s.burningspicecookiefilter(c,tp)
 	return c:IsCode(table.unpack(CARD_BURNING_SPICE)) and Cookie3.NoEmFzonefilter(c,tp)

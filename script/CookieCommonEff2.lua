@@ -116,7 +116,7 @@ function Cookie7.hpcookietomove(e,tp,eg,ep,ev,re,r,rp)
 	local cost1=true
 	if gtbl and type(gtbl.FlipCookiecost) == "function" then
 		cost1=gtbl.FlipCookiecost(e,tp,eg,ep,ev,re,r,rp) end
-	if not cost1 then
+	if hpcookie2:IsLocation(LOCATION_SZONE) and not cost1 then
 	Duel.Remove(hpcookie2,POS_FACEUP,REASON_RULE)
 	Duel.SendtoGrave(hpcookie2,REASON_RULE|REASON_RETURN) return end
 	local condition1=true
@@ -124,7 +124,7 @@ function Cookie7.hpcookietomove(e,tp,eg,ep,ev,re,r,rp)
 	local operation1=function(e,tp,eg,ep,ev,re,r,rp) return end
 	if gtbl and type(gtbl.FlipCookieeffcondition) == "function" then
 		condition1=gtbl.FlipCookieeffcondition(e,tp,eg,ep,ev,re,r,rp) end
-	if not Duel.SelectYesNo(tp,aux.Stringid(10060001,0)) then
+	if hpcookie2:IsLocation(LOCATION_SZONE) and not Duel.SelectYesNo(tp,aux.Stringid(10060001,0)) then
 	Duel.Remove(hpcookie2,POS_FACEUP,REASON_RULE)
 	Duel.SendtoGrave(hpcookie2,REASON_RULE|REASON_RETURN) return end
 	if condition1 then
@@ -136,7 +136,7 @@ function Cookie7.hpcookietomove(e,tp,eg,ep,ev,re,r,rp)
 	if gtbl and type(gtbl.FlipCookiecostoperation) == "function" then
 		costop1=gtbl.FlipCookiecostoperation(e,tp,eg,ep,ev,re,r,rp) end
 	else end end
-	if not hpcookie2:IsSetCard(0xa16) then
+	if hpcookie2:IsLocation(LOCATION_SZONE) and not hpcookie2:IsSetCard(0xa16) then
 	Duel.Remove(hpcookie2,POS_FACEUP,REASON_RULE)
 	Duel.SendtoGrave(hpcookie2,REASON_RULE|REASON_RETURN) end
 end
@@ -282,7 +282,7 @@ function Cookie7.faceuphpcookietomove(e,tp,eg,ep,ev,re,r,rp)
 	local cost1=true
 	if gtbl and type(gtbl.FlipCookiecost) == "function" then
 		cost1=gtbl.FlipCookiecost(e,tp,eg,ep,ev,re,r,rp) end
-	if not cost1 then
+	if hpcookie2:IsLocation(LOCATION_SZONE) and not cost1 then
 	Duel.Remove(hpcookie2,POS_FACEUP,REASON_RULE)
 	Duel.SendtoGrave(hpcookie2,REASON_RULE|REASON_RETURN) return end
 	local condition1=true
@@ -290,7 +290,7 @@ function Cookie7.faceuphpcookietomove(e,tp,eg,ep,ev,re,r,rp)
 	local operation1=function(e,tp,eg,ep,ev,re,r,rp) return end
 	if gtbl and type(gtbl.FlipCookieeffcondition) == "function" then
 		condition1=gtbl.FlipCookieeffcondition(e,tp,eg,ep,ev,re,r,rp) end
-	if not Duel.SelectYesNo(tp,aux.Stringid(10060001,0)) then
+	if hpcookie2:IsLocation(LOCATION_SZONE) and not Duel.SelectYesNo(tp,aux.Stringid(10060001,0)) then
 	Duel.Remove(hpcookie2,POS_FACEUP,REASON_RULE)
 	Duel.SendtoGrave(hpcookie2,REASON_RULE|REASON_RETURN) return end
 	if condition1 then
@@ -302,7 +302,7 @@ function Cookie7.faceuphpcookietomove(e,tp,eg,ep,ev,re,r,rp)
 	if gtbl and type(gtbl.FlipCookiecostoperation) == "function" then
 		costop1=gtbl.FlipCookiecostoperation(e,tp,eg,ep,ev,re,r,rp) end
 	else end end
-	if not hpcookie2:IsSetCard(0xa16) then
+	if hpcookie2:IsLocation(LOCATION_SZONE) and not hpcookie2:IsSetCard(0xa16) then
 	Duel.Remove(hpcookie2,POS_FACEUP,REASON_RULE)
 	Duel.SendtoGrave(hpcookie2,REASON_RULE|REASON_RETURN) end
 end

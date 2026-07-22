@@ -92,12 +92,17 @@ function Cookie3.SupportAreaCount(e,tp,eg,ep,ev,re,r,rp,allymanazone1,allymanazo
 end
 
 --리프레시
+function Cookie3.Refreshszonefilter(c)
+	return c:IsSetCard(0xb00) and not c:GetEquipTarget()
+end
 function Cookie3.Refreshop(e,tp,eg,ep,ev,re,r,rp)
 	if Duel.GetFieldGroupCount(tp,LOCATION_DECK,0)~=0 then return end
 	local brk=1
 	if Duel.IsExistingMatchingCard(Card.IsCode,tp,LOCATION_MZONE,0,1,nil,10069096) then	brk=0
 	elseif Duel.IsExistingMatchingCard(Card.IsCode,tp,0,LOCATION_MZONE,1,nil,10069111) then brk=2
 	else brk=1 end
+	local sz=Duel.GetMatchingGroup(Cookie3.Refreshszonefilter,tp,LOCATION_SZONE,0,nil)
+	if #sz>0 then Duel.Remove(sz,POS_FACEUP,REASON_RULE) Duel.SendtoGrave(sz,REASON_RULE) end
 	local ag=Duel.SelectMatchingCard(tp,Card.IsRace,tp,LOCATION_GRAVE,0,brk,brk,nil,RACE_WARRIOR)
 	if #ag>0 then Duel.SendtoExtraP(ag,nil,REASON_EFFECT) end
 	local refill=Duel.GetFieldGroup(tp,LOCATION_GRAVE,0)
