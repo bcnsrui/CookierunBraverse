@@ -8,7 +8,7 @@ function s.IGCookiecostoperation(e,tp,eg,ep,ev,re,r,rp)
 	Cookie3.bttrashop(e,tp,eg,ep,ev,re,r,rp,e:GetHandler())
 end
 function s.IGCookieeffcondition(e,tp,eg,ep,ev,re,r,rp)
-	return Duel.GetFieldGroupCount(tp,LOCATION_GRAVE,0)>=15
+	return Duel.GetFieldGroupCount(tp,LOCATION_GRAVE,0)>=14
 end
 function s.IGCookieoperation(e,tp,eg,ep,ev,re,r,rp)
 	local ct=Duel.AnnounceNumber(tp,1,0)

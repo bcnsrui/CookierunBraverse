@@ -16,7 +16,7 @@ function s.IGCookiecostoperation(e,tp,eg,ep,ev,re,r,rp)
 	Duel.SendtoGrave(hg,REASON_COST)
 end
 function s.IGCookieeffcondition(e,tp,eg,ep,ev,re,r,rp)
-	return Duel.GetFieldGroupCount(tp,LOCATION_GRAVE,0)>=15
+	return Duel.GetFieldGroupCount(tp,LOCATION_GRAVE,0)>=14
 	and Duel.GetLocationCount(tp,LOCATION_MZONE)>0
 	and Duel.IsExistingMatchingCard(s.lv2filter,tp,LOCATION_GRAVE,0,1,nil)
 end
